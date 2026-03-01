@@ -1,0 +1,25 @@
+{ ... }:
+[
+  ./bat
+  ./bun
+  ./cargo
+  ./claude-code
+  ./direnv
+  ./eza
+  ./fd
+  ./fzf
+  ./gh
+  ./ghostty
+  ./git
+  ./neovim
+  ./nodejs
+  ./obsidian
+  ./ruff
+  ./rust
+  ./safe-chain
+  ./starship
+  ./tmux
+  ./uv
+  ./zoxide
+  ./zsh
+]
