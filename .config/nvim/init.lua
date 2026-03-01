@@ -1,0 +1,6 @@
+require("config.option")
+require("config.lazy")
+require("lsp")
+require("config.keybind")
+require("config.ime")
+require("config.thino")
