@@ -1,0 +1,93 @@
+{{define "function"}}
+func {{.TestName}}(t *testing.T) {
+	{{- if .Subtests}}
+	tests := []struct {
+		name string
+		{{- if .TestParameters}}
+		args struct {
+			{{- range .TestParameters}}
+			{{Field .}} {{.Type}}
+			{{- end}}
+		}
+		{{- end}}
+		{{- if .TestResults}}
+		want{{if gt (len .TestResults) 1}}s{{end}} struct {
+			{{- range .TestResults}}
+			{{Field .}} {{.Type}}
+			{{- end}}
+		}
+		{{- end}}
+		{{- if .OnlyReturnsError}}
+		wantErr bool
+		{{- end}}
+	}{
+		// TODO: Add test cases.
+	}
+	for {{if (or .Subtests (not .IsNaked))}} _, tt := {{end}} range tests {
+		{{- if .Subtests}}
+		{{if .Parallel}}t.{{end}}Run(tt.name, func(t *testing.T) {
+			{{- if .Parallel}}
+			t.Parallel()
+			{{- end}}
+		{{- end}}
+			{{- if and .Receiver .IsNaked}}
+			{{Receiver .}} := {{.Receiver.Type}}{}
+			{{- end}}
+			{{- with .Inline}}
+			{{. := .Receiver.Name}} := {{.Receiver.Type}}{
+			{{- range .Receiver.Fields}}
+				{{.Name}}: {{.Value}},
+			{{- end}}
+			}
+			{{- end}}
+			{{- range .Parameters}}
+			{{- if .IsWriter}}
+			{{Param .}} := &bytes.Buffer{}
+			{{- end}}
+			{{- if .IsChannel}}
+			{{Param .}} := make({{.Type}})
+			{{- end}}
+			{{- end}}
+			{{- if .OnlyReturnsError}}
+			{{- if .Subtests}}
+			if err := {{template "call" .}}; (err != nil) != tt.wantErr {
+				t.Errorf("{{template "message" .}} error = %v, wantErr %v", err, tt.wantErr)
+			}
+			{{- end}}
+			{{- else}}
+			{{template "results" .}} {{template "call" .}}
+			{{- if .TestResults}}
+			{{- range .TestResults}}
+			if {{if .IsWriter}}{{Param .}}.String(){{else}}{{Got .}}{{end}} != tt.want{{if gt (len $.TestResults) 1}}s{{end}}.{{Field .}} {
+				t.Errorf("{{template "message" $}} = %v, want %v", {{Got .}}, tt.want{{if gt (len $.TestResults) 1}}s{{end}}.{{Field .}})
+			}
+			{{- end}}
+			{{- end}}
+			{{- end}}
+		{{- if .Subtests}}
+		})
+		{{- end}}
+	}
+	{{- else}}
+	{{- if and .Receiver .IsNaked}}
+	{{Receiver .}} := {{.Receiver.Type}}{}
+	{{- end}}
+	{{- with .Inline}}
+	{{. := .Receiver.Name}} := {{.Receiver.Type}}{
+	{{- range .Receiver.Fields}}
+		{{.Name}}: {{.Value}},
+	{{- end}}
+	}
+	{{- end}}
+	{{- range .Parameters}}
+	{{- if .IsWriter}}
+	{{Param .}} := &bytes.Buffer{}
+	{{- end}}
+	{{- if .IsChannel}}
+	{{Param .}} := make({{.Type}})
+	{{- end}}
+	{{- end}}
+	{{template "results" .}} {{template "call" .}}
+	{{- end}}
+}
+{{- end}}
