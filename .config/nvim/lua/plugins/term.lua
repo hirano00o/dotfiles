@@ -139,43 +139,6 @@ return {
           vim.cmd(i .. "ToggleTerm")
         end, { desc = "Toggle terminal " .. i })
       end
-
-      -- lazygit
-      local lazygit = Terminal:new({
-        cmd = "lazygit",
-        direction = "float",
-        hidden = true,
-        on_close = function(term)
-          -- 閉じた時に他のターミナルを開かないようにする
-          -- （デフォルトの動作を無効化）
-        end,
-        on_exit = function(term, job, exit_code, name)
-          -- 終了時は何もしない(グローバルon_exitを上書き)
-        end,
-        count = 99,
-      })
-      function _lazygit_toggle()
-        lazygit:toggle()
-      end
-
-      vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
-
-      -- lazydocker
-      local lazydocker = Terminal:new({
-        cmd = "lazydocker",
-        direction = "float",
-        hidden = true,
-        on_close = function(term)
-        end,
-        on_exit = function(term, job, exit_code, name)
-        end,
-        count = 98,
-      })
-      function _lazydocker_toggle()
-        lazydocker:toggle()
-      end
-
-      vim.keymap.set("n", "<leader>co", _lazydocker_toggle, { noremap = true, silent = true, desc = "Toggle lazydocker" })
     end,
   },
 }
