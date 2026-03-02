@@ -31,6 +31,7 @@ in
       share = true;
     };
     shellAliases = {
+      d = "docker";
       k = "kubectl";
     };
     shellGlobalAliases = {
