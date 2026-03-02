@@ -38,6 +38,7 @@ with pkgs;
   go
   gofumpt
   golangci-lint
+  gotests
 
   # Misc
   openssl

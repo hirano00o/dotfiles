@@ -19,8 +19,7 @@ function M.generate_test()
   local test_file = filepath:gsub("%.go$", "_test.go")
 
   -- treesitterでカーソル位置の関数名を取得
-  local ts_utils = require("nvim-treesitter.ts_utils")
-  local node = ts_utils.get_node_at_cursor()
+  local node = vim.treesitter.get_node()
 
   vim.notify(string.format("🔍 初期ノード: %s", node and node:type() or "nil"), vim.log.levels.INFO)
 
