@@ -2,6 +2,12 @@ return {
   "folke/snacks.nvim",
   opts = {
     image = {
+      enabled = true,
+      doc = {
+        enabled = true,
+        inline = true,
+        float = true,
+      },
       formats = {
         "png", "jpg", "jpeg", "gif", "webp", "avif",
         "bmp", "tiff", "heic", "ico", "icns", "svg",
