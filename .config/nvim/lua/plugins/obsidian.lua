@@ -42,4 +42,13 @@ return {
       }
     end,
   },
+  {
+    "hirano00o/obsidian-thino.nvim",
+    dependencies = {
+      "epwalsh/obsidian.nvim",
+    },
+    opts = {
+      time_format = "%H:%M:%S",
+    },
+  },
 }
