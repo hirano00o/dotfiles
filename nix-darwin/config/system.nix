@@ -6,6 +6,7 @@
     defaults = {
       NSGlobalDomain = {
         AppleShowAllExtensions = true;
+        "com.apple.keyboard.fnState" = true;
       };
       finder = {
         AppleShowAllFiles = true;
@@ -17,6 +18,11 @@
         show-recents = false;
         launchanim = false;
         orientation = "bottom";
+      };
+      controlcenter = {
+        Bluetooth = true;
+        Sound = true;
+        BatteryShowPercentage = true;
       };
     };
     startup = {
