@@ -61,16 +61,20 @@ with pkgs;
   python312
   typescript
   google-cloud-sdk
+
   presenterm
   mermaid-cli
   typst
   pandoc
   d2
   python313Packages.weasyprint
+
   marp-cli
+
   markitdown-mcp
   drawio
   vhs
+  shottr
 
   llm-agents.packages.${stdenv.hostPlatform.system}.ccusage
 
