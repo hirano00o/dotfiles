@@ -18,6 +18,7 @@ return {
         "query",
         "sql",
         "markdown",
+        "markdown_inline",
         "yaml",
         "json",
         "toml",

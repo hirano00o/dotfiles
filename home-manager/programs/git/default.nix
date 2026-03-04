@@ -7,7 +7,7 @@
       ".DS_Store"
       ".direnv"
       ".serena/"
-      "**/.claude/settings.local.json"
+      "**/.claude/**/*.local.*"
     ];
   };
 
