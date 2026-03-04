@@ -45,13 +45,11 @@ let
   };
   lib = pkgs.lib;
 
-  nodePkgs = import ../node-pkgs { inherit pkgs; };
   basicPkgs = import ./packages/basic.nix { inherit pkgs llm-agents; };
 
   misc = import ./misc { };
 
   basicPrograms = import ./programs/basic.nix {
-    inherit pkgs nodePkgs;
     inherit mcp-servers-nix;
     inherit rust-overlay;
     inherit llm-agents;
