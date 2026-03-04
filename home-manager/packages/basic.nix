@@ -70,6 +70,7 @@ with pkgs;
   marp-cli
   markitdown-mcp
   drawio
+  vhs
 
   llm-agents.packages.${stdenv.hostPlatform.system}.ccusage
 
