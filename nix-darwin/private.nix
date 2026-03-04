@@ -7,10 +7,4 @@ in
     ./default.nix
     network
   ];
-
-  homebrew = {
-    casks = [
-      "grishka/grishka/neardrop"
-    ];
-  };
 }
