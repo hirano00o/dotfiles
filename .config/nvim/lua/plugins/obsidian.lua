@@ -1,7 +1,8 @@
 return {
   {
-    "epwalsh/obsidian.nvim",
+    "obsidian-nvim/obsidian.nvim",
     version = "*",
+    ft = "markdown",
     lazy = false,
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -12,6 +13,7 @@ return {
     opts = function()
       vim.opt.conceallevel = 1
       return {
+        legacy_commands = false,
         ui = {
           enable = false,
         },
@@ -36,16 +38,13 @@ return {
           date_format = "%Y-%m-%d",
           time_format = "%H:%M:%S",
         },
-        follow_url_func = function(url)
-          vim.ui.open(url)
-        end
       }
     end,
   },
   {
     "hirano00o/obsidian-thino.nvim",
     dependencies = {
-      "epwalsh/obsidian.nvim",
+      "obsidian-nvim/obsidian.nvim",
     },
     opts = {
       time_format = "%H:%M:%S",
