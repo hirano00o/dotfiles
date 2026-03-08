@@ -187,7 +187,7 @@ if [ -f "$CACHE_FILE" ]; then
 fi
 
 # 出力組み立て（複数行表示）
-# モデル | NORMAL | ⎇ branch | dir | ⏱️ 5h [████░░░░░░] X% (Xh Xm) | 📅 7d [██░░░░░░░░] Y% | 📊 Ctx [█░░░░░░░░░] Z% | 💰 $12.34 | 💰 $123.0/mon | 🤖 エージェント
+# モデル | ⎇ branch | dir | ⏱️ 5h [████░░░░░░] X% (Xh Xm) | 📅 7d [██░░░░░░░░] Y% | 📊 Ctx [█░░░░░░░░░] Z% | 💰 $12.34 | 💰 $123.0/mon | 🤖 エージェント
 
 line1="${CYAN}${model}${RESET}"
 [ -n "$git_str" ] && line1="$line1 ${GRAY}| $git_str"
