@@ -41,6 +41,10 @@
       url = "path:./users/work";
       flake = true;
     };
+    hb = {
+      url = "github:hirano00o/hb";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
