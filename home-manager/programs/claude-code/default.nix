@@ -12,6 +12,12 @@ let
   };
 in
 {
+  home.file = {
+    ".claude/scripts/statusline.sh" = {
+      source = ./scripts/statusline.sh;
+      executable = true;
+    };
+  };
   programs.claude-code = {
     enable = true;
     package = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
@@ -186,7 +192,7 @@ in
       };
       statusLine = {
         type = "command";
-        command = "ccusage statusline --no-offline";
+        command = "~/.claude/scripts/statusline.sh";
         padding = 0;
       };
       enabledPlugins = {
