@@ -1,6 +1,7 @@
-{ pkgs }:
+{ pkgs, hb }:
 with pkgs;
 [
+  hb.packages.${pkgs.system}.default
   go-mockery
   discord
   orbstack
