@@ -8,6 +8,7 @@
       ".direnv"
       ".serena/"
       "**/.claude/**/*.local.*"
+      "**/.claude/handovers/**"
     ];
   };
 
