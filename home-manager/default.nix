@@ -15,11 +15,14 @@ let
   # mcpパッケージの壊れたpostPatchを修正するoverlay
   # nixpkgsのmcp 1.25.0にはmacOS向けのpostPatchがあるが、
   # upstream(mcp PR#1529)で該当コードが削除されたため、パッチが失敗する
+  # mcp 1.26.0のテストはNixサンドボックス内でネットワークサーバーを起動しようとして
+  # TimeoutErrorになるため、doCheck = falseでテストをスキップする
   mcpFixOverlay = final: prev: {
     python3Packages = prev.python3Packages.override {
       overrides = pyFinal: pyPrev: {
         mcp = pyPrev.mcp.overrideAttrs (old: {
           postPatch = "";
+          doCheck = false;
         });
       };
     };
@@ -27,6 +30,7 @@ let
       overrides = pyFinal: pyPrev: {
         mcp = pyPrev.mcp.overrideAttrs (old: {
           postPatch = "";
+          doCheck = false;
         });
       };
     };
