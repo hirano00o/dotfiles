@@ -5,7 +5,7 @@
   ];
 
   home.packages = with pkgs; [
-    (rust-bin.stable.latest.default.override {
+    (rust-bin.stable.latest.minimal.override {
       extensions = [
         "rust-src" # rust-analyzer Diagnostics 用のソースコード
         "rust-analyzer"
