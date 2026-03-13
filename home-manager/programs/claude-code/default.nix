@@ -17,6 +17,10 @@ in
       source = ./scripts/statusline.sh;
       executable = true;
     };
+    ".claude/scripts/notify.sh" = {
+      source = ./scripts/notify.sh;
+      executable = true;
+    };
   };
   programs.claude-code = {
     enable = true;
@@ -25,17 +29,20 @@ in
     settings = {
       model = "opusplan";
       theme = "dark";
+      language = "japanese";
       autoUpdates = false;
       includeCoAuthoredBy = false;
       enableAllProjectMcpServers = true;
-      alwaysThinkingEnabled = false;
-      preferredNotifChannel = "terminal_bell";
+      alwaysThinkingEnabled = true;
       env = {
         CLAUDE_CODE_ENABLE_TELEMETRY = "0";
         DISABLE_COST_WARNINGS = "0";
         BASH_DEFAULT_TIMEOUT_MS = "300000";
         BASH_MAX_TIMEOUT_MS = "1200000";
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
+        ENABLE_TOOL_SEARCH = "true";
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
+        CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
       };
       permissions = {
         allow = [
@@ -106,6 +113,15 @@ in
           "Bash(readlink:*)"
           "Bash(jq:*)"
           "Bash(yq:*)"
+          "WebFetch(domain:api.github.com)"
+          "WebFetch(domain:github.com)"
+          "WebFetch(domain:gist.github.com)"
+          "WebFetch(domain:docs.anthropic.com)"
+          "Read(**/.env.example)"
+          "Read(**/.env.sample)"
+          "Write(**/.env.example)"
+          "Write(**/.env.sample)"
+          "Write(/private/tmp)"
           "mcp__serena"
           "mcp__filesystem"
           "mcp__fetch"
@@ -117,37 +133,44 @@ in
           "mcp__markitdown"
         ];
         deny = [
-          "Bash(rm -rf /*)"
-          "Bash(rm -rf ~)"
-          "Bash(rm -rf ~/)"
-          "Bash(rm -rf /)"
-          "Bash(sudo rm -:*)"
-          "Bash(chmod 777 /*)"
+          "Bash(* .env*)"
+          "Bash(* ~/.aws/*)"
+          "Bash(* ~/.config/gh/*)"
+          "Bash(* ~/.config/git/*)"
+          "Bash(* ~/.netrc)"
+          "Bash(* ~/.ssh/*)"
+          "Bash(* ~/.pypirc)"
+          "Bash(* ~/.cloudflared/*)"
+          "Bash(* ~/.config/sops/*)"
+          "Bash(* ~/.config/sops-nix/*)"
+          "Bash(rm -rf *)"
+          "Bash(rm -rf:*)"
+          "Bash(rmdir *)"
+          "Bash(for)"
+          "Bash(do)"
+          "Bash(gh repo delete:*)"
+          "Bash(security *)"
+          "Bash(ssh *)"
+          "Bash(telnet *)"
+          "Bash(su *)"
+          "Bash(sudo *)"
+          "Bash(sudo:*)"
+          "Bash(chmod 777:*)"
           "Bash(chmod -R 777 /*)"
           "Bash(chown root:*)"
-          "Bash(sudo chmod 777:*)"
-          "Bash(sudo chown :*)"
-          "Bash(sudo -i:*)"
-          "Bash(sudo su:*)"
+          "Bash(mysql:*)"
+          "Bash(psql:*)"
+          "Bash(mongosh:*)"
+          "Bash(su *)"
           "Bash(dd:*)"
           "Bash(mkfs:*)"
           "Bash(fdisk:*)"
           "Bash(> /dev/*)"
           "Bash(>> /dev/*)"
-          "Bash(sudo dd:*)"
-          "Bash(sudo mkfs:*)"
-          "Bash(sudo fdisk:*)"
-          "Bash(sudo mount:*)"
-          "Bash(sudo umount:*)"
-          "Bash(rm -rf .git)"
-          "Bash(git push --force-with-lease origin main)"
-          "Bash(git push --force-with-lease origin master)"
-          "Bash(git push -f origin main)"
-          "Bash(git push -f origin master)"
-          "Bash(git push origin main)"
-          "Bash(git push origin master)"
           "Bash(npm publish:*)"
           "Bash(deno publish:*)"
+          "Bash(sed -i:*)"
+          "Bash(awk -i:*)"
           "Edit(/etc/**)"
           "Edit(/usr/**)"
           "Edit(/var/**)"
@@ -161,30 +184,57 @@ in
           "Edit(/sys/**)"
           "Edit(/dev/**)"
           "Edit(~/.ssh/*)"
-          "Bash(sed -i:*)"
-          "Bash(awk -i:*)"
-          "Write(/etc/**)"
-          "Write(/usr/**)"
-          "Write(/var/**)"
-          "Write(/opt/**)"
-          "Write(/bin/**)"
-          "Write(/sbin/**)"
-          "Write(/lib/**)"
-          "Write(/lib64/**)"
-          "Write(/boot/**)"
-          "Write(/proc/**)"
-          "Write(/sys/**)"
-          "Write(/dev/**)"
-          "Write(~/.ssh/*)"
+          "Edit(./.env)"
+          "Edit(./.env.*)"
+          "Write(**/*.env*)"
+          "Write(**/*aws*)"
+          "Write(**/*key)"
+          "Write(**/*secrets*)"
+          "Write(**/*token*)"
+          "Write(./.env)"
+          "Write(./.env.*)"
+          "Read(**/*.env*)"
+          "Read(**/*aws*)"
+          "Read(**/*key)"
+          "Read(**/*secrets*)"
+          "Read(**/*token*)"
+          "Read(./.env)"
+          "Read(./.env.*)"
+          "Read(~/.aws/**)"
+          "Read(~/.config/gh/**)"
+          "Read(~/.config/git/**)"
+          "Read(~/.netrc)"
+          "Read(~/.npmrc)"
+          "Read(~/.pypirc)"
+          "Read(~/.ssh/**)"
+          "Read(~/.cloudflared/**)"
+          "Read(~/.config/sops/**)"
+          "Read(~/.config/sops-nix/**)"
+        ];
+        ask = [
+          "Bash(git push:*)"
+          "Bash(git config:*)"
+          "Bash(git rm:*)"
         ];
       };
       hooks = {
+        Stop = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/notify.sh \"Finished\" 'Claude Code'";
+              }
+            ];
+          }
+        ];
         Notification = [
           {
             hooks = [
               {
                 type = "command";
-                command = "echo \"Claude Code: $(jq -r '.message')\" | terminal-notifier -title 'Claude Code'";
+                command = "${config.home.homeDirectory}/.claude/scripts/notify.sh \"$(jq -r '.message')\" 'Claude Code'";
               }
             ];
           }
@@ -197,21 +247,12 @@ in
       };
       enabledPlugins = {
         # https://github.com/anthropics/claude-plugins-official
-        "code-review@claude-code-plugins" = true;
         "agent-sdk-dev@claude-code-plugins" = true;
         "feature-dev@claude-code-plugins" = true;
         "frontend-design@claude-code-plugins" = true;
         "pr-review-toolkit@claude-code-plugins" = true;
         "ralph-wiggum@claude-code-plugins" = true;
         "security-guidance@claude-code-plugins" = true;
-        # https://github.com/VoltAgent/awesome-claude-code-subagents
-        "voltagent-core-dev@voltagent-subagents" = true;
-        "voltagent-lang@voltagent-subagents" = true;
-        "voltagent-infra@voltagent-subagents" = true;
-        "voltagent-data-ai@voltagent-subagents" = true;
-        "voltagent-dev-exp@voltagent-subagents" = true;
-        "voltagent-meta@voltagent-subagents" = true;
-        "voltagent-research@voltagent-subagents" = true;
       };
     };
     skills = {
