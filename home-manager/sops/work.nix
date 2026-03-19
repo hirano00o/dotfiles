@@ -21,6 +21,8 @@
     };
 
     secrets = {
+      "obsidian/plugin/remotely_save/secret" = { };
+
       "git/config" = {
         path = "${config.home.homeDirectory}/.gitconfig";
         mode = "0644";
