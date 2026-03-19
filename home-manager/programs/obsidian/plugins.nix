@@ -142,16 +142,6 @@ let
     hasStyles = false;
   };
 
-  hatena = mkObsidianPlugin {
-    pname = "obsidian-hatena";
-    version = "1.1.1";
-    repo = "takmatsukawa/obsidian-hatena";
-    mainHash = "sha256-al6wpeZc97faqKPKyJOmSyEl4DyhRxNxqddS+uC5/Ro=";
-    manifestHash = "sha256-O59H2HBrZIgIs83bkQpsy/7If2I7lXVqeMKN0ua8WsE=";
-    hasStyles = true;
-    stylesHash = "sha256-h2QkPK4DUevbt253DE/v/LGVb/QkINTsFZIS3HqFNe0=";
-  };
-
   excalidrawPlugin = mkObsidianPlugin {
     pname = "obsidian-excalidraw-plugin";
     version = "2.17.2";
@@ -200,7 +190,6 @@ in
     checklistPlugin
     cmEditorSyntaxHighlight
     advancedUri
-    hatena
     excalidrawPlugin
     kanban
     dataview

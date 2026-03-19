@@ -1220,9 +1220,6 @@ in
           # generated through sops.templates below.
           plugins.remotelySave
           plugins.noteArchiver
-          # hatena plugin: apiKey is managed via sops; data.json is generated through
-          # sops.templates and referenced from extraFiles below.
-          plugins.hatena
           {
             pkg = plugins.dataview;
             settings = {
@@ -1263,16 +1260,6 @@ in
   # bypassing the need for extraFiles source references (which require the file to
   # exist at Nix evaluation time).
   sops.templates = {
-    # hatena plugin: apiKey is read from obsidian/plugin/hatena/apiKey secret.
-    "obsidian-hatena-data" = {
-      path = "${config.home.homeDirectory}/vaults/private/.obsidian/plugins/hatena/data.json";
-      mode = "0644";
-      content = builtins.toJSON {
-        apiKey = config.sops.placeholder."obsidian/plugin/hatena/apiKey";
-        rootEndpoint = "https://blog.hatena.ne.jp/hirano00o/hirano00o.hateblo.jp/atom";
-      };
-    };
-
     # remotely-save plugin: "d" field holds encrypted sync credentials.
     "obsidian-remotely-save-data" = {
       path = "${config.home.homeDirectory}/vaults/private/.obsidian/plugins/remotely-save/data.json";
