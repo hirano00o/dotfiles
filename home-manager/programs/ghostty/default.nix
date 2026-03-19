@@ -10,7 +10,7 @@
       if pkgs.stdenv.isLinux then
         pkgs.ghostty
       else if pkgs.stdenv.isDarwin then
-        pkgs.brewCasks.ghostty
+        pkgs.ghostty-bin
       else
         throw "unsupported system ${pkgs.stdenv.hostPlatform.system}";
 
