@@ -21,6 +21,10 @@ in
       source = ./scripts/notify.sh;
       executable = true;
     };
+    ".claude/scripts/posttooluse-lint.sh" = {
+      source = ./scripts/posttooluse-lint.sh;
+      executable = true;
+    };
   };
   programs.claude-code = {
     enable = true;
@@ -218,6 +222,17 @@ in
         ];
       };
       hooks = {
+        PostToolUse = [
+          {
+            matcher = "Edit|Write";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/posttooluse-lint.sh";
+              }
+            ];
+          }
+        ];
         Stop = [
           {
             matcher = "";
