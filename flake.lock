@@ -154,6 +154,26 @@
         "type": "github"
       }
     },
+    "gatehook": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774259665,
+        "narHash": "sha256-J6DDonu3CY86qgMx4fEZ7xu22vc7JvVJiylawR5no1A=",
+        "owner": "hirano00o",
+        "repo": "gatehook",
+        "rev": "395f8e0a532296098d6710eb404cad1b28a5338a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hirano00o",
+        "repo": "gatehook",
+        "type": "github"
+      }
+    },
     "hb": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -162,11 +182,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773821306,
-        "narHash": "sha256-hiiegHseIJxsza8Rsw3f0grT0vAuIRe5CzfIyGkMHfw=",
+        "lastModified": 1774225613,
+        "narHash": "sha256-YCwc5nxHp/3pVuBDkYOu1qOhot/it4jAYhzwthwLpCU=",
         "owner": "hirano00o",
         "repo": "hb",
-        "rev": "28fbfba68924123730c52966c4e99a8263ae22b9",
+        "rev": "972ffc9915d43968d55ab695a95d3d8f658b8c71",
         "type": "github"
       },
       "original": {
@@ -364,6 +384,7 @@
         "brew-api": "brew-api",
         "brew-nix": "brew-nix",
         "flake-parts": "flake-parts",
+        "gatehook": "gatehook",
         "hb": "hb",
         "home-manager": "home-manager",
         "llm-agents": "llm-agents",
