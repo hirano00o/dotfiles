@@ -2,7 +2,8 @@
 with pkgs;
 [
   zoom-us
-  awscli
+  awscli2
+  saml2aws
   granted
   kubectl
   docker
@@ -10,6 +11,7 @@ with pkgs;
   mongosh
   mongodb-tools
   xbar
+  jira-cli-go
 ]
 ++ lib.optionals stdenv.isDarwin [
   pkgs.brewCasks.docker-desktop
