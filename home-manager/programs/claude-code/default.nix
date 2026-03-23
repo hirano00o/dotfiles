@@ -3,6 +3,7 @@
   pkgs,
   mcp-servers-nix,
   llm-agents,
+  gatehook,
   ...
 }:
 let
@@ -10,6 +11,14 @@ let
     url = "https://raw.githubusercontent.com/jgraph/drawio-mcp/15ce87fe3fe9ea87f79f2e80f0efd0ff40367249/skill-cli/SKILL.md";
     sha256 = "sha256-mO102njzsU+FKaZuZQ1YcwNA6SwcBI+tXcPj81Y2PSk=";
   };
+
+  gatehook-pkg = gatehook.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+  gatehook-rules = {
+    rules = [ ];
+  };
+
+  rulesJson = pkgs.writeText "pretooluse-rules.json" (builtins.toJSON gatehook-rules);
 in
 {
   home.file = {
@@ -25,6 +34,7 @@ in
       source = ./scripts/posttooluse-lint.sh;
       executable = true;
     };
+    ".claude/scripts/gatehook-rules.json".source = rulesJson;
   };
   programs.claude-code = {
     enable = true;
@@ -222,6 +232,17 @@ in
         ];
       };
       hooks = {
+        PreToolUse = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${gatehook-pkg}/bin/gatehook --config ${config.home.homeDirectory}/.claude/scripts/gatehook-rules.json";
+              }
+            ];
+          }
+        ];
         PostToolUse = [
           {
             matcher = "Edit|Write";

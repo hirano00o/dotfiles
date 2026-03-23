@@ -47,6 +47,7 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) rust-overlay;
           inherit (inputs) llm-agents;
           inherit (inputs) sops-nix;
+          inherit (inputs) gatehook;
         };
       };
     }

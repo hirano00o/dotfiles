@@ -47,6 +47,7 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) llm-agents;
           inherit (inputs) sops-nix;
           inherit (inputs) hb;
+          inherit (inputs) gatehook;
         };
       };
     }

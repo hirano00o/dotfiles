@@ -5,6 +5,7 @@
   brew-nix,
   rust-overlay,
   llm-agents,
+  gatehook,
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
   ...
@@ -65,7 +66,7 @@ in
   # すべてのモジュールがoverlayを含むpkgsを使用するように設定
   _module.args = {
     pkgs = lib.mkForce pkgs;
-    inherit mcp-servers-nix llm-agents;
+    inherit mcp-servers-nix llm-agents gatehook;
   };
 
   home.stateVersion = "25.11";
