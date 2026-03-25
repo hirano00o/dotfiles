@@ -1210,6 +1210,238 @@ in
       };
     };
 
+    vaults."vaults/work" = {
+      settings = {
+        # Differs from defaultSettings: properties enabled, slides disabled,
+        # daily-notes has vault-specific folder/template/format settings.
+        corePlugins = [
+          "file-explorer"
+          "global-search"
+          "switcher"
+          "graph"
+          "backlink"
+          "canvas"
+          "outgoing-link"
+          "tag-pane"
+          "page-preview"
+          {
+            name = "daily-notes";
+            # Generates ~/.obsidian/daily-notes.json
+            settings = {
+              format = "YYYY-MM-DD";
+              folder = "daily_report";
+              template = "templates/daily_report";
+              autorun = false;
+            };
+          }
+          {
+            name = "templates";
+            # Generates ~/.obsidian/templates.json
+            settings = {
+              folder = "templates";
+            };
+          }
+          "note-composer"
+          "command-palette"
+          "editor-status"
+          "bookmarks"
+          "outline"
+          "word-count"
+          {
+            name = "slides";
+            enable = false;
+          }
+          "file-recovery"
+          "bases"
+          "properties"
+          {
+            name = "slash-command";
+            enable = false;
+          }
+          {
+            name = "markdown-importer";
+            enable = false;
+          }
+          {
+            name = "zk-prefixer";
+            enable = false;
+          }
+          {
+            name = "random-note";
+            enable = false;
+          }
+          {
+            name = "audio-recorder";
+            enable = false;
+          }
+          {
+            name = "workspaces";
+            enable = false;
+          }
+          {
+            name = "publish";
+            enable = false;
+          }
+          {
+            name = "sync";
+            enable = false;
+          }
+        ];
+
+        # Work vault has a different plugin set from defaultSettings;
+        # specify explicitly rather than inheriting from defaultSettings.
+        communityPlugins = [
+          {
+            pkg = plugins.thino;
+            settings = {
+              FirstLoaded = false;
+              StartDate = "Sunday";
+              InsertAfter = "# Journal";
+              UserName = "THINO 😉";
+              ProcessEntriesBelow = "";
+              Language = "en";
+              SaveMemoButtonLabel = "NOTEIT";
+              SaveMemoButtonIcon = "✍️";
+              ShareFooterStart = "{ThinoNum} Memos {UsedDay} Day";
+              ShareFooterEnd = "✍️ by {UserName}";
+              DefaultPrefix = "List";
+              DefaultTimePrefix = "HH:mm:ss";
+              UseDailyOrPeriodic = "Daily";
+              InsertDateFormat = "Tasks";
+              DefaultEditorLocation = "Top";
+              UseButtonToShowEditor = false;
+              FocusOnEditor = true;
+              OpenDailyMemosWithMemos = true;
+              HideDoneTasks = false;
+              ShowTaskLabel = true;
+              AppendDateWhenTaskDone = false;
+              MobileAndDesktop = "All";
+              OpenMemosAutomatically = false;
+              ShowTime = true;
+              ShowDate = true;
+              AddBlankLineWhenDate = false;
+              AutoSaveWhenOnMobile = false;
+              DeleteFileName = "delete";
+              QueryFileName = "query";
+              UseVaultTags = true;
+              SetCustomBackgroundImage = false;
+              SetCustomMemoFooter = false;
+              DefaultLightBackgroundImage = "";
+              DefaultDarkBackgroundImage = "";
+              DefaultLightBackgroundImageForClean = "";
+              DefaultDarkBackgroundImageForClean = "";
+              DefaultMemoComposition = "{TIME} {CONTENT}";
+              CommentOnMemos = false;
+              CommentsInOriginalNotes = false;
+              FetchMemosMark = "#memo";
+              FetchMemosFromNote = false;
+              ShowCommentOnMemos = false;
+              ShowLeftSideBar = false;
+              MemoListView = "list";
+              MemoSaveLocation = "DAILY";
+              MemoOtherSaveLocation = {
+                MemoDefaultCanvasPath = "basic.thino.canvas";
+                MemoDefaultMultiFilePath = "Thino";
+                MemoDefaultSingleFilePath = "basic.thino.md";
+              };
+              MemoDailyTarget = 5;
+              HeatmapColorScheme = "default";
+              EnabledHttpApi = false;
+              HttpApiIpType = "127.0.0.1";
+              HttpApiPort = "43999";
+              AutoDownloadImage = false;
+              EditorType = "obsidian";
+              EnabledLocationList = [
+                {
+                  value = "DAILY";
+                  target = "ProcessEntriesBelow";
+                  insert = "InsertAfter";
+                }
+              ];
+              DeleteThinoDirectly = false;
+              CaptureKey = {
+                EnableCaptureKey = false;
+                OpenThinoGlobally = "CommandOrControl+Shift+T";
+                ShowNearMouse = false;
+              };
+              startSync = false;
+              tokenForVerify = { };
+              saveThinoType = "FILE";
+              showDayMark = false;
+              dayMarkRange = "day";
+              navigation = false;
+              password = "";
+              needVerify = false;
+              addTagAutomatically = false;
+              addTagPosition = "End";
+              addTagWithNewline = false;
+              chatViewStyle = "default";
+              MomentsBackgroundImage = "https://images.pexels.com/photos/531767/pexels-photo-531767.jpeg";
+              MomentsIcon = "https://images.pexels.com/photos/256514/pexels-photo-256514.jpeg";
+              MomentsQuote = "Share your thino with the world";
+              DefaultThemeForThino = "modern";
+              LastUpdatedVersion = "2.4.50";
+              ShareToThinoWithText = false;
+              ShareToThinoWithTextAppend = "";
+              ShareToThinoWithTextPrepend = "";
+              ShareToThinoWithTextNewline = "none";
+              hidePinnedGroup = false;
+              DifferentInsertTarget = false;
+              InsertAfterForTask = "";
+              ProcessContentTarget = "custom";
+              InsertType = "custom";
+              ShareAppendType = "preset";
+              SharePrependType = "preset";
+              SetFileNameAfterCreate = false;
+              TagForFileTypeFiles = "thino/file";
+              TagForMultiTypeFiles = "thino/multi";
+              MinHeightForShare = "200px";
+              ThinoMaxHeight = 0;
+              ThinoCollapsedHeight = 100;
+              OptimizeForCallout = true;
+              AppendOrPrependTextViaServer = false;
+              AppendViaServer = "";
+              PrependViaServer = "";
+              WithNewLineViaServer = "none";
+              SupportSelectOtherView = false;
+              WaitTemplaterToFinishParse = false;
+              NavbarButton = false;
+              AlwaysShowStatusText = false;
+              FilterByMetadata = false;
+              ShowSourcePath = false;
+              ShowUpdateMessage = true;
+              SyncManually = false;
+            };
+          }
+          # excalidraw: data.json is managed by Obsidian (not via Nix settings)
+          # because the work vault uses an older config snapshot.
+          plugins.excalidrawPlugin
+          {
+            pkg = plugins.kanban;
+            settings = {
+              "link-date-to-daily-note" = true;
+            };
+          }
+          {
+            pkg = plugins.advancedUri;
+            # openFileWithoutWriteInNewPane differs from defaultSettings (false → true).
+            settings = {
+              openFileOnWrite = true;
+              openDailyInNewPane = true;
+              openFileOnWriteInNewPane = true;
+              openFileWithoutWriteInNewPane = true;
+              idField = "id";
+              useUID = false;
+              addFilepathWhenUsingUID = false;
+              allowEval = false;
+              includeVaultName = true;
+              vaultParam = "name";
+            };
+          }
+        ];
+      };
+    };
+
     vaults."vaults/private" = {
       settings = {
         # Vault-specific community plugins added on top of defaultSettings.communityPlugins.
