@@ -43,6 +43,7 @@ let
     overlays = [
       mcpFixOverlay
       (import ./overlays/markitdown-mcp.nix)
+      (import ./overlays/drawio-mcp.nix)
       mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
     ]

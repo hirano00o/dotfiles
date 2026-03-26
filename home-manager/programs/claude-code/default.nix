@@ -324,8 +324,8 @@ in
           command = "markitdown-mcp";
         };
         drawio = {
-          type = "http";
-          url = "https://mcp.draw.io/mcp";
+          type = "stdio";
+          command = "${pkgs.drawio-mcp}/bin/drawio-mcp";
         };
       };
   };
