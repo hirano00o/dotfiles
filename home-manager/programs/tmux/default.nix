@@ -120,6 +120,9 @@
 
       set -g extended-keys on
       set -as terminal-features 'xterm*:extkeys'
+
+      # 画像レンダリング（Kitty image protocol）をターミナルに通過させる
+      set -g allow-passthrough on
     '';
   };
 

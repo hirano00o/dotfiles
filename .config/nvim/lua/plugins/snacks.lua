@@ -5,8 +5,14 @@ return {
       enabled = true,
       doc = {
         enabled = true,
-        inline = true,
+        inline = false,
         float = true,
+      },
+      convert = {
+        mermaid = function()
+          local theme = vim.o.background == "light" and "neutral" or "dark"
+          return { "-i", "{src}", "-o", "{file}", "-b", "transparent", "-t", theme, "-s", "{scale}" }
+        end,
       },
       formats = {
         "png", "jpg", "jpeg", "gif", "webp", "avif",

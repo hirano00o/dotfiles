@@ -16,5 +16,8 @@ return {
     inline_highlight = {
       enable = true,
     },
+    code = {
+      disable_background = { "mermaid" },
+    },
   },
 }

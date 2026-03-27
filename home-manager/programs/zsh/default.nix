@@ -39,6 +39,8 @@ in
     };
     initContent = ''
       export LANG=ja_JP.UTF-8
+      # mmdc (mermaid-cli) 用: tmuxでhm-session-varsが引き継がれないため直接設定
+      export PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
       bindkey -M viins '^j' vi-cmd-mode
       bindkey -M viins '^f' autosuggest-accept
 
