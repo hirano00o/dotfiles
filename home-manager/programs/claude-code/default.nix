@@ -34,6 +34,10 @@ in
       source = ./scripts/posttooluse-lint.sh;
       executable = true;
     };
+    ".claude/scripts/stop-handover.sh" = {
+      source = ./scripts/stop-handover.sh;
+      executable = true;
+    };
     ".claude/scripts/gatehook-rules.json".source = rulesJson;
   };
   programs.claude-code = {
@@ -59,93 +63,7 @@ in
         CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
       };
       permissions = {
-        allow = [
-          "List(*)"
-          "WebSearch"
-          "Bash(ls:*)"
-          "Bash(rg:*)"
-          "Bash(grep:*)"
-          "Bash(make:*)"
-          "Bash(mkdir:*)"
-          "Bash(cp:*)"
-          "Bash(find:*)"
-          "Bash(cat:*)"
-          "Bash(bat:*)"
-          "Bash(head:*)"
-          "Bash(tail:*)"
-          "Bash(less:*)"
-          "Bash(more:*)"
-          "Bash(wc:*)"
-          "Bash(sort:*)"
-          "Bash(uniq:*)"
-          "Bash(tar:*)"
-          "Bash(gzip:*)"
-          "Bash(zip:*)"
-          "Bash(unzip:*)"
-          "Bash(ps:*)"
-          "Bash(top:*)"
-          "Bash(which:*)"
-          "Bash(whoami:*)"
-          "Bash(pwd:*)"
-          "Bash(df:*)"
-          "Bash(date:*)"
-          "Bash(echo:*)"
-          "Bash(touch:*)"
-          "Bash(lsof:*)"
-          "Bash(diff:*)"
-          "Bash(docker ps:*)"
-          "Bash(docker build:*)"
-          "Bash(docker run:*)"
-          "Bash(docker logs:*)"
-          "Bash(docker images:*)"
-          "Bash(docker pull:*)"
-          "Bash(docker stop:*)"
-          "Bash(docker rm:*)"
-          "Bash(docker rmi:*)"
-          "Bash(docker inspect:*)"
-          "Bash(docker compose:*)"
-          "Bash(go test:*)"
-          "Bash(go build:*)"
-          "Bash(go fmt:*)"
-          "Bash(gofmt:*)"
-          "Bash(gh pr list:*)"
-          "Bash(gh pr view:*)"
-          "Bash(gh pr diff:*)"
-          "Bash(git add:*)"
-          "Bash(git pull:*)"
-          "Bash(git checkout:*)"
-          "Bash(git reset:*)"
-          "Bash(nix search:*)"
-          "Bash(nix hash:*)"
-          "Bash(nix flake:*)"
-          "Bash(nix derivation show:*)"
-          "Bash(nix log:*)"
-          "Bash(nix --version:*)"
-          "Bash(nix-build:*)"
-          "Bash(nix-prefetch-url:*)"
-          "Bash(nix-collect-garbage:*)"
-          "Bash(readlink:*)"
-          "Bash(jq:*)"
-          "Bash(yq:*)"
-          "WebFetch(domain:api.github.com)"
-          "WebFetch(domain:github.com)"
-          "WebFetch(domain:gist.github.com)"
-          "WebFetch(domain:docs.anthropic.com)"
-          "Read(**/.env.example)"
-          "Read(**/.env.sample)"
-          "Write(**/.env.example)"
-          "Write(**/.env.sample)"
-          "Write(/private/tmp)"
-          "mcp__serena"
-          "mcp__filesystem"
-          "mcp__fetch"
-          "mcp__context7"
-          "mcp__deepwiki"
-          "mcp__playwright"
-          "mcp__sequential-thinking"
-          "mcp__terraform"
-          "mcp__markitdown"
-        ];
+        allow = [ ];
         deny = [
           "Bash(* .env*)"
           "Bash(* ~/.aws/*)"
@@ -255,6 +173,15 @@ in
           }
         ];
         Stop = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/stop-handover.sh";
+              }
+            ];
+          }
           {
             matcher = "";
             hooks = [
