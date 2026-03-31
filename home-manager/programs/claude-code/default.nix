@@ -283,12 +283,12 @@ in
       };
       enabledPlugins = {
         # https://github.com/anthropics/claude-plugins-official
-        "agent-sdk-dev@claude-code-plugins" = true;
-        "feature-dev@claude-code-plugins" = true;
-        "frontend-design@claude-code-plugins" = true;
-        "pr-review-toolkit@claude-code-plugins" = true;
-        "ralph-wiggum@claude-code-plugins" = true;
-        "security-guidance@claude-code-plugins" = true;
+        "agent-sdk-dev@claude-plugins-official" = true;
+        "feature-dev@claude-plugins-official" = true;
+        "frontend-design@claude-plugins-official" = true;
+        "pr-review-toolkit@claude-plugins-official" = true;
+        "ralph-loop@claude-plugins-official" = true;
+        "security-guidance@claude-plugins-official" = true;
       };
     };
     skills = {
