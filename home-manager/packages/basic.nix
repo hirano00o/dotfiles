@@ -45,6 +45,7 @@ with pkgs;
   slack
   zstd
   imagemagick
+  ghostscript
   protobuf
   jq
   yq
