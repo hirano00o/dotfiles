@@ -1,0 +1,186 @@
+{
+  "nodes": {
+    "account-permission-for-dybw-generator-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1684829488,
+        "narHash": "sha256-qeFY3KHOxTeq/kMx4Hn2bd4OtutcBh2ci64WP5ExdSw=",
+        "ref": "refs/heads/main",
+        "rev": "4f0f27aa10b15570a8ae9ad496df8c958dd09216",
+        "revCount": 10,
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/account-permission-for-dybw-generator.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/account-permission-for-dybw-generator.git"
+      }
+    },
+    "dybw-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1753861381,
+        "narHash": "sha256-Yi6l6l1JbQnZ3U4yXdUvWd+5rEPbvdiTJwe2ZZbJvIk=",
+        "ref": "refs/tags/v0.0.3",
+        "rev": "7c064db708fde3791801459ff49b651f48d14c43",
+        "revCount": 55,
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/dybw.git"
+      },
+      "original": {
+        "ref": "refs/tags/v0.0.3",
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/dybw.git"
+      }
+    },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "generate-luida-hearingsheet": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767837530,
+        "narHash": "sha256-fUnyruMXk9js/xPb516lwgNDeur9QWGElRlMu9/BfMY=",
+        "ref": "refs/heads/main",
+        "rev": "781e6338b2edd08bd0ceadc5026b79c8c9737d58",
+        "revCount": 12,
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/generate-luida-hearingsheet"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/generate-luida-hearingsheet"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1768564909,
+        "narHash": "sha256-Kell/SpJYVkHWMvnhqJz/8DqQg2b6PguxVWOuadbHCc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e4bae1bd10c9c57b2cf517953ab70060a828ee6f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-python311pip": {
+      "locked": {
+        "lastModified": 1678571061,
+        "narHash": "sha256-0gI2FHID8XYD3504kLFRLH3C2GmMCzVMC50APV/kZp8=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "8ad5e8132c5dcf977e308e7bf5517cc6cc0bf7d8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "8ad5e8132c5dcf977e308e7bf5517cc6cc0bf7d8",
+        "type": "github"
+      }
+    },
+    "pjwt-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1753858452,
+        "narHash": "sha256-YPG8D+cJEQ4IHrkpjNtxatrBgh/Yk3nlfT0TjtTgrj8=",
+        "ref": "refs/tags/v1.0.1",
+        "rev": "8d2839dd4cb8029c31c75da04d8784fe02ee2568",
+        "revCount": 27,
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/pjwt.git"
+      },
+      "original": {
+        "ref": "refs/tags/v1.0.1",
+        "type": "git",
+        "url": "ssh://git@github.com/dentsudigital/pjwt.git"
+      }
+    },
+    "root": {
+      "inputs": {
+        "account-permission-for-dybw-generator-src": "account-permission-for-dybw-generator-src",
+        "dybw-src": "dybw-src",
+        "flake-utils": "flake-utils",
+        "generate-luida-hearingsheet": "generate-luida-hearingsheet",
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-python311pip": "nixpkgs-python311pip",
+        "pjwt-src": "pjwt-src"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
