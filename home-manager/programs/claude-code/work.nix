@@ -4,6 +4,7 @@
     settings = {
       env = {
         NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
+        CLAUDE_CODE_EFFORT_LEVEL= "medeium";
       };
       model = "opusplan";
     };
