@@ -39,13 +39,17 @@ in
       executable = true;
     };
     ".claude/scripts/gatehook-rules.json".source = rulesJson;
+    ".claude/scripts/pretooluse-version-check.sh" = {
+      source = ./scripts/pretooluse-version-check.sh;
+      executable = true;
+    };
   };
   programs.claude-code = {
     enable = true;
     package = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
     memory.source = ./CLAUDE.md;
     settings = {
-      model = "opusplan";
+      model = "opus";
       theme = "dark";
       language = "japanese";
       autoUpdates = false;
@@ -260,6 +264,15 @@ in
               }
             ];
           }
+          {
+            matcher = "Bash|Write|Edit";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/pretooluse-version-check.sh";
+              }
+            ];
+          }
         ];
         PostToolUse = [
           {
@@ -327,7 +340,6 @@ in
           filesystem.enable = true;
           fetch.enable = true;
           context7.enable = true;
-          playwright.enable = true;
           terraform.enable = true;
           sequential-thinking.enable = true;
           serena = {
@@ -345,6 +357,14 @@ in
         deepwiki = {
           type = "http";
           url = "https://mcp.deepwiki.com/mcp";
+        };
+        playwright = {
+          type = "stdio";
+          command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
+          args = [
+            "--executable-path"
+            "${pkgs.google-chrome}/bin/google-chrome"
+          ];
         };
         markitdown = {
           type = "stdio";
