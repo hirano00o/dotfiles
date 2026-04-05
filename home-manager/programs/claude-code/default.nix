@@ -67,6 +67,7 @@ in
         CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
       };
       permissions = {
+        defaultMode = "auto";
         allow = [
           "List(*)"
           "WebSearch"
