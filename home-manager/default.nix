@@ -13,16 +13,15 @@
 let
   isDarwin = builtins.match ".*-darwin" system != null;
   brewNixOverlay = if isDarwin then [ brew-nix.overlays.default ] else [ ];
-  # mcpパッケージの壊れたpostPatchを修正するoverlay
-  # nixpkgsのmcp 1.25.0にはmacOS向けのpostPatchがあるが、
-  # upstream(mcp PR#1529)で該当コードが削除されたため、パッチが失敗する
-  # mcp 1.26.0のテストはNixサンドボックス内でネットワークサーバーを起動しようとして
+  # mcpのテストはNixサンドボックス内でネットワークサーバーを起動しようとして
   # TimeoutErrorになるため、doCheck = falseでテストをスキップする
+  # denoのcompile_tests (trybuild) もNixサンドボックス内で失敗するため同様にスキップ
+  # https://github.com/NixOS/nixpkgs/pull/445232 がマージされたら除去可能
   mcpFixOverlay = final: prev: {
+    deno = prev.deno.overrideAttrs { doCheck = false; };
     python3Packages = prev.python3Packages.override {
       overrides = pyFinal: pyPrev: {
         mcp = pyPrev.mcp.overrideAttrs (old: {
-          postPatch = "";
           doCheck = false;
         });
       };
@@ -30,7 +29,6 @@ let
     python311Packages = prev.python311Packages.override {
       overrides = pyFinal: pyPrev: {
         mcp = pyPrev.mcp.overrideAttrs (old: {
-          postPatch = "";
           doCheck = false;
         });
       };
@@ -42,7 +40,6 @@ let
     config.allowUnfree = true;
     overlays = [
       mcpFixOverlay
-      (import ./overlays/markitdown-mcp.nix)
       (import ./overlays/drawio-mcp.nix)
       mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
