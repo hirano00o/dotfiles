@@ -14,9 +14,7 @@ let
 
   gatehook-pkg = gatehook.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-  gatehook-rules = {
-    rules = [ ];
-  };
+  gatehook-rules = import ./gatehook-rules.nix;
 
   rulesJson = pkgs.writeText "pretooluse-rules.json" (builtins.toJSON gatehook-rules);
 in
