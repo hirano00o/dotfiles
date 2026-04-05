@@ -1,9 +1,3 @@
-## Language
-
-- **ALWAYS** respond to the user in Japanese.
-
----
-
 ## Principles
 
 - Write code that expresses **how** it works. Write tests that express **what** the behavior is. Write commit messages that explain **why** the change was made. Write code comments only to explain **why not** — i.e., non-obvious decisions or rejected alternatives.
