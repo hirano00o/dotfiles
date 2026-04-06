@@ -1,12 +1,12 @@
-{ ... }:
+{ lib, ... }:
 {
   programs.claude-code = {
     settings = {
       env = {
         NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
-        CLAUDE_CODE_EFFORT_LEVEL= "medeium";
+        CLAUDE_CODE_EFFORT_LEVEL = lib.mkForce "medium";
       };
-      model = "opusplan";
+      model = lib.mkForce "opusplan";
     };
     mcpServers = {
       datadog = {
