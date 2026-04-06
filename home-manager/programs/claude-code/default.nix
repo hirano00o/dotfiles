@@ -63,7 +63,7 @@ in
         ENABLE_TOOL_SEARCH = "true";
         DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
         CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
-        CLAUDE_CODE_EFFORT_LEVEL= "max";
+        CLAUDE_CODE_EFFORT_LEVEL = "max";
       };
       permissions = {
         defaultMode = "auto";
@@ -215,14 +215,14 @@ in
           "Edit(./.env)"
           "Edit(./.env.*)"
           "Write(**/*.env*)"
-          "Write(**/*aws*)"
+          "Write(**/.aws/**)"
           "Write(**/*key)"
           "Write(**/*secrets*)"
           "Write(**/*token*)"
           "Write(./.env)"
           "Write(./.env.*)"
           "Read(**/*.env*)"
-          "Read(**/*aws*)"
+          "Read(**/.aws/**)"
           "Read(**/*key)"
           "Read(**/*secrets*)"
           "Read(**/*token*)"
