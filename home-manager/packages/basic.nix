@@ -4,7 +4,6 @@ with pkgs;
   # Related vim
   tree-sitter
   lazydocker
-  lazygit
   pinentry_mac
   lua54Packages.lua
 
