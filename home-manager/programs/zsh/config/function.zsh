@@ -42,3 +42,9 @@ function _trigger_vpn() {
         echo "no found: $1"
     fi
 }
+
+if command -v jira >/dev/null 2>&1; then
+  function jira() {
+    JIRA_API_TOKEN=$(security find-generic-password -a "$USER" -s "jira_api_token" -w 2>/dev/null) command jira "$@"
+  }
+fi
