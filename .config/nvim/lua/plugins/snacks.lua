@@ -1,6 +1,12 @@
 return {
   "folke/snacks.nvim",
   opts = {
+    styles = {
+      snacks_image = {
+        anchor = "SW",
+        row = -1,
+      },
+    },
     image = {
       enabled = true,
       doc = {
