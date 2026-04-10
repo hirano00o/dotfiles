@@ -9,9 +9,13 @@
       model = lib.mkForce "opusplan";
     };
     mcpServers = {
-      datadog = {
+      datadog-dev = {
         type = "http";
-        url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking";
+        url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking&account=dev";
+      };
+      datadog-prd = {
+        type = "http";
+        url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking&account=prd";
       };
     };
   };
