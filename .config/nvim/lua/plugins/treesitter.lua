@@ -10,6 +10,12 @@ return {
     },
     event = "BufReadPost",
     build = ":TSUpdate",
+    config = function()
+      -- nvim-treesitter v2: bundled queriesをNeovimが検出できるようruntimepathに追加
+      vim.opt.rtp:prepend(vim.fs.joinpath(
+        vim.fn.stdpath('data') --[[@as string]], 'lazy', 'nvim-treesitter', 'runtime'
+      ))
+    end,
     opts = {
       ensure_installed = {
         "lua",
