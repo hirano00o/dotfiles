@@ -1,10 +1,6 @@
 return {
   "MeanderingProgrammer/render-markdown.nvim",
-  dependencies = {
-    {
-      "tree-sitter-grammars/tree-sitter-markdown",
-    },
-  },
+  dependencies = {},
   ft = {"markdown", "quarto", "Avante"},
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
