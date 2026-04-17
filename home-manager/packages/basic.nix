@@ -29,7 +29,7 @@ with pkgs;
   typescript-go
 
   # DB
-  mysql80
+  mysql84
   sqlite
   duckdb
 

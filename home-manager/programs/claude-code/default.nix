@@ -45,7 +45,7 @@ in
   programs.claude-code = {
     enable = true;
     package = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
-    memory.source = ./CLAUDE.md;
+    context = ./CLAUDE.md;
     settings = {
       model = "opus";
       theme = "dark";
