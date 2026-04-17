@@ -103,7 +103,7 @@
       bind c new-window -c "#{pane_current_path}"
 
       # <prefix>e でclaude codeを縦分割で起動する
-      bind e command-prompt -p "worktree name (empty to skip):" "if-shell '[ -n \"%%\" ]' 'split-window -h -c \"#{pane_current_path}\" \"claude -w %%\"' 'split-window -h -c \"#{pane_current_path}\" \"claude\"'"
+      bind e command-prompt -p "worktree name (empty to skip):" "run-shell 'if [ -n \"%%\" ]; then tmux split-window -h -l $((#{window_width}/3)) -c \"#{pane_current_path}\" \"claude -w %%\"; else tmux split-window -h -l $((#{window_width}/3)) -c \"#{pane_current_path}\" claude; fi'"
 
       # <prefix>u でlazydockerをポップアップウィンドウで起動する
       bind u display-popup -E -w 90% -h 90% -d "#{pane_current_path}" "lazydocker"
