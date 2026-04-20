@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.tmux = {
     enable = true;
@@ -90,8 +90,10 @@
       # 左パネルを設定する
       set -g status-left-length 40
       set -g status-left "#[fg=green]Session: #S #[fg=yellow]#I #[fg=cyan]#P"
-      # 右パネルを設定する
-      set-option -g status-right '[%Y-%m-%d(%a) %H:%M]'
+      # 右パネルを設定する (Claude Code 待機ペイン数を左端に差し込む)
+      set-option -g status-right '#(${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh count)[%Y-%m-%d(%a) %H:%M]'
+      set-option -g status-right-length 60
+      set-option -g status-interval 5
 
       # ウィンドウリストの位置を中心寄せにする
       set -g status-justify centre
@@ -110,6 +112,12 @@
 
       # <prefix>g でlazygitをポップアップウィンドウで起動する
       bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" "lazygit"
+
+      # <prefix>C-n で Claude Code 待機中ペインの一覧をメニュー表示する
+      bind C-n run-shell "${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh menu"
+
+      # ペインにフォーカスが移ったら Claude Code 待機状態を解除する
+      set-hook -g pane-focus-in 'run-shell "${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh clear"'
 
       # コピーモードのキーバインドを設定する
       bind-key -T copy-mode-vi v     send-keys -X begin-selection
