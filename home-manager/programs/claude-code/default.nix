@@ -17,6 +17,45 @@ let
   gatehook-rules = import ./gatehook-rules.nix;
 
   rulesJson = pkgs.writeText "pretooluse-rules.json" (builtins.toJSON gatehook-rules);
+
+  # YAML frontmatter (先頭 "---"〜次の "---") を除去し、本文のみを返すヘルパ。
+  # impl エージェントの system prompt に汎用スキル本文を preload する際に使う。
+  stripFrontmatter =
+    text:
+    let
+      lines = pkgs.lib.splitString "\n" text;
+      hasFrontmatter = lines != [ ] && builtins.head lines == "---";
+      dropUntilMarker =
+        list:
+        if list == [ ] then
+          [ ]
+        else if builtins.head list == "---" then
+          builtins.tail list
+        else
+          dropUntilMarker (builtins.tail list);
+      bodyLines = if hasFrontmatter then dropUntilMarker (builtins.tail lines) else lines;
+    in
+    pkgs.lib.concatStringsSep "\n" bodyLines;
+
+  loadSkillBody = path: stripFrontmatter (builtins.readFile path);
+
+  # impl エージェント本文: テンプレート (agents/impl.md) のプレースホルダを
+  # 汎用スキル本文で差し替えて、最終的な system prompt を合成する。
+  implContent =
+    builtins.replaceStrings
+      [
+        "<!-- PRELOAD:tdd-cycle -->"
+        "<!-- PRELOAD:quality-pipeline -->"
+        "<!-- PRELOAD:review-checklist -->"
+        "<!-- PRELOAD:scope-guard -->"
+      ]
+      [
+        (loadSkillBody ./skills/tdd-cycle/SKILL.md)
+        (loadSkillBody ./skills/quality-pipeline/SKILL.md)
+        (loadSkillBody ./skills/review-checklist/SKILL.md)
+        (loadSkillBody ./skills/scope-guard/SKILL.md)
+      ]
+      (builtins.readFile ./agents/impl.md);
 in
 {
   home.file = {
@@ -26,6 +65,10 @@ in
     };
     ".claude/scripts/notify.sh" = {
       source = ./scripts/notify.sh;
+      executable = true;
+    };
+    ".claude/scripts/waiting-panes.sh" = {
+      source = ./scripts/waiting-panes.sh;
       executable = true;
     };
     ".claude/scripts/posttooluse-lint.sh" = {
@@ -115,7 +158,36 @@ in
           "Bash(go test:*)"
           "Bash(go build:*)"
           "Bash(go fmt:*)"
+          "Bash(go vet:*)"
+          "Bash(go mod:*)"
           "Bash(gofmt:*)"
+          "Bash(goimports:*)"
+          "Bash(golangci-lint:*)"
+          "Bash(vitest:*)"
+          "Bash(jest:*)"
+          "Bash(bun test:*)"
+          "Bash(bun remove:*)"
+          "Bash(biome:*)"
+          "Bash(eslint:*)"
+          "Bash(prettier:*)"
+          "Bash(tsc:*)"
+          "Bash(npm ci:*)"
+          "Bash(npm test:*)"
+          "Bash(pnpm:*)"
+          "Bash(pytest:*)"
+          "Bash(ruff:*)"
+          "Bash(mypy:*)"
+          "Bash(pyright:*)"
+          "Bash(uv:*)"
+          "Bash(cargo test:*)"
+          "Bash(cargo fmt:*)"
+          "Bash(cargo clippy:*)"
+          "Bash(cargo check:*)"
+          "Bash(cargo build:*)"
+          "Bash(cargo remove:*)"
+          "Bash(cargo run:*)"
+          "Bash(cargo nextest:*)"
+          "Bash(rustfmt:*)"
           "Bash(gh pr list:*)"
           "Bash(gh pr view:*)"
           "Bash(gh pr diff:*)"
@@ -242,6 +314,11 @@ in
           "mcp__datadog__submit_mcp_feedback"
         ];
         ask = [
+          "Bash(uv add:*)"
+          "Bash(bun install:*)"
+          "Bash(bun add:*)"
+          "Bash(cargo add:*)"
+          "Bash(npm install:*)"
           "Bash(git push:*)"
           "Bash(git config:*)"
           "Bash(git rm:*)"
@@ -333,6 +410,17 @@ in
     };
     skills = {
       handover = ./skills/handover/SKILL.md;
+      tdd-cycle = ./skills/tdd-cycle/SKILL.md;
+      quality-pipeline = ./skills/quality-pipeline/SKILL.md;
+      review-checklist = ./skills/review-checklist/SKILL.md;
+      scope-guard = ./skills/scope-guard/SKILL.md;
+      lang-go = ./skills/lang-go/SKILL.md;
+      lang-typescript = ./skills/lang-typescript/SKILL.md;
+      lang-python = ./skills/lang-python/SKILL.md;
+      lang-rust = ./skills/lang-rust/SKILL.md;
+    };
+    agents = {
+      impl = implContent;
     };
     mcpServers =
       (mcp-servers-nix.lib.evalModule pkgs {
