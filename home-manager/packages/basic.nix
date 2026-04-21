@@ -87,5 +87,5 @@ with pkgs;
 ]
 ++ lib.optionals stdenv.isDarwin [
   terminal-notifier
-  brewCasks.raycast
+  raycast
 ]
