@@ -108,6 +108,8 @@ in
         CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
         CLAUDE_CODE_EFFORT_LEVEL = "max";
       };
+      skipAutoPermissionPrompt = true;
+      skipDangerousModePermissionPrompt = true;
       permissions = {
         defaultMode = "auto";
         allow = [
