@@ -2,6 +2,7 @@ args@{ sops-nix, ... }:
 import ./default.nix (
   args
   // {
+    extraOverlays = [ (import ./overlays/datadog-pup.nix) ];
     extraPackages = { pkgs }: import ./packages/work.nix { inherit pkgs; };
     extraPrograms =
       { pkgs, mcp-servers-nix }:

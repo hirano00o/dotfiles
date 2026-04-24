@@ -14,6 +14,7 @@ with pkgs;
   mongodb-tools
   xbar
   jira-cli-go
+  datadog-pup
 ]
 ++ lib.optionals stdenv.isDarwin [
   pkgs.brewCasks.docker-desktop

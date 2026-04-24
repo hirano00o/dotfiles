@@ -6,6 +6,7 @@
   rust-overlay,
   llm-agents,
   gatehook,
+  extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
   ...
@@ -44,6 +45,7 @@ let
       mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
     ]
+    ++ extraOverlays
     ++ brewNixOverlay;
   };
   lib = pkgs.lib;
