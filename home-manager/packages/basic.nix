@@ -40,6 +40,7 @@ with pkgs;
   gotests
 
   # Misc
+  git-filter-repo
   openssl
   slack
   zstd
