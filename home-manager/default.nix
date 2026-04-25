@@ -42,6 +42,8 @@ let
     overlays = [
       mcpFixOverlay
       (import ./overlays/drawio-mcp.nix)
+      (import ./overlays/d2-darwin.nix)
+      (import ./overlays/kvazaar-darwin.nix)
       mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
     ]
