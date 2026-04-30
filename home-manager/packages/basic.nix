@@ -1,4 +1,4 @@
-{ pkgs, llm-agents }:
+{ pkgs, pkgs-stable, llm-agents }:
 with pkgs;
 [
   # Related vim
@@ -58,7 +58,7 @@ with pkgs;
   xcodes
   terraform
   trivy
-  deno
+  pkgs-stable.deno
   python312
   typescript
   google-cloud-sdk
