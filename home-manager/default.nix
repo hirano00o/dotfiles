@@ -1,6 +1,7 @@
 {
   system,
   nixpkgs,
+  nixpkgs-stable,
   mcp-servers-nix,
   brew-nix,
   rust-overlay,
@@ -14,45 +15,34 @@
 let
   isDarwin = builtins.match ".*-darwin" system != null;
   brewNixOverlay = if isDarwin then [ brew-nix.overlays.default ] else [ ];
-  # mcpのテストはNixサンドボックス内でネットワークサーバーを起動しようとして
+  # いくつかテストはNixサンドボックス内でネットワークサーバーを起動しようとして
   # TimeoutErrorになるため、doCheck = falseでテストをスキップする
-  # denoのcompile_tests (trybuild) もNixサンドボックス内で失敗するため同様にスキップ
-  # https://github.com/NixOS/nixpkgs/pull/445232 がマージされたら除去可能
-  mcpFixOverlay = final: prev: {
-    deno = prev.deno.overrideAttrs { doCheck = false; };
-    python3Packages = prev.python3Packages.override {
-      overrides = pyFinal: pyPrev: {
-        mcp = pyPrev.mcp.overrideAttrs (old: {
-          doCheck = false;
-        });
-      };
-    };
-    python311Packages = prev.python311Packages.override {
-      overrides = pyFinal: pyPrev: {
-        mcp = pyPrev.mcp.overrideAttrs (old: {
-          doCheck = false;
-        });
-      };
-    };
+  dontCheckOverlay = final: prev: {
+    chromaprint = prev.chromaprint.overrideAttrs { doCheck = false; };
+    kvazaar = prev.kvazaar.overrideAttrs { doCheck = false; };
   };
 
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
     overlays = [
-      mcpFixOverlay
+      dontCheckOverlay
       (import ./overlays/drawio-mcp.nix)
       (import ./overlays/d2-darwin.nix)
-      (import ./overlays/kvazaar-darwin.nix)
+      (import ./overlays/python-audio-darwin.nix)
       mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
     ]
     ++ extraOverlays
     ++ brewNixOverlay;
   };
+  pkgs-stable = import nixpkgs-stable {
+    inherit system;
+    config.allowUnfree = true;
+  };
   lib = pkgs.lib;
 
-  basicPkgs = import ./packages/basic.nix { inherit pkgs llm-agents; };
+  basicPkgs = import ./packages/basic.nix { inherit pkgs pkgs-stable llm-agents; };
 
   misc = import ./misc { };
 
