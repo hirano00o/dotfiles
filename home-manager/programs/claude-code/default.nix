@@ -106,7 +106,7 @@ in
         ENABLE_TOOL_SEARCH = "true";
         DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
         CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
-        CLAUDE_CODE_EFFORT_LEVEL = "max";
+        CLAUDE_CODE_EFFORT_LEVEL = "xhigh";
       };
       skipAutoPermissionPrompt = true;
       skipDangerousModePermissionPrompt = true;
@@ -408,6 +408,7 @@ in
         "pr-review-toolkit@claude-plugins-official" = true;
         "ralph-loop@claude-plugins-official" = true;
         "security-guidance@claude-plugins-official" = true;
+        "understand-anything@understand-anything" = true;
       };
     };
     skills = {
