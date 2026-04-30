@@ -105,7 +105,7 @@ return {
     heading = {
       enabled  = true,
       sign     = false,
-      icons    = {},
+      icons    = { '󰲡 ', '󰲣 ', '󰲥 ', '󰲧 ', '󰲩 ', '󰲫 ' },
       position = 'overlay',
       width    = 'full',
 
@@ -118,7 +118,7 @@ return {
       above = ' ',
       below = ' ',
 
-      left_pad  = 0,
+      left_pad  = { 0, 1, 2, 3, 4, 5 },
       right_pad = 0,
 
       -- 背景なし
@@ -135,10 +135,10 @@ return {
     code = {
       enabled            = true,
       sign               = false,
-      style              = 'normal',
+      style              = 'full',
       position           = 'left',
       language_pad       = 0,
-      disable_background = false,
+      disable_background = { 'mermaid' },
       width              = 'block',
       left_pad           = 0,
       right_pad          = 2,
