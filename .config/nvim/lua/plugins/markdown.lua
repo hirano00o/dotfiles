@@ -36,7 +36,6 @@ return {
         'RenderMarkdownH4', 'RenderMarkdownH5', 'RenderMarkdownH6',
       },
     },
-
     code = {
       enabled            = true,
       sign               = false,
@@ -44,6 +43,102 @@ return {
       position           = 'left',
       language_pad       = 0,
       disable_background = { 'mermaid' },
+      width              = 'block',
+      left_pad           = 0,
+      right_pad          = 2,
+      border             = 'thin',
+      highlight          = 'RenderMarkdownCode',
+      highlight_inline   = 'RenderMarkdownCodeInline',
+    },
+
+    bullet = {
+      enabled   = true,
+      icons     = { '•', '◦', '▪', '▫' },
+      left_pad  = 0,
+      right_pad = 0,
+    },
+
+    checkbox = {
+      enabled   = true,
+      unchecked = { icon = '☐ ', highlight = 'RenderMarkdownUnchecked' },
+      checked   = { icon = '☑ ', highlight = 'RenderMarkdownChecked'   },
+    },
+
+    quote = {
+      enabled          = true,
+      icon             = '▍',
+      repeat_linebreak = true,
+      highlight        = 'RenderMarkdownQuote',
+    },
+
+    pipe_table = {
+      enabled = true,
+      style   = 'full',
+      cell    = 'padded',
+      border  = {
+        '┌', '┬', '┐',
+        '├', '┼', '┤',
+        '└', '┴', '┘',
+        '│', '─',
+      },
+      alignment_indicator = '━',
+      head   = 'RenderMarkdownTableHead',
+      row    = 'RenderMarkdownTableRow',
+      filler = 'RenderMarkdownTableFill',
+    },
+
+    link = {
+      enabled   = true,
+      image     = '🖼 ',
+      email     = '✉ ',
+      hyperlink = '󰌹 ',
+      highlight = 'RenderMarkdownLink',
+    },
+
+    dash = {
+      enabled   = true,
+      icon      = '─',
+      width     = 'full',
+      highlight = 'RenderMarkdownDash',
+    },
+    anti_conceal = { enabled = true },
+    heading = {
+      enabled  = true,
+      sign     = false,
+      icons    = {},
+      position = 'overlay',
+      width    = 'full',
+
+      -- h1/h2 の下線(border)
+      border         = true,
+      border_virtual = true,
+      border_prefix  = false,
+
+      -- ヘッダ前後の余白
+      above = ' ',
+      below = ' ',
+
+      left_pad  = 0,
+      right_pad = 0,
+
+      -- 背景なし
+      backgrounds = {
+        'RenderMarkdownH1Bg', 'RenderMarkdownH2Bg', 'RenderMarkdownH3Bg',
+        'RenderMarkdownH4Bg', 'RenderMarkdownH5Bg', 'RenderMarkdownH6Bg',
+      },
+      foregrounds = {
+        'RenderMarkdownH1', 'RenderMarkdownH2', 'RenderMarkdownH3',
+        'RenderMarkdownH4', 'RenderMarkdownH5', 'RenderMarkdownH6',
+      },
+    },
+
+    code = {
+      enabled            = true,
+      sign               = false,
+      style              = 'normal',
+      position           = 'left',
+      language_pad       = 0,
+      disable_background = false,
       width              = 'block',
       left_pad           = 0,
       right_pad          = 2,
