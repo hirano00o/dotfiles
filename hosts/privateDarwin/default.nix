@@ -41,12 +41,14 @@ nix-darwin.lib.darwinSystem {
         extraSpecialArgs = {
           inherit system username;
           inherit (inputs) nixpkgs;
+          inherit (inputs) nixpkgs-stable;
           inherit (inputs) mcp-servers-nix;
           inherit (inputs) brew-nix;
           inherit (inputs) rust-overlay;
           inherit (inputs) llm-agents;
           inherit (inputs) sops-nix;
           inherit (inputs) hb;
+          inherit (inputs) gatehook;
         };
       };
     }

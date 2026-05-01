@@ -142,16 +142,6 @@ let
     hasStyles = false;
   };
 
-  hatena = mkObsidianPlugin {
-    pname = "obsidian-hatena";
-    version = "1.1.1";
-    repo = "takmatsukawa/obsidian-hatena";
-    mainHash = "sha256-al6wpeZc97faqKPKyJOmSyEl4DyhRxNxqddS+uC5/Ro=";
-    manifestHash = "sha256-O59H2HBrZIgIs83bkQpsy/7If2I7lXVqeMKN0ua8WsE=";
-    hasStyles = true;
-    stylesHash = "sha256-h2QkPK4DUevbt253DE/v/LGVb/QkINTsFZIS3HqFNe0=";
-  };
-
   excalidrawPlugin = mkObsidianPlugin {
     pname = "obsidian-excalidraw-plugin";
     version = "2.17.2";
@@ -191,6 +181,16 @@ let
     hasStyles = true;
     stylesHash = "sha256-J9U7w2XyKZ6A89N79Uy0XthQPoARavIxfXmmTlnlnHw=";
   };
+
+  thino = mkObsidianPlugin {
+    pname = "obsidian-memos";
+    version = "2.4.50";
+    repo = "Quorafind/Obsidian-Thino";
+    mainHash = "sha256-et0onkvPxsXz91IVJ7LupVBexGxM94IIBXjfMEg9Tzk=";
+    manifestHash = "sha256-C32Hp315X9FDNJf1OtsNbxxAQ/VEdDBIeubdTn/9E24=";
+    hasStyles = true;
+    stylesHash = "sha256-tW110tRCBEnDROTY0xp1+MvQkfKaB1b9VOaH6M8083A=";
+  };
 in
 {
   # Export individual plugins so they can be referenced in default.nix.
@@ -200,10 +200,10 @@ in
     checklistPlugin
     cmEditorSyntaxHighlight
     advancedUri
-    hatena
     excalidrawPlugin
     kanban
     dataview
     terminal
+    thino
     ;
 }

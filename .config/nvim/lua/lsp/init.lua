@@ -18,11 +18,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     if client:supports_method('textDocument/implementation') then
-      vim.keymap.set("n", "<leader>i", vim.lsp.buf.implementation, { buffer = args.buf, desc = "References buffer" })
+      vim.keymap.set("n", "<leader>i", "<cmd>Trouble lsp_implementations<cr>", { buffer = args.buf, desc = "References buffer" })
     end
 
     if client:supports_method("textDocument/references") then
-      vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = args.buf, desc = "References buffer" })
+      vim.keymap.set("n", "gr", "<cmd>Trouble lsp_references<cr>", { buffer = args.buf, desc = "References buffer" })
     end
 
     if client:supports_method("textDocument/rename") then

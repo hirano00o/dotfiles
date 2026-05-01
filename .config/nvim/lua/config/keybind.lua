@@ -30,3 +30,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
   desc = "Setup Go test functionality"
 })
+
+-- yank
+vim.keymap.set("v", "Y", '"+y', { desc = "Copy to OS clipboard" })

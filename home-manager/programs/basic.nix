@@ -11,6 +11,7 @@
   ./gh
   ./ghostty
   ./git
+  ./lazygit
   ./neovim
   ./nodejs
   ./obsidian

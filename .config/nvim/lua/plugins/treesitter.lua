@@ -10,52 +10,25 @@ return {
     },
     event = "BufReadPost",
     build = ":TSUpdate",
-    opts = {
-      ensure_installed = {
-        "lua",
-        "vim",
-        "vimdoc",
-        "query",
-        "sql",
-        "markdown",
-        "markdown_inline",
-        "yaml",
-        "json",
-        "toml",
-        "go",
-        "typescript",
-        "tsx",
-        "javascript",
-        "python",
-        "bash",
-        "html",
-        "css",
-        "csv",
-        "tsv",
-        "diff",
-        "dockerfile",
-        "editorconfig",
-        "graphql",
-        "hcl",
-        "helm",
-        "http",
-        "jq",
-        "mermaid",
-        "nginx",
-        "nix",
-        "proto",
-        "tmux",
-      },
-      sync_install = false,
-      auto_install = true,
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-      indent = {
-        enable = true,
-      },
-    },
+    config = function()
+      -- nvim-treesitter v2: bundled queriesをNeovimが検出できるようruntimepathに追加
+      vim.opt.rtp:prepend(vim.fs.joinpath(
+        vim.fn.stdpath('data') --[[@as string]], 'lazy', 'nvim-treesitter', 'runtime'
+      ))
+      require('nvim-treesitter').install({
+        "lua", "vim", "vimdoc", "query", "sql",
+        "markdown", "markdown_inline", "yaml", "json", "toml",
+        "go", "typescript", "tsx", "javascript", "python", "bash",
+        "html", "css", "csv", "tsv", "diff",
+        "dockerfile", "editorconfig", "graphql", "hcl", "helm",
+        "http", "jq", "mermaid", "nginx", "nix", "proto", "tmux",
+      })
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function(ev)
+          pcall(vim.treesitter.start, ev.buf)
+        end,
+      })
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter-context",

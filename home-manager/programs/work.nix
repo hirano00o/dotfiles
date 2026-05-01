@@ -4,4 +4,5 @@
   ...
 }:
 [
+  ./claude-code/work.nix
 ]

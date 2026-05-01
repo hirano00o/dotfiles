@@ -1,8 +1,11 @@
 { pkgs }:
 with pkgs;
 [
+  _1password-gui
+  _1password-cli
   zoom-us
-  awscli
+  awscli2
+  saml2aws
   granted
   kubectl
   docker
@@ -10,6 +13,8 @@ with pkgs;
   mongosh
   mongodb-tools
   xbar
+  jira-cli-go
+  datadog-pup
 ]
 ++ lib.optionals stdenv.isDarwin [
   pkgs.brewCasks.docker-desktop

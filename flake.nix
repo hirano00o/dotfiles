@@ -45,6 +45,10 @@
       url = "github:hirano00o/hb";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gatehook = {
+      url = "github:hirano00o/gatehook";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

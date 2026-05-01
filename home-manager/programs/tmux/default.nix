@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.tmux = {
     enable = true;
@@ -90,8 +90,10 @@
       # 左パネルを設定する
       set -g status-left-length 40
       set -g status-left "#[fg=green]Session: #S #[fg=yellow]#I #[fg=cyan]#P"
-      # 右パネルを設定する
-      set-option -g status-right '[%Y-%m-%d(%a) %H:%M]'
+      # 右パネルを設定する (Claude Code 待機ペイン数を左端に差し込む)
+      set-option -g status-right '#(${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh count)[%Y-%m-%d(%a) %H:%M]'
+      set-option -g status-right-length 60
+      set-option -g status-interval 5
 
       # ウィンドウリストの位置を中心寄せにする
       set -g status-justify centre
@@ -103,7 +105,7 @@
       bind c new-window -c "#{pane_current_path}"
 
       # <prefix>e でclaude codeを縦分割で起動する
-      bind e command-prompt -p "worktree name (empty to skip):" "if-shell '[ -n \"%%\" ]' 'split-window -h -c \"#{pane_current_path}\" \"claude -w %%\"' 'split-window -h -c \"#{pane_current_path}\" \"claude\"'"
+      bind e command-prompt -p "worktree name (empty to skip):" "run-shell 'tmux split-window -h -l $((#{window_width}/3)) -c \"#{pane_current_path}\" \"~/.claude/scripts/claude-worktree.sh %%\"'"
 
       # <prefix>u でlazydockerをポップアップウィンドウで起動する
       bind u display-popup -E -w 90% -h 90% -d "#{pane_current_path}" "lazydocker"
@@ -111,12 +113,24 @@
       # <prefix>g でlazygitをポップアップウィンドウで起動する
       bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" "lazygit"
 
+      # <prefix>C-n で Claude Code 待機中ペインの一覧をメニュー表示する
+      bind C-n run-shell "${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh menu"
+
+      # ペインにフォーカスが移ったら Claude Code 待機状態を解除する
+      set-hook -g pane-focus-in 'run-shell "${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh clear"'
+
       # コピーモードのキーバインドを設定する
       bind-key -T copy-mode-vi v     send-keys -X begin-selection
       bind-key -T copy-mode-vi V     send-keys -X select-line
       bind-key -T copy-mode-vi C-v   send-keys -X rectangle-toggle
       bind-key -T copy-mode-vi y     send-keys -X copy-pipe-and-cancel "pbcopy"
       bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "pbcopy"
+
+      set -g extended-keys on
+      set -as terminal-features 'xterm*:extkeys'
+
+      # 画像レンダリング（Kitty image protocol）をターミナルに通過させる
+      set -g allow-passthrough on
     '';
   };
 

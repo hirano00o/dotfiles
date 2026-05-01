@@ -3,6 +3,7 @@
   pkgs,
   mcp-servers-nix,
   llm-agents,
+  gatehook,
   ...
 }:
 let
@@ -10,6 +11,51 @@ let
     url = "https://raw.githubusercontent.com/jgraph/drawio-mcp/15ce87fe3fe9ea87f79f2e80f0efd0ff40367249/skill-cli/SKILL.md";
     sha256 = "sha256-mO102njzsU+FKaZuZQ1YcwNA6SwcBI+tXcPj81Y2PSk=";
   };
+
+  gatehook-pkg = gatehook.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+  gatehook-rules = import ./gatehook-rules.nix;
+
+  rulesJson = pkgs.writeText "pretooluse-rules.json" (builtins.toJSON gatehook-rules);
+
+  # YAML frontmatter (先頭 "---"〜次の "---") を除去し、本文のみを返すヘルパ。
+  # impl エージェントの system prompt に汎用スキル本文を preload する際に使う。
+  stripFrontmatter =
+    text:
+    let
+      lines = pkgs.lib.splitString "\n" text;
+      hasFrontmatter = lines != [ ] && builtins.head lines == "---";
+      dropUntilMarker =
+        list:
+        if list == [ ] then
+          [ ]
+        else if builtins.head list == "---" then
+          builtins.tail list
+        else
+          dropUntilMarker (builtins.tail list);
+      bodyLines = if hasFrontmatter then dropUntilMarker (builtins.tail lines) else lines;
+    in
+    pkgs.lib.concatStringsSep "\n" bodyLines;
+
+  loadSkillBody = path: stripFrontmatter (builtins.readFile path);
+
+  # impl エージェント本文: テンプレート (agents/impl.md) のプレースホルダを
+  # 汎用スキル本文で差し替えて、最終的な system prompt を合成する。
+  implContent =
+    builtins.replaceStrings
+      [
+        "<!-- PRELOAD:tdd-cycle -->"
+        "<!-- PRELOAD:quality-pipeline -->"
+        "<!-- PRELOAD:review-checklist -->"
+        "<!-- PRELOAD:scope-guard -->"
+      ]
+      [
+        (loadSkillBody ./skills/tdd-cycle/SKILL.md)
+        (loadSkillBody ./skills/quality-pipeline/SKILL.md)
+        (loadSkillBody ./skills/review-checklist/SKILL.md)
+        (loadSkillBody ./skills/scope-guard/SKILL.md)
+      ]
+      (builtins.readFile ./agents/impl.md);
 in
 {
   home.file = {
@@ -17,27 +63,59 @@ in
       source = ./scripts/statusline.sh;
       executable = true;
     };
+    ".claude/scripts/notify.sh" = {
+      source = ./scripts/notify.sh;
+      executable = true;
+    };
+    ".claude/scripts/waiting-panes.sh" = {
+      source = ./scripts/waiting-panes.sh;
+      executable = true;
+    };
+    ".claude/scripts/posttooluse-lint.sh" = {
+      source = ./scripts/posttooluse-lint.sh;
+      executable = true;
+    };
+    ".claude/scripts/stop-handover.sh" = {
+      source = ./scripts/stop-handover.sh;
+      executable = true;
+    };
+    ".claude/scripts/claude-worktree.sh" = {
+      source = ./scripts/claude-worktree.sh;
+      executable = true;
+    };
+    ".claude/scripts/gatehook-rules.json".source = rulesJson;
+    ".claude/scripts/pretooluse-version-check.sh" = {
+      source = ./scripts/pretooluse-version-check.sh;
+      executable = true;
+    };
   };
   programs.claude-code = {
     enable = true;
     package = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
-    memory.source = ./CLAUDE.md;
+    context = ./CLAUDE.md;
     settings = {
-      model = "opusplan";
+      model = "opus";
       theme = "dark";
+      language = "japanese";
       autoUpdates = false;
       includeCoAuthoredBy = false;
       enableAllProjectMcpServers = true;
-      alwaysThinkingEnabled = false;
-      preferredNotifChannel = "terminal_bell";
+      alwaysThinkingEnabled = true;
       env = {
         CLAUDE_CODE_ENABLE_TELEMETRY = "0";
         DISABLE_COST_WARNINGS = "0";
         BASH_DEFAULT_TIMEOUT_MS = "300000";
         BASH_MAX_TIMEOUT_MS = "1200000";
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
+        ENABLE_TOOL_SEARCH = "true";
+        DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
+        CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
+        CLAUDE_CODE_EFFORT_LEVEL = "xhigh";
       };
+      skipAutoPermissionPrompt = true;
+      skipDangerousModePermissionPrompt = true;
       permissions = {
+        defaultMode = "auto";
         allow = [
           "List(*)"
           "WebSearch"
@@ -86,7 +164,36 @@ in
           "Bash(go test:*)"
           "Bash(go build:*)"
           "Bash(go fmt:*)"
+          "Bash(go vet:*)"
+          "Bash(go mod:*)"
           "Bash(gofmt:*)"
+          "Bash(goimports:*)"
+          "Bash(golangci-lint:*)"
+          "Bash(vitest:*)"
+          "Bash(jest:*)"
+          "Bash(bun test:*)"
+          "Bash(bun remove:*)"
+          "Bash(biome:*)"
+          "Bash(eslint:*)"
+          "Bash(prettier:*)"
+          "Bash(tsc:*)"
+          "Bash(npm ci:*)"
+          "Bash(npm test:*)"
+          "Bash(pnpm:*)"
+          "Bash(pytest:*)"
+          "Bash(ruff:*)"
+          "Bash(mypy:*)"
+          "Bash(pyright:*)"
+          "Bash(uv:*)"
+          "Bash(cargo test:*)"
+          "Bash(cargo fmt:*)"
+          "Bash(cargo clippy:*)"
+          "Bash(cargo check:*)"
+          "Bash(cargo build:*)"
+          "Bash(cargo remove:*)"
+          "Bash(cargo run:*)"
+          "Bash(cargo nextest:*)"
+          "Bash(rustfmt:*)"
           "Bash(gh pr list:*)"
           "Bash(gh pr view:*)"
           "Bash(gh pr diff:*)"
@@ -106,6 +213,16 @@ in
           "Bash(readlink:*)"
           "Bash(jq:*)"
           "Bash(yq:*)"
+          "WebFetch(domain:api.github.com)"
+          "WebFetch(domain:github.com)"
+          "WebFetch(domain:gist.github.com)"
+          "WebFetch(domain:docs.anthropic.com)"
+          "Read(**/.env.example)"
+          "Read(**/.env.sample)"
+          "Write(**/.env.example)"
+          "Write(**/.env.sample)"
+          "Write(/private/tmp)"
+          "Skill"
           "mcp__serena"
           "mcp__filesystem"
           "mcp__fetch"
@@ -115,39 +232,51 @@ in
           "mcp__sequential-thinking"
           "mcp__terraform"
           "mcp__markitdown"
+          "mcp__drawio"
+          "mcp__datadog"
+          "mcp__github__get*"
+          "mcp__github__search*"
+          "mcp__github__list*"
         ];
         deny = [
-          "Bash(rm -rf /*)"
-          "Bash(rm -rf ~)"
-          "Bash(rm -rf ~/)"
-          "Bash(rm -rf /)"
-          "Bash(sudo rm -:*)"
-          "Bash(chmod 777 /*)"
+          "Bash(* .env*)"
+          "Bash(* ~/.aws/*)"
+          "Bash(* ~/.config/gh/*)"
+          "Bash(* ~/.config/git/*)"
+          "Bash(* ~/.netrc)"
+          "Bash(* ~/.ssh/*)"
+          "Bash(* ~/.pypirc)"
+          "Bash(* ~/.cloudflared/*)"
+          "Bash(* ~/.config/sops/*)"
+          "Bash(* ~/.config/sops-nix/*)"
+          "Bash(rm -rf *)"
+          "Bash(rm -rf:*)"
+          "Bash(rmdir *)"
+          "Bash(for)"
+          "Bash(do)"
+          "Bash(gh repo delete:*)"
+          "Bash(security *)"
+          "Bash(ssh *)"
+          "Bash(telnet *)"
+          "Bash(su *)"
+          "Bash(sudo *)"
+          "Bash(sudo:*)"
+          "Bash(chmod 777:*)"
           "Bash(chmod -R 777 /*)"
           "Bash(chown root:*)"
-          "Bash(sudo chmod 777:*)"
-          "Bash(sudo chown :*)"
-          "Bash(sudo -i:*)"
-          "Bash(sudo su:*)"
+          "Bash(mysql:*)"
+          "Bash(psql:*)"
+          "Bash(mongosh:*)"
+          "Bash(su *)"
           "Bash(dd:*)"
           "Bash(mkfs:*)"
           "Bash(fdisk:*)"
           "Bash(> /dev/*)"
           "Bash(>> /dev/*)"
-          "Bash(sudo dd:*)"
-          "Bash(sudo mkfs:*)"
-          "Bash(sudo fdisk:*)"
-          "Bash(sudo mount:*)"
-          "Bash(sudo umount:*)"
-          "Bash(rm -rf .git)"
-          "Bash(git push --force-with-lease origin main)"
-          "Bash(git push --force-with-lease origin master)"
-          "Bash(git push -f origin main)"
-          "Bash(git push -f origin master)"
-          "Bash(git push origin main)"
-          "Bash(git push origin master)"
           "Bash(npm publish:*)"
           "Bash(deno publish:*)"
+          "Bash(sed -i:*)"
+          "Bash(awk -i:*)"
           "Edit(/etc/**)"
           "Edit(/usr/**)"
           "Edit(/var/**)"
@@ -161,30 +290,110 @@ in
           "Edit(/sys/**)"
           "Edit(/dev/**)"
           "Edit(~/.ssh/*)"
-          "Bash(sed -i:*)"
-          "Bash(awk -i:*)"
-          "Write(/etc/**)"
-          "Write(/usr/**)"
-          "Write(/var/**)"
-          "Write(/opt/**)"
-          "Write(/bin/**)"
-          "Write(/sbin/**)"
-          "Write(/lib/**)"
-          "Write(/lib64/**)"
-          "Write(/boot/**)"
-          "Write(/proc/**)"
-          "Write(/sys/**)"
-          "Write(/dev/**)"
-          "Write(~/.ssh/*)"
+          "Edit(./.env)"
+          "Edit(./.env.*)"
+          "Write(**/*.env*)"
+          "Write(**/.aws/**)"
+          "Write(**/*key)"
+          "Write(**/*secrets*)"
+          "Write(**/*token*)"
+          "Write(./.env)"
+          "Write(./.env.*)"
+          "Read(**/*.env*)"
+          "Read(**/.aws/**)"
+          "Read(**/*key)"
+          "Read(**/*secrets*)"
+          "Read(**/*token*)"
+          "Read(./.env)"
+          "Read(./.env.*)"
+          "Read(~/.aws/**)"
+          "Read(~/.config/gh/**)"
+          "Read(~/.config/git/**)"
+          "Read(~/.netrc)"
+          "Read(~/.npmrc)"
+          "Read(~/.pypirc)"
+          "Read(~/.ssh/**)"
+          "Read(~/.cloudflared/**)"
+          "Read(~/.config/sops/**)"
+          "Read(~/.config/sops-nix/**)"
+          "mcp__datadog__delete_datadog_dashboard"
+          "mcp__datadog__submit_mcp_feedback"
+        ];
+        ask = [
+          "Bash(uv add:*)"
+          "Bash(bun install:*)"
+          "Bash(bun add:*)"
+          "Bash(cargo add:*)"
+          "Bash(npm install:*)"
+          "Bash(git push:*)"
+          "Bash(git config:*)"
+          "Bash(git rm:*)"
+          "mcp__playwright__browser_file_upload"
+          "mcp__playwright__browser_install"
+          "mcp__playwright__browser_run_code"
+          "mcp__datadog__edit_datadog_notebook"
+          "mcp__datadog__upsert_datadog_dashboard"
+          "mcp__github__delete_file"
         ];
       };
       hooks = {
+        PreToolUse = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${gatehook-pkg}/bin/gatehook --config ${config.home.homeDirectory}/.claude/scripts/gatehook-rules.json";
+              }
+            ];
+          }
+          {
+            matcher = "Bash|Write|Edit";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/pretooluse-version-check.sh";
+              }
+            ];
+          }
+        ];
+        PostToolUse = [
+          {
+            matcher = "Edit|Write";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/posttooluse-lint.sh";
+              }
+            ];
+          }
+        ];
+        Stop = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/stop-handover.sh";
+              }
+            ];
+          }
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "${config.home.homeDirectory}/.claude/scripts/notify.sh \"Finished\" 'Claude Code'";
+              }
+            ];
+          }
+        ];
         Notification = [
           {
             hooks = [
               {
                 type = "command";
-                command = "echo \"Claude Code: $(jq -r '.message')\" | terminal-notifier -title 'Claude Code'";
+                command = "${config.home.homeDirectory}/.claude/scripts/notify.sh \"$(jq -r '.message')\" 'Claude Code'";
               }
             ];
           }
@@ -197,25 +406,28 @@ in
       };
       enabledPlugins = {
         # https://github.com/anthropics/claude-plugins-official
-        "code-review@claude-code-plugins" = true;
-        "agent-sdk-dev@claude-code-plugins" = true;
-        "feature-dev@claude-code-plugins" = true;
-        "frontend-design@claude-code-plugins" = true;
-        "pr-review-toolkit@claude-code-plugins" = true;
-        "ralph-wiggum@claude-code-plugins" = true;
-        "security-guidance@claude-code-plugins" = true;
-        # https://github.com/VoltAgent/awesome-claude-code-subagents
-        "voltagent-core-dev@voltagent-subagents" = true;
-        "voltagent-lang@voltagent-subagents" = true;
-        "voltagent-infra@voltagent-subagents" = true;
-        "voltagent-data-ai@voltagent-subagents" = true;
-        "voltagent-dev-exp@voltagent-subagents" = true;
-        "voltagent-meta@voltagent-subagents" = true;
-        "voltagent-research@voltagent-subagents" = true;
+        "agent-sdk-dev@claude-plugins-official" = true;
+        "feature-dev@claude-plugins-official" = true;
+        "frontend-design@claude-plugins-official" = true;
+        "pr-review-toolkit@claude-plugins-official" = true;
+        "ralph-loop@claude-plugins-official" = true;
+        "security-guidance@claude-plugins-official" = true;
+        "understand-anything@understand-anything" = true;
       };
     };
     skills = {
       handover = ./skills/handover/SKILL.md;
+      tdd-cycle = ./skills/tdd-cycle/SKILL.md;
+      quality-pipeline = ./skills/quality-pipeline/SKILL.md;
+      review-checklist = ./skills/review-checklist/SKILL.md;
+      scope-guard = ./skills/scope-guard/SKILL.md;
+      lang-go = ./skills/lang-go/SKILL.md;
+      lang-typescript = ./skills/lang-typescript/SKILL.md;
+      lang-python = ./skills/lang-python/SKILL.md;
+      lang-rust = ./skills/lang-rust/SKILL.md;
+    };
+    agents = {
+      impl = implContent;
     };
     mcpServers =
       (mcp-servers-nix.lib.evalModule pkgs {
@@ -223,7 +435,6 @@ in
           filesystem.enable = true;
           fetch.enable = true;
           context7.enable = true;
-          playwright.enable = true;
           terraform.enable = true;
           sequential-thinking.enable = true;
           serena = {
@@ -242,13 +453,21 @@ in
           type = "http";
           url = "https://mcp.deepwiki.com/mcp";
         };
+        playwright = {
+          type = "stdio";
+          command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
+          args = [
+            "--executable-path"
+            "${pkgs.google-chrome}/bin/google-chrome"
+          ];
+        };
         markitdown = {
           type = "stdio";
           command = "markitdown-mcp";
         };
         drawio = {
-          type = "http";
-          url = "https://mcp.draw.io/mcp";
+          type = "stdio";
+          command = "${pkgs.drawio-mcp}/bin/drawio-mcp";
         };
       };
   };

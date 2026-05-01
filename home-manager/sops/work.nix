@@ -21,6 +21,10 @@
     };
 
     secrets = {
+      "jira/api_token" = { };
+
+      "obsidian/plugin/remotely_save/secret" = { };
+
       "git/config" = {
         path = "${config.home.homeDirectory}/.gitconfig";
         mode = "0644";
@@ -49,6 +53,23 @@
         path = "${config.home.homeDirectory}/.ssh/id_ed25519_github_private.pub";
         mode = "0644";
       };
+      "python" = {
+        path = "${config.home.homeDirectory}/.pypirc";
+        mode = "0600";
+      };
+      "npm" = {
+        path = "${config.home.homeDirectory}/.npmrc";
+        mode = "0600";
+      };
     };
   };
+
+  home.activation.registerJiraToken = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [[ "$(uname)" == "Darwin" ]]; then
+      if token=$(SOPS_AGE_KEY_FILE="${config.xdg.configHome}/sops/age/keys.txt" ${pkgs.sops}/bin/sops --extract '["jira"]["api_token"]' -d ${toString ../../secrets/work.enc.yaml} 2>/dev/null); then
+        run /usr/bin/security add-generic-password \
+          -a "$USER" -s "jira_api_token" -w "$token" -U
+      fi
+    fi
+  '';
 }

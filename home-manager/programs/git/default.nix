@@ -8,7 +8,13 @@
       ".direnv"
       ".serena/"
       "**/.claude/**/*.local.*"
+      "**/.claude/handovers/**"
     ];
+    settings = {
+      ghq = {
+        root = "~/ws/repo";
+      };
+    };
   };
 
   programs.zsh = {

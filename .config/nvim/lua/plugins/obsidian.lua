@@ -32,7 +32,9 @@ return {
           date_format = "%Y-%m-%d",
           template = "daily_report.md",
         },
-        disable_frontmatter = true,
+        frontmatter = {
+          enable = false,
+        },
         templates = {
           folder = "templates",
           date_format = "%Y-%m-%d",

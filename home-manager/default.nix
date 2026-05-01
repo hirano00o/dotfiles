@@ -1,10 +1,13 @@
 {
   system,
   nixpkgs,
+  nixpkgs-stable,
   mcp-servers-nix,
   brew-nix,
   rust-overlay,
   llm-agents,
+  gatehook,
+  extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
   ...
@@ -12,44 +15,34 @@
 let
   isDarwin = builtins.match ".*-darwin" system != null;
   brewNixOverlay = if isDarwin then [ brew-nix.overlays.default ] else [ ];
-  # mcpパッケージの壊れたpostPatchを修正するoverlay
-  # nixpkgsのmcp 1.25.0にはmacOS向けのpostPatchがあるが、
-  # upstream(mcp PR#1529)で該当コードが削除されたため、パッチが失敗する
-  # mcp 1.26.0のテストはNixサンドボックス内でネットワークサーバーを起動しようとして
+  # いくつかテストはNixサンドボックス内でネットワークサーバーを起動しようとして
   # TimeoutErrorになるため、doCheck = falseでテストをスキップする
-  mcpFixOverlay = final: prev: {
-    python3Packages = prev.python3Packages.override {
-      overrides = pyFinal: pyPrev: {
-        mcp = pyPrev.mcp.overrideAttrs (old: {
-          postPatch = "";
-          doCheck = false;
-        });
-      };
-    };
-    python311Packages = prev.python311Packages.override {
-      overrides = pyFinal: pyPrev: {
-        mcp = pyPrev.mcp.overrideAttrs (old: {
-          postPatch = "";
-          doCheck = false;
-        });
-      };
-    };
+  dontCheckOverlay = final: prev: {
+    chromaprint = prev.chromaprint.overrideAttrs { doCheck = false; };
+    kvazaar = prev.kvazaar.overrideAttrs { doCheck = false; };
   };
 
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
     overlays = [
-      mcpFixOverlay
-      (import ./overlays/markitdown-mcp.nix)
+      dontCheckOverlay
+      (import ./overlays/drawio-mcp.nix)
+      (import ./overlays/d2-darwin.nix)
+      (import ./overlays/python-audio-darwin.nix)
       mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
     ]
+    ++ extraOverlays
     ++ brewNixOverlay;
+  };
+  pkgs-stable = import nixpkgs-stable {
+    inherit system;
+    config.allowUnfree = true;
   };
   lib = pkgs.lib;
 
-  basicPkgs = import ./packages/basic.nix { inherit pkgs llm-agents; };
+  basicPkgs = import ./packages/basic.nix { inherit pkgs pkgs-stable llm-agents; };
 
   misc = import ./misc { };
 
@@ -65,7 +58,7 @@ in
   # すべてのモジュールがoverlayを含むpkgsを使用するように設定
   _module.args = {
     pkgs = lib.mkForce pkgs;
-    inherit mcp-servers-nix llm-agents;
+    inherit mcp-servers-nix llm-agents gatehook;
   };
 
   home.stateVersion = "25.11";

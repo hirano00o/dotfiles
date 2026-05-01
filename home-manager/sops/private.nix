@@ -21,7 +21,6 @@
     };
 
     secrets = {
-      "obsidian/plugin/hatena/apiKey" = { };
       "obsidian/plugin/remotely_save/secret" = { };
 
       "git/config" = {

@@ -1,10 +1,9 @@
-{ pkgs, llm-agents }:
+{ pkgs, pkgs-stable, llm-agents }:
 with pkgs;
 [
   # Related vim
   tree-sitter
   lazydocker
-  lazygit
   pinentry_mac
   lua54Packages.lua
 
@@ -30,7 +29,7 @@ with pkgs;
   typescript-go
 
   # DB
-  mysql80
+  mysql84
   sqlite
   duckdb
 
@@ -41,10 +40,12 @@ with pkgs;
   gotests
 
   # Misc
+  git-filter-repo
   openssl
   slack
   zstd
   imagemagick
+  ghostscript
   protobuf
   jq
   yq
@@ -57,7 +58,7 @@ with pkgs;
   xcodes
   terraform
   trivy
-  deno
+  pkgs-stable.deno
   python312
   typescript
   google-cloud-sdk
@@ -87,5 +88,5 @@ with pkgs;
 ]
 ++ lib.optionals stdenv.isDarwin [
   terminal-notifier
-  brewCasks.raycast
+  raycast
 ]
