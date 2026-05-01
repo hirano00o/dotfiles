@@ -10,11 +10,12 @@ STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/claude-code"
 STATE_FILE="${STATE_DIR}/waiting-panes"
 mkdir -p "$STATE_DIR"
 
-PANE_INFO=$(tmux display-message -p '#{pane_id}	#{session_name}	#{window_index}	#{pane_index}') || exit 0
-PANE_ID=$(printf '%s' "$PANE_INFO" | cut -f1)
-SESSION=$(printf '%s' "$PANE_INFO" | cut -f2)
-WIN_IDX=$(printf '%s' "$PANE_INFO" | cut -f3)
-PANE_IDX=$(printf '%s' "$PANE_INFO" | cut -f4)
+PANE_ID="${TMUX_PANE:-}"
+[[ -z "$PANE_ID" ]] && exit 0
+PANE_INFO=$(tmux display-message -t "$PANE_ID" -p '#{session_name}	#{window_index}	#{pane_index}') || exit 0
+SESSION=$(printf '%s' "$PANE_INFO" | cut -f1)
+WIN_IDX=$(printf '%s' "$PANE_INFO" | cut -f2)
+PANE_IDX=$(printf '%s' "$PANE_INFO" | cut -f3)
 TARGET="${SESSION}:${WIN_IDX}.${PANE_IDX}"
 TIMESTAMP=$(date +%s)
 
@@ -30,6 +31,6 @@ fi
 printf '%s\t%s\t%s\t%s\n' "$PANE_ID" "$TARGET" "$TIMESTAMP" "$SANITIZED_MESSAGE" >> "$TMP"
 mv "$TMP" "$STATE_FILE"
 
-tmux select-pane -t "$PANE_ID" -P 'bg=red,fg=yellow' 2>/dev/null || true
+tmux set-option -p -t "$PANE_ID" pane-border-style 'fg=red,bold' 2>/dev/null || true
 tmux display-message "[${TITLE}] ${SANITIZED_MESSAGE}" 2>/dev/null || true
 tmux refresh-client -S 2>/dev/null || true

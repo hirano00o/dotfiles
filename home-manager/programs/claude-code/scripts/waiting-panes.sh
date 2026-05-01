@@ -19,6 +19,7 @@ remove_pane_from_state() {
 
 reset_pane_border() {
   local pane="$1"
+  tmux set-option -p -u -t "$pane" pane-border-style 2>/dev/null || true
   tmux select-pane -t "$pane" -P '' 2>/dev/null || true
 }
 

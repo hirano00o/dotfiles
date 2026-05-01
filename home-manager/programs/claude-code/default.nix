@@ -79,6 +79,10 @@ in
       source = ./scripts/stop-handover.sh;
       executable = true;
     };
+    ".claude/scripts/claude-worktree.sh" = {
+      source = ./scripts/claude-worktree.sh;
+      executable = true;
+    };
     ".claude/scripts/gatehook-rules.json".source = rulesJson;
     ".claude/scripts/pretooluse-version-check.sh" = {
       source = ./scripts/pretooluse-version-check.sh;
