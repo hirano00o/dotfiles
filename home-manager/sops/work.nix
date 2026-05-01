@@ -53,6 +53,14 @@
         path = "${config.home.homeDirectory}/.ssh/id_ed25519_github_private.pub";
         mode = "0644";
       };
+      "python" = {
+        path = "${config.home.homeDirectory}/.pypirc";
+        mode = "0600";
+      };
+      "npm" = {
+        path = "${config.home.homeDirectory}/.npmrc";
+        mode = "0600";
+      };
     };
   };
 
