@@ -17,6 +17,14 @@
         type = "http";
         url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking&account=prd";
       };
+      cloudwatch-logs = {
+        type = "stdio";
+        command = "uvx";
+        args = [ "awslabs.cloudwatch-mcp-server@0.0.28" ];
+        env = {
+          FASTMCP_LOG_LEVEL = "ERROR";
+        };
+      };
     };
   };
 }
