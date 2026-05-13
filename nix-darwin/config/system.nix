@@ -18,6 +18,7 @@
         show-recents = false;
         launchanim = false;
         orientation = "bottom";
+        wvous-br-corner = 4;
       };
       controlcenter = {
         Bluetooth = true;
