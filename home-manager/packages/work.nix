@@ -1,7 +1,6 @@
 { pkgs }:
 with pkgs;
 [
-  _1password-gui
   _1password-cli
   zoom-us
   awscli2
