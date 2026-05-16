@@ -234,6 +234,7 @@ in
           "mcp__markitdown"
           "mcp__drawio"
           "mcp__datadog"
+          "mcp__cloudwatch-logs"
           "mcp__github__get*"
           "mcp__github__search*"
           "mcp__github__list*"
