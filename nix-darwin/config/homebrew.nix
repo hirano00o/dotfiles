@@ -7,7 +7,6 @@
     };
     casks = [
       "karabiner-elements"
-      "google-chrome"
       "logi-options+"
     ];
   };

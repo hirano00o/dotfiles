@@ -1,4 +1,8 @@
-{ inputs, username }:
+{
+  inputs,
+  username,
+  brewUsername,
+}:
 let
   inherit (inputs)
     nix-darwin
@@ -26,7 +30,7 @@ nix-darwin.lib.darwinSystem {
   inherit pkgs;
   inherit (inputs.nixpkgs) lib;
   specialArgs = {
-    inherit username pkgs;
+    inherit username brewUsername pkgs;
   };
   modules = [
     configuration

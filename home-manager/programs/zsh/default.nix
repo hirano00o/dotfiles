@@ -14,6 +14,7 @@ in
   programs.zsh = {
     enable = true;
     enableCompletion = true;
+    completionInit = "autoload -U compinit && compinit -u";
     autosuggestion = {
       enable = true;
     };

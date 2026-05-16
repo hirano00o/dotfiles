@@ -67,6 +67,7 @@
           workDarwin = import ./hosts/workDarwin {
             inherit inputs;
             username = inputs.workUsername.value;
+            brewUsername = inputs.workUsername.brewUser;
           };
         };
       };
