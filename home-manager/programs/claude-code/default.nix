@@ -114,6 +114,7 @@ in
       };
       skipAutoPermissionPrompt = true;
       skipDangerousModePermissionPrompt = true;
+      tui = "fullscreen";
       permissions = {
         defaultMode = "auto";
         allow = [
