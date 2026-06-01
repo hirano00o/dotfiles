@@ -8,7 +8,7 @@
       ".direnv"
       ".serena/"
       "**/.claude/**/*.local.*"
-      "**/.claude/handovers/**"
+      ".envrc"
     ];
     settings = {
       ghq = {
@@ -26,6 +26,8 @@
       gs = "git switch";
       gpl = "git pull";
       glgg = "git log --color --graph --decorate --oneline";
+
+      cdg = "cd $(ghq list -p | fzf)";
     };
   };
 }
