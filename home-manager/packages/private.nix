@@ -10,6 +10,7 @@ with pkgs;
   kubernetes-helm
   scrcpy
   ffmpeg-full
+  slack
 ]
 ++ lib.optionals stdenv.isDarwin [
 ]

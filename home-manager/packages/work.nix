@@ -2,7 +2,6 @@
 with pkgs;
 [
   _1password-cli
-  zoom-us
   awscli2
   saml2aws
   granted

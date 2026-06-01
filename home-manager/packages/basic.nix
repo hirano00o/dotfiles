@@ -42,7 +42,6 @@ with pkgs;
   # Misc
   git-filter-repo
   openssl
-  slack
   zstd
   imagemagick
   ghostscript
@@ -62,6 +61,7 @@ with pkgs;
   python312
   typescript
   google-cloud-sdk
+  envsubst
 
   presenterm
   mermaid-cli
