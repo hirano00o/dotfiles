@@ -3,7 +3,8 @@ INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
 TRANSCRIPT_PATH=$(echo "$INPUT" | jq -r '.transcript_path // empty')
 
-HANDOVER_DIR="${HOME}/.claude/handovers/${CLAUDE_PROJECT_DIR:-.}"
+PROJECT_NAME=$(basename "${CLAUDE_PROJECT_DIR:-$PWD}")
+HANDOVER_DIR="${HOME}/.claude/handovers/${PROJECT_NAME}"
 
 # 短いセッション（assistant メッセージが3件以下）はスキップ
 # claude -p やワンショット利用を想定
