@@ -40,6 +40,37 @@ return {
     opts = {
       current_line_blame = true,
       word_diff = true,
+      -- 追加/変更は細い縦バー、削除は三角
+      signs = {
+        add = { text = "▎" },
+        change = { text = "▎" },
+        delete = { text = "▸" },
+        topdelete = { text = "▸" },
+        changedelete = { text = "▎" },
+        untracked = { text = "▎" },
+      },
+      -- base がブランチ分岐点になるため、staged との区別表示は冗長になり無効化
+      signs_staged_enable = false,
+      on_attach = function(bufnr)
+        -- ブランチ分岐点の差分表示
+        -- (デフォルトブランチとの merge-base) を差分の基準にする。
+        -- デフォルトブランチ上では merge-base = HEAD となり従来挙動と一致する。
+        vim.schedule(function()
+          if not vim.api.nvim_buf_is_valid(bufnr) then
+            return
+          end
+          local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+          for _, ref in ipairs { "origin/HEAD", "origin/main", "origin/master", "main", "master" } do
+            local out = vim.fn.systemlist { "git", "-C", dir, "merge-base", ref, "HEAD" }
+            if vim.v.shell_error == 0 and out[1] then
+              vim.api.nvim_buf_call(bufnr, function()
+                require("gitsigns").change_base(out[1], false)
+              end)
+              return
+            end
+          end
+        end)
+      end,
     },
     keys = {
       {
