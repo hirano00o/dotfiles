@@ -1,4 +1,8 @@
-{ pkgs, pkgs-stable, llm-agents }:
+{
+  pkgs,
+  pkgs-stable,
+  llm-agents,
+}:
 with pkgs;
 [
   # Related vim
@@ -76,6 +80,10 @@ with pkgs;
   drawio
   vhs
   shottr
+  # Upstream test suite segfaults during the build check phase, so skip it.
+  (md2pdf.overridePythonAttrs (_: {
+    doCheck = false;
+  }))
 
   llm-agents.packages.${stdenv.hostPlatform.system}.ccusage
 
