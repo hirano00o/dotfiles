@@ -11,6 +11,7 @@ with pkgs;
   scrcpy
   ffmpeg-full
   slack
+  zoom-us
 ]
 ++ lib.optionals stdenv.isDarwin [
 ]
