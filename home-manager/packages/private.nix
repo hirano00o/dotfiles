@@ -8,6 +8,7 @@ with pkgs;
   brewCasks.bitwarden
   cloudflared
   kubernetes-helm
+  fluxcd
   scrcpy
   ffmpeg-full
   slack
