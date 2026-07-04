@@ -4,8 +4,10 @@
     settings = {
       env = {
         NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
-        CLAUDE_CODE_EFFORT_LEVEL = lib.mkForce "medium";
       };
+      # effort は settings.effortLevel に一本化 (env.CLAUDE_CODE_EFFORT_LEVEL と
+      # の二重管理だと優先順位が実装依存になるため)
+      effortLevel = lib.mkForce "medium";
       model = lib.mkForce "opusplan";
     };
     mcpServers = {

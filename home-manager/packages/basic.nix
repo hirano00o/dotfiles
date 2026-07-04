@@ -44,6 +44,7 @@ with pkgs;
   gotests
 
   # Misc
+  lefthook
   git-filter-repo
   openssl
   zstd

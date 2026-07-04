@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v16
+      # workDarwin は users/work/flake.nix のプレースホルダ未設定で throw するため
+      # privateDarwin のみ評価する
+      - name: Evaluate privateDarwin
+        run: nix eval .#darwinConfigurations.privateDarwin.system.drvPath
+      - name: Check nix formatting
+        run: |
+          nix run nixpkgs#nixfmt-rfc-style -- --check $(git ls-files '*.nix')

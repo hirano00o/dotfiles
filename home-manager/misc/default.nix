@@ -2,4 +2,5 @@
 [
   ./nix
   ./activation
+  ./flake-update
 ]

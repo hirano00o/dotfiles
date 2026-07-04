@@ -1,6 +1,6 @@
 ---
 name: lang-typescript
-description: TypeScript / JavaScript の TDD 実装手順。Vitest / Jest / bun test、Biome / ESLint + Prettier、tsc、パッケージマネージャ (pnpm / npm / bun) の具体コマンド。
+description: TypeScript / JavaScript のコードを書く・修正する・テストする作業全般で使用。Vitest / Jest / bun test、Biome / ESLint + Prettier、tsc、パッケージマネージャ (pnpm / npm / bun) の具体コマンドと TDD (tdd-cycle) での典型実行順。
 ---
 
 # TypeScript 実装ガイド

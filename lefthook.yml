@@ -1,0 +1,8 @@
+# git hooks (lefthook install で有効化)。Claude Code 経由の編集は
+# posttooluse-lint.sh が整形するが、手動編集・手動コミットの防波堤として置く。
+pre-commit:
+  commands:
+    nixfmt:
+      glob: "*.nix"
+      run: nixfmt {staged_files}
+      stage_fixed: true

@@ -45,15 +45,11 @@ let
     builtins.replaceStrings
       [
         "<!-- PRELOAD:tdd-cycle -->"
-        "<!-- PRELOAD:quality-pipeline -->"
         "<!-- PRELOAD:review-checklist -->"
-        "<!-- PRELOAD:scope-guard -->"
       ]
       [
         (loadSkillBody ./skills/tdd-cycle/SKILL.md)
-        (loadSkillBody ./skills/quality-pipeline/SKILL.md)
         (loadSkillBody ./skills/review-checklist/SKILL.md)
-        (loadSkillBody ./skills/scope-guard/SKILL.md)
       ]
       (builtins.readFile ./agents/impl.md);
 in
@@ -99,7 +95,10 @@ in
       language = "japanese";
       autoUpdates = false;
       includeCoAuthoredBy = false;
-      enableAllProjectMcpServers = true;
+      # サードパーティリポジトリの .mcp.json を無確認で信頼しない (2026-07 監査)。
+      # 必要なプロジェクトのみ各プロジェクトの settings.local.json の
+      # enabledMcpjsonServers で個別に許可する。
+      enableAllProjectMcpServers = false;
       alwaysThinkingEnabled = true;
       env = {
         CLAUDE_CODE_ENABLE_TELEMETRY = "0";
@@ -218,7 +217,9 @@ in
           "WebFetch(domain:api.github.com)"
           "WebFetch(domain:github.com)"
           "WebFetch(domain:gist.github.com)"
+          "WebFetch(domain:raw.githubusercontent.com)"
           "WebFetch(domain:docs.anthropic.com)"
+          "Bash(gh api:*)"
           "Read(**/.env.example)"
           "Read(**/.env.sample)"
           "Write(**/.env.example)"
@@ -255,8 +256,6 @@ in
           "Bash(rm -rf *)"
           "Bash(rm -rf:*)"
           "Bash(rmdir *)"
-          "Bash(for)"
-          "Bash(do)"
           "Bash(gh repo delete:*)"
           "Bash(security *)"
           "Bash(ssh *)"
@@ -270,7 +269,6 @@ in
           "Bash(mysql:*)"
           "Bash(psql:*)"
           "Bash(mongosh:*)"
-          "Bash(su *)"
           "Bash(dd:*)"
           "Bash(mkfs:*)"
           "Bash(fdisk:*)"
@@ -328,6 +326,7 @@ in
           "Bash(bun add:*)"
           "Bash(cargo add:*)"
           "Bash(npm install:*)"
+          "Bash(go get:*)"
           "Bash(git push:*)"
           "Bash(git config:*)"
           "Bash(git rm:*)"
@@ -409,28 +408,32 @@ in
       };
       enabledPlugins = {
         # https://github.com/anthropics/claude-plugins-official
-        "agent-sdk-dev@claude-plugins-official" = true;
+        # usageCount 0 が続いた agent-sdk-dev / frontend-design は無効化 (2026-07 監査)
+        "agent-sdk-dev@claude-plugins-official" = false;
         "feature-dev@claude-plugins-official" = true;
-        "frontend-design@claude-plugins-official" = true;
+        "frontend-design@claude-plugins-official" = false;
         "pr-review-toolkit@claude-plugins-official" = true;
         "ralph-loop@claude-plugins-official" = true;
         "security-guidance@claude-plugins-official" = true;
-        "understand-anything@understand-anything" = true;
       };
     };
     skills = {
+      develop = ./skills/develop/SKILL.md;
+      ship = ./skills/ship/SKILL.md;
       handover = ./skills/handover/SKILL.md;
+      # quality-pipeline は tdd-cycle へ、scope-guard は review-checklist へ統合 (2026-07)
       tdd-cycle = ./skills/tdd-cycle/SKILL.md;
-      quality-pipeline = ./skills/quality-pipeline/SKILL.md;
       review-checklist = ./skills/review-checklist/SKILL.md;
-      scope-guard = ./skills/scope-guard/SKILL.md;
       lang-go = ./skills/lang-go/SKILL.md;
       lang-typescript = ./skills/lang-typescript/SKILL.md;
       lang-python = ./skills/lang-python/SKILL.md;
       lang-rust = ./skills/lang-rust/SKILL.md;
+      aws-diagram = ./skills/aws-diagram/SKILL.md;
     };
     agents = {
       impl = implContent;
+      security-auditor = builtins.readFile ./agents/security-auditor.md;
+      tf-analyst = builtins.readFile ./agents/tf-analyst.md;
     };
     mcpServers =
       (mcp-servers-nix.lib.evalModule pkgs {
@@ -448,6 +451,8 @@ in
           github = {
             enable = true;
             envFile = "${config.home.homeDirectory}/.claude/.github.token";
+            # 全43ツールの常時露出を避け、実際に使う read/PR/issue 系に絞る
+            env.GITHUB_TOOLSETS = "context,repos,issues,pull_requests";
           };
         };
       }).config.settings.servers
@@ -476,5 +481,8 @@ in
   };
   home.file = {
     "${config.home.homeDirectory}/.claude/skills/drawio/SKILL.md".source = drawio-skill;
+    # aws-diagram の参照資料。SKILL.md 本体は programs.claude-code.skills で配備される
+    "${config.home.homeDirectory}/.claude/skills/aws-diagram/references".source =
+      ./skills/aws-diagram/references;
   };
 }

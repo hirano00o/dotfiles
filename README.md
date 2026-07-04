@@ -13,10 +13,15 @@ cat <<EOF > ~/.config/nix/local.conf
 access-tokens = github.com=$(gh auth token)
 EOF
 
-cat <<EOF > ~/.claude/.github.token
-GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)
-EOF
+# github MCP のトークンを sops で管理する (~/.claude/.github.token として 0600 で配備される)
+sops set secrets/private.enc.yaml '["claude"]["github_env"]' "\"GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)\""
+# 初回のみ: 手動配置していた旧ファイルがあれば削除してから switch し直す
+# rm ~/.claude/.github.token && sudo darwin-rebuild switch --flake .#privateDarwin
 ```
+
+**Note**: `home-manager/sops/private.nix` の `claude/github_env` secret が
+`secrets/private.enc.yaml` に存在しない状態で switch すると失敗する。
+先に上記の `sops set` を実行すること。
 
 From the second time onwards:
 ```sh
@@ -52,9 +57,8 @@ cat <<EOF > ~/.config/nix/local.conf
 access-tokens = github.com=$(gh auth token)
 EOF
 
-cat <<EOF > ~/.claude/.github.token
-GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)
-EOF
+# github MCP のトークン (work ホストでも sops 管理。work.enc.yaml に追加すること)
+sops set secrets/work.enc.yaml '["claude"]["github_env"]' "\"GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)\""
 ```
 
 **Note**: If you encounter an error like `evaluation of cached failed attribute 'darwinConfigurations.workDarwin.system' unexpectedly succeeded`, run the following command instead:

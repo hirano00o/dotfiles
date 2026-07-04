@@ -1,6 +1,6 @@
 ---
 name: handover
-description: Generate handovers at the end of a session or when work is completed
+description: セッション終了時・作業の区切り・引き継ぎ依頼時に、引き継ぎノートを ~/.claude/handovers/ に生成する。「/handover」「引き継ぎを書いて」「ここまでの作業をまとめて」等で発動。
 allowed-tools: Bash, Read, Write
 ---
 

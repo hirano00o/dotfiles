@@ -1,6 +1,6 @@
 ---
 name: lang-go
-description: Go 言語での TDD 実装手順。テスト実行・フォーマット・リンタ・依存管理の具体コマンド、およびテーブル駆動テスト規約。
+description: Go のコードを書く・修正する・テストする作業全般で使用。go test / gofmt / goimports / go vet / golangci-lint / go mod の具体コマンド、テーブル駆動テスト規約、TDD (tdd-cycle) での典型実行順。
 ---
 
 # Go 実装ガイド

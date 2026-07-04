@@ -61,6 +61,14 @@
         path = "${config.home.homeDirectory}/.npmrc";
         mode = "0600";
       };
+
+      # github MCP サーバの envFile (claude-code/default.nix の mcpServers.github が参照)。
+      # 有効化する前に README の手順で secrets/work.enc.yaml に
+      # claude/github_env を sops set しておくこと (未投入だと activation が失敗する)。
+      # "claude/github_env" = {
+      #   path = "${config.home.homeDirectory}/.claude/.github.token";
+      #   mode = "0600";
+      # };
     };
   };
 

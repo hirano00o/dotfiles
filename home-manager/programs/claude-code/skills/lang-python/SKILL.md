@@ -1,6 +1,6 @@
 ---
 name: lang-python
-description: Python の TDD 実装手順。pytest、ruff (lint + format)、mypy / pyright、uv による依存管理の具体コマンド。
+description: Python のコードを書く・修正する・テストする作業全般で使用。pytest、ruff (lint + format)、mypy / pyright、uv による依存管理の具体コマンドと TDD (tdd-cycle) での典型実行順。
 ---
 
 # Python 実装ガイド
