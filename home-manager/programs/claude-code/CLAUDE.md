@@ -38,7 +38,7 @@
 
 ## Session Handover
 
-- At session start, check the `.claude/handovers/` directory in the project root. If files exist, read the most recent one.
+- At session start, check `$HOME/.claude/handovers/$(basename "$PWD")/`. If files exist, read the most recent one.
 - At session end or at a natural stopping point, prompt the user to run `/handover`.
 
 ---
