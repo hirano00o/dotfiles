@@ -16,6 +16,7 @@ go test -v ./pkg              # 詳細出力
 ```
 
 - **テーブル駆動テスト**を第一選択とする
+- ケースには境界値 (空入力、要素数が閾値未満、ゼロ値) を必ず含める
 - サブテスト名は `t.Run(tc.name, ...)` で付与
 - 並行実行可能なテストは `t.Parallel()` を明示
 - テストファイルは `*_test.go`、同一パッケージ配置が基本
@@ -64,10 +65,14 @@ golangci-lint の設定はプロジェクトの `.golangci.yml` が優先され�
 ## 依存管理
 
 ```bash
-go mod tidy              # 不要な依存の削除 + 整理
-go get example.com/pkg   # 依存追加
-go mod download          # 依存ダウンロードのみ
+go mod tidy                           # 不要な依存の削除 + 整理
+go list -m -versions example.com/pkg  # 追加前に最新バージョンを確認
+go get example.com/pkg                # 依存追加
+go mod download                       # 依存ダウンロードのみ
 ```
+
+依存を新規追加する前に最新メジャーバージョンを確認する (メジャー更新で import パスが
+`/v4` のように変わるため、確認せずに追加すると古いメジャーを掴む)。
 
 ## 規約
 
