@@ -428,7 +428,8 @@ in
       lang-typescript = ./skills/lang-typescript/SKILL.md;
       lang-python = ./skills/lang-python/SKILL.md;
       lang-rust = ./skills/lang-rust/SKILL.md;
-      aws-diagram = ./skills/aws-diagram/SKILL.md;
+      # ディレクトリ指定で references/ (aws4-shapes 等) も配備する
+      aws-diagram = ./skills/aws-diagram;
     };
     agents = {
       impl = implContent;

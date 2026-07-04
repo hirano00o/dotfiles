@@ -1,0 +1,10 @@
+# グローバルフォールバック設定。プロジェクトに .golangci.yml がある場合はそちらが優先される。
+# lang-go スキルの Lint / Format 手順はこの設定を前提とする。
+version: "2"
+
+# linters はデフォルトセット (errcheck / govet / ineffassign / staticcheck / unused) を使う
+
+formatters:
+  enable:
+    - gofumpt
+    - goimports
