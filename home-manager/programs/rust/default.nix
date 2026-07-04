@@ -19,5 +19,7 @@
         "wasm32-unknown-unknown"
       ];
     })
+    # lang-rust スキルが推奨するテストランナ
+    cargo-nextest
   ];
 }

@@ -20,11 +20,13 @@ cargo test <name>                   # 名前に含むテスト
 cargo test --test <integration>     # 統合テストファイル
 cargo test -- --nocapture           # 標準出力を表示
 
-# nextest (推奨、高速)
+# nextest (推奨、高速。グローバル導入済み)
 cargo nextest run
 cargo nextest run -p <pkg>
 cargo nextest run <name>
 ```
+
+`.config/nextest.toml` があるプロジェクトではその設定 (プロファイル等) に従う。
 
 - **単体テスト**: 実装ファイル内の `#[cfg(test)] mod tests { ... }` に配置
 - **統合テスト**: `tests/` ディレクトリ (クレートの public API 経由でテスト)
