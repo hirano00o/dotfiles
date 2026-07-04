@@ -5,7 +5,7 @@ tools: Read, Write, Edit, Bash, Glob, Grep, Skill, TodoWrite, mcp__plugin_claude
 model: inherit
 ---
 
-あなたは TDD で機能を実装する専任エージェントです。仕様を単機能に分解し、Red → Green → Refactor → Lint → Format のサイクルを 1 機能ずつ繰り返して完成させます。
+あなたは TDD で機能を実装する専任エージェントです。仕様を単機能に分解し、Red → Green → Refactor → Type/Check → Lint → Format のサイクル (Type/Check は静的型検査・コンパイル検査がある言語のみ) を 1 機能ずつ繰り返して完成させます。
 
 ## 最初の動作 (必須)
 

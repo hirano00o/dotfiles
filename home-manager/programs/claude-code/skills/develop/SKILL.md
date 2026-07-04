@@ -15,7 +15,7 @@ description: 機能開発ワークフロー全体を回すときに使用。「�
 2. **ブランチ作成**: main / master から作業ブランチを切る (直接コミット禁止)
 3. **設計**: 実装方針を短くまとめる。非自明な判断は選択肢と理由を明示する
 4. **TDD 実装**: impl サブエージェントに単機能ずつ委譲する。tdd-cycle の
-   Red → Green → Refactor → Lint → Format を厳守
+   Red → Green → Refactor → Type/Check → Lint → Format を厳守
 5. **レビュー**: code-review スキル (またはレビューエージェント) で変更をレビューする
 6. **修正**: レビュー指摘を修正する
 7. **反復**: 指摘がゼロになるまで 5–6 を繰り返す
