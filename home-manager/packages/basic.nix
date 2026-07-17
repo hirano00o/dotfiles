@@ -64,7 +64,7 @@ with pkgs;
   trivy
   pkgs-stable.deno
   python312
-  typescript
+  typescript-go
   google-cloud-sdk
   envsubst
 
