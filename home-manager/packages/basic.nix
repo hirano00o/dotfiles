@@ -1,4 +1,9 @@
-{ pkgs, pkgs-stable, llm-agents }:
+{
+  pkgs,
+  pkgs-stable,
+  llm-agents,
+  hunk,
+}:
 with pkgs;
 [
   # Related vim
@@ -62,6 +67,8 @@ with pkgs;
   python312
   typescript
   google-cloud-sdk
+  hunk.packages.${pkgs.system}.default
+  (import ./casty { inherit pkgs; })
 
   presenterm
   mermaid-cli

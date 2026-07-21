@@ -7,6 +7,7 @@
   rust-overlay,
   llm-agents,
   gatehook,
+  hunk,
   extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
@@ -42,7 +43,14 @@ let
   };
   lib = pkgs.lib;
 
-  basicPkgs = import ./packages/basic.nix { inherit pkgs pkgs-stable llm-agents; };
+  basicPkgs = import ./packages/basic.nix {
+    inherit
+      pkgs
+      pkgs-stable
+      llm-agents
+      hunk
+      ;
+  };
 
   misc = import ./misc { };
 
