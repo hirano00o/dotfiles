@@ -65,7 +65,6 @@ with pkgs;
   trivy
   pkgs-stable.deno
   python312
-  typescript
   google-cloud-sdk
   hunk.packages.${pkgs.system}.default
   (import ./casty { inherit pkgs; })
