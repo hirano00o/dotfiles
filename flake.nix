@@ -53,6 +53,7 @@
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    arto.url = "github:arto-app/Arto";
   };
 
   outputs =

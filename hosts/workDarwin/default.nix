@@ -54,6 +54,7 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) sops-nix;
           inherit (inputs) gatehook;
           inherit (inputs) hunk;
+          inherit (inputs) arto;
         };
       };
     }

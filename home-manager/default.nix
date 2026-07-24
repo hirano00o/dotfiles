@@ -8,6 +8,7 @@
   llm-agents,
   gatehook,
   hunk,
+  arto,
   extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
@@ -49,6 +50,7 @@ let
       pkgs-stable
       llm-agents
       hunk
+      arto
       ;
   };
 

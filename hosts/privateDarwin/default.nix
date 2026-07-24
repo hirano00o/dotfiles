@@ -50,6 +50,7 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) hb;
           inherit (inputs) gatehook;
           inherit (inputs) hunk;
+          inherit (inputs) arto;
         };
       };
     }
