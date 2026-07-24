@@ -67,7 +67,6 @@ with pkgs;
   python312
   google-cloud-sdk
   hunk.packages.${pkgs.system}.default
-  (import ./casty { inherit pkgs; })
 
   presenterm
   mermaid-cli
