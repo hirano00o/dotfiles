@@ -20,5 +20,6 @@
         "wasm32-unknown-unknown"
       ];
     })
+    cargo-nextest
   ];
 }

@@ -23,6 +23,13 @@ if [ -d "$HANDOVER_DIR" ]; then
   fi
 fi
 
+KEEP=10
+if [ -d "$HANDOVER_DIR" ]; then
+  /bin/ls -1t "$HANDOVER_DIR"/*.md 2>/dev/null | tail -n "+$((KEEP + 1))" | while IFS= read -r old; do
+    rm -f "$old"
+  done
+fi
+
 # セッション内で既にプロンプト済み＆メッセージ数が増えていなければ通過（ループ防止＋resume対応）
 LOCK="/tmp/claude-handover-prompted-${SESSION_ID}"
 if [ -n "$SESSION_ID" ] && [ -f "$LOCK" ]; then

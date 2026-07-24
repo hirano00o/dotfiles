@@ -1,6 +1,6 @@
 ---
 name: lang-go
-description: Go 言語での TDD 実装手順。テスト実行・フォーマット・リンタ・依存管理の具体コマンド、およびテーブル駆動テスト規約。
+description: Go のコードを書く・修正する・テストする作業全般で使用。go test / go vet / golangci-lint (lint と format: gofumpt + goimports) / go mod の具体コマンド、テーブル駆動テスト規約、TDD (tdd-cycle) での典型実行順。
 ---
 
 # Go 実装ガイド
@@ -16,6 +16,7 @@ go test -v ./pkg              # 詳細出力
 ```
 
 - **テーブル駆動テスト**を第一選択とする
+- ケースには境界値 (空入力、要素数が閾値未満、ゼロ値) を必ず含める
 - サブテスト名は `t.Run(tc.name, ...)` で付与
 - 並行実行可能なテストは `t.Parallel()` を明示
 - テストファイルは `*_test.go`、同一パッケージ配置が基本
@@ -44,9 +45,11 @@ func TestAdd(t *testing.T) {
 ## フォーマット
 
 ```bash
-gofmt -w .        # 保存時整形
-goimports -w .    # import も含めて整形 (推奨)
+golangci-lint fmt   # gofumpt + goimports を適用 (推奨)
+gofmt -w .          # 標準整形のみで足りる場合
 ```
+
+goimports 単体はグローバル環境に無い。import 整理を含む整形は `golangci-lint fmt` で行う。
 
 ## リンタ / 静的解析
 
@@ -56,13 +59,20 @@ golangci-lint run ./...         # 包括的リンタ (推奨)
 golangci-lint run --fix ./...   # 自動修正可能なものを適用
 ```
 
+golangci-lint の設定はプロジェクトの `.golangci.yml` が優先され、無ければ
+`~/.golangci.yml` (home-manager が配備するフォールバック) が使われる。
+
 ## 依存管理
 
 ```bash
-go mod tidy              # 不要な依存の削除 + 整理
-go get example.com/pkg   # 依存追加
-go mod download          # 依存ダウンロードのみ
+go mod tidy                           # 不要な依存の削除 + 整理
+go list -m -versions example.com/pkg  # 追加前に最新バージョンを確認
+go get example.com/pkg                # 依存追加
+go mod download                       # 依存ダウンロードのみ
 ```
+
+依存を新規追加する前に最新メジャーバージョンを確認する (メジャー更新で import パスが
+`/v4` のように変わるため、確認せずに追加すると古いメジャーを掴む)。
 
 ## 規約
 
@@ -79,4 +89,4 @@ go mod download          # 依存ダウンロードのみ
 2. Green: 実装 → `go test ./pkg` で緑化
 3. Refactor: コード整理 → `go test ./...` で全体緑維持
 4. Lint: `go vet ./...` → `golangci-lint run ./...`
-5. Format: `goimports -w .`
+5. Format: `golangci-lint fmt`

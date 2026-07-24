@@ -1,0 +1,7 @@
+# lang-go スキルの手順はこの設定が前提
+version: "2"
+
+formatters:
+  enable:
+    - gofumpt
+    - goimports
