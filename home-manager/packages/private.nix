@@ -5,11 +5,14 @@ with pkgs;
   go-mockery
   discord
   orbstack
-  bitwarden-desktop
+  brewCasks.bitwarden
   cloudflared
   kubernetes-helm
+  fluxcd
   scrcpy
   ffmpeg-full
+  slack
+  zoom-us
 ]
 ++ lib.optionals stdenv.isDarwin [
 ]

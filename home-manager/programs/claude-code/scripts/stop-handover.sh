@@ -3,7 +3,8 @@ INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
 TRANSCRIPT_PATH=$(echo "$INPUT" | jq -r '.transcript_path // empty')
 
-HANDOVER_DIR="${CLAUDE_PROJECT_DIR:-.}/.claude/handovers"
+PROJECT_NAME=$(basename "${CLAUDE_PROJECT_DIR:-$PWD}")
+HANDOVER_DIR="${HOME}/.claude/handovers/${PROJECT_NAME}"
 
 # 短いセッション（assistant メッセージが3件以下）はスキップ
 # claude -p やワンショット利用を想定
@@ -15,9 +16,9 @@ if [ -n "$TRANSCRIPT_PATH" ] && [ -f "$TRANSCRIPT_PATH" ]; then
   fi
 fi
 
-# 5分以内の handover ファイルがあれば通過
+# 10分以内の handover ファイルがあれば通過
 if [ -d "$HANDOVER_DIR" ]; then
-  recent=$(find "$HANDOVER_DIR" -name '*.md' -mmin -5 -print -quit 2>/dev/null)
+  recent=$(find "$HANDOVER_DIR" -name '*.md' -mmin -10 -print -quit 2>/dev/null)
   if [ -n "$recent" ]; then
     exit 0
   fi

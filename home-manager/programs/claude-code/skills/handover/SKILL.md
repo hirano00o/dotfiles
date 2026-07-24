@@ -1,7 +1,7 @@
 ---
 name: handover
 description: Generate handovers at the end of a session or when work is completed
-allowed-tools: Read, Write
+allowed-tools: Bash, Read, Write
 ---
 
 # セッション引き継ぎノート生成
@@ -11,7 +11,11 @@ allowed-tools: Read, Write
 ## 手順
 
 1. 今回のセッションで行ったことを振り返る
-2. プロジェクトルートの `.claude/handovers/` ディレクトリが存在しない場合は作成する
+2. Bash で書き込み先ディレクトリを確定して作成する:
+   ```bash
+   mkdir -p "$HOME/.claude/handovers/$(basename "${CLAUDE_PROJECT_DIR:-$PWD}")" && echo "$HOME/.claude/handovers/$(basename "${CLAUDE_PROJECT_DIR:-$PWD}")"
+   ```
+   出力された絶対パスを以後の Write ツール呼び出しに使う（`$HOME` や `~` のままでは Write で展開されないため、必ず展開後の絶対パスを渡す）
 3. `YYYY-MM-DD_HHmmss.md` のファイル名で引き継ぎノートを生成する（例: `2026-02-17_143000.md`）
 4. 既存のファイルと同名になる場合は末尾に `_2` などの連番を付与する
 

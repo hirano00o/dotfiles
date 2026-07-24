@@ -110,10 +110,12 @@ in
         ENABLE_TOOL_SEARCH = "true";
         DISABLE_NON_ESSENTIAL_MODEL_CALLS = "1";
         CLAUDE_CODE_HIDE_ACCOUNT_INFO = "1";
-        CLAUDE_CODE_EFFORT_LEVEL = "xhigh";
       };
       skipAutoPermissionPrompt = true;
       skipDangerousModePermissionPrompt = true;
+      tui = "default";
+      editorMode = "vim";
+      effortLevel = "xhigh";
       permissions = {
         defaultMode = "auto";
         allow = [
