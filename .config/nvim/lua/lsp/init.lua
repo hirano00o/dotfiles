@@ -53,7 +53,7 @@ vim.lsp.config("*", {
 vim.lsp.enable({
   "gopls",
   "ts_ls",
-  "pyright",
+  "pyrefly",
   "ruff",
   "lua_ls",
   "cssls",

@@ -25,7 +25,7 @@ with pkgs;
   lua-language-server
   nixd
   protobuf-language-server
-  pyright
+  pyrefly
   terraform-ls
   tflint
   textlsp

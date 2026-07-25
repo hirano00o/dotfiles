@@ -1,6 +1,6 @@
 ---
 name: lang-python
-description: Python のコードを書く・修正する・テストする作業全般で使用。pytest、ruff (lint + format)、mypy / pyright、uv による依存管理の具体コマンドと TDD (tdd-cycle) での典型実行順。
+description: Python のコードを書く・修正する・テストする作業全般で使用。pytest、ruff (lint + format)、mypy / pyrefly、uv による依存管理の具体コマンドと TDD (tdd-cycle) での典型実行順。
 ---
 
 # Python 実装ガイド
@@ -56,13 +56,13 @@ ruff format .              # フォーマット
 
 ## 型チェック
 
-`pyproject.toml` に `[tool.mypy]` があるプロジェクトは mypy、無ければ pyright を使う
-(mypy はグローバル環境に無いため `uv run` を前置。pyright はグローバル導入済み):
+`pyproject.toml` に `[tool.mypy]` があるプロジェクトは mypy、無ければ `pyrefly check` を使う
+(mypy はグローバル環境に無いため `uv run` を前置。pyrefly はグローバル導入済み):
 
 ```bash
 uv run mypy .                     # プロジェクト全体 ([tool.mypy] あり)
 uv run mypy path/to/module.py     # 特定モジュール
-pyright                           # [tool.mypy] が無い場合
+pyrefly check                     # [tool.mypy] が無い場合
 ```
 
 - 公開関数には型注釈を必須
@@ -97,7 +97,7 @@ pip install -r requirements.txt
 1. Red: テスト作成 → `uv run pytest -q <file>` で失敗確認
 2. Green: 実装 → `uv run pytest -q <file>` で緑化
 3. Refactor: → `uv run pytest -q` で全体緑維持
-4. Type: `[tool.mypy]` があれば `uv run mypy .`、なければ `pyright`
+4. Type: `[tool.mypy]` があれば `uv run mypy .`、なければ `pyrefly check`
 5. Lint: `ruff check --fix .`
 6. Format: `ruff format .`
 

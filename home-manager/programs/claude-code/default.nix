@@ -179,7 +179,7 @@ in
           "Bash(pytest:*)"
           "Bash(ruff:*)"
           "Bash(mypy:*)"
-          "Bash(pyright:*)"
+          "Bash(pyrefly:*)"
           "Bash(uv:*)"
           "Bash(cargo test:*)"
           "Bash(cargo fmt:*)"

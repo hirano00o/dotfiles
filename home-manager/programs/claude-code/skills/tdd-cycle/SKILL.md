@@ -19,7 +19,7 @@ description: テスト駆動開発 (TDD) のサイクルと完了前の品質パ
 3. **実行**: テストが "期待通りに失敗" することを確認する (実装未着手でテストが通ったらテストが誤っている)
 4. **Green**: 最小限のコードでテストを緑にする。この段階では最適化・抽象化しない
 5. **Refactor**: 緑を維持したままコードを整理する。重複除去、命名改善、意図の明確化
-6. **Type/Check**: 静的型検査・コンパイル検査がある言語では実行する (Python: mypy / pyright、Rust: cargo check、TypeScript: tsc --noEmit。Go は go test がコンパイルを内包するため独立ステップ不要)。失敗したら Refactor に戻る
+6. **Type/Check**: 静的型検査・コンパイル検査がある言語では実行する (Python: mypy / pyrefly、Rust: cargo check、TypeScript: tsc --noEmit。Go は go test がコンパイルを内包するため独立ステップ不要)。失敗したら Refactor に戻る
 7. **Lint**: 言語固有スキル (lang-go / lang-typescript / lang-python / lang-rust) のリンタコマンドを実行。失敗したら Refactor に戻る
 8. **Format**: 言語固有スキルのフォーマッタを適用。Lint と Format が単一コマンドの言語 (TypeScript の `biome check --write .` 等) では 7–8 を 1 ステップに統合してよい
 9. **次サイクル**: 全テストが緑なら、次の単機能へ
