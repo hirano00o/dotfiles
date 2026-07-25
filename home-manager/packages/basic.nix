@@ -2,6 +2,8 @@
   pkgs,
   pkgs-stable,
   llm-agents,
+  hunk,
+  arto,
 }:
 with pkgs;
 [
@@ -23,7 +25,7 @@ with pkgs;
   lua-language-server
   nixd
   protobuf-language-server
-  pyright
+  pyrefly
   terraform-ls
   tflint
   textlsp
@@ -63,8 +65,8 @@ with pkgs;
   trivy
   pkgs-stable.deno
   python312
-  typescript
   google-cloud-sdk
+  hunk.packages.${pkgs.system}.default
   envsubst
 
   presenterm
@@ -75,6 +77,7 @@ with pkgs;
   python313Packages.weasyprint
 
   marp-cli
+  arto.packages.${pkgs.system}.default # markdown viewer
 
   markitdown-mcp
   drawio

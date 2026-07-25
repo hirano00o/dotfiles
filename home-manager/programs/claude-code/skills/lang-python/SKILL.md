@@ -1,6 +1,6 @@
 ---
 name: lang-python
-description: Python の TDD 実装手順。pytest、ruff (lint + format)、mypy / pyright、uv による依存管理の具体コマンド。
+description: Python のコードを書く・修正する・テストする作業全般で使用。pytest、ruff (lint + format)、mypy / pyrefly、uv による依存管理の具体コマンドと TDD (tdd-cycle) での典型実行順。
 ---
 
 # Python 実装ガイド
@@ -13,14 +13,16 @@ description: Python の TDD 実装手順。pytest、ruff (lint + format)、mypy 
 
 ## テスト
 
+pytest はグローバル環境に無く、プロジェクトの仮想環境にのみ入る。uv プロジェクトでは
+`uv run` を前置し、pip プロジェクトでは仮想環境を有効化してから素の `pytest` を使う:
+
 ```bash
-pytest                        # 全テスト
-pytest -q                     # 簡潔出力 (推奨)
-pytest path/to/test_file.py   # 特定ファイル
-pytest -k "pattern"           # 名前パターン
-pytest -x                     # 初回失敗で停止
-pytest --lf                   # 前回失敗分のみ
-pytest -v                     # 詳細
+uv run pytest -q                     # 全テスト・簡潔出力 (推奨)
+uv run pytest path/to/test_file.py   # 特定ファイル
+uv run pytest -k "pattern"           # 名前パターン
+uv run pytest -x                     # 初回失敗で停止
+uv run pytest --lf                   # 前回失敗分のみ
+uv run pytest -v                     # 詳細
 ```
 
 - テストファイル命名: `test_*.py` or `*_test.py`
@@ -54,10 +56,13 @@ ruff format .              # フォーマット
 
 ## 型チェック
 
+`pyproject.toml` に `[tool.mypy]` があるプロジェクトは mypy、無ければ `pyrefly check` を使う
+(mypy はグローバル環境に無いため `uv run` を前置。pyrefly はグローバル導入済み):
+
 ```bash
-mypy .                     # プロジェクト全体
-mypy path/to/module.py     # 特定モジュール
-pyright                    # 代替: 高速で厳格
+uv run mypy .                     # プロジェクト全体 ([tool.mypy] あり)
+uv run mypy path/to/module.py     # 特定モジュール
+pyrefly check                     # [tool.mypy] が無い場合
 ```
 
 - 公開関数には型注釈を必須
@@ -89,9 +94,11 @@ pip install -r requirements.txt
 
 ## TDD サイクル内での典型実行順
 
-1. Red: テスト作成 → `pytest -q <file>` で失敗確認
-2. Green: 実装 → `pytest -q <file>` で緑化
-3. Refactor: → `pytest -q` で全体緑維持
-4. Type: `mypy .` or `pyright`
+1. Red: テスト作成 → `uv run pytest -q <file>` で失敗確認
+2. Green: 実装 → `uv run pytest -q <file>` で緑化
+3. Refactor: → `uv run pytest -q` で全体緑維持
+4. Type: `[tool.mypy]` があれば `uv run mypy .`、なければ `pyrefly check`
 5. Lint: `ruff check --fix .`
 6. Format: `ruff format .`
+
+ruff はグローバル導入済みのため素で実行できる (プロジェクトが依存に持つ場合は `uv run ruff` でも可)。

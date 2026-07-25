@@ -4,8 +4,8 @@
     settings = {
       env = {
         NODE_EXTRA_CA_CERTS = "/etc/ssl/certs/ca-certificates.crt";
-        CLAUDE_CODE_EFFORT_LEVEL = lib.mkForce "medium";
       };
+      effortLevel = lib.mkForce "medium";
       model = lib.mkForce "opusplan";
     };
     mcpServers = {

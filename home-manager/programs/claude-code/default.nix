@@ -45,15 +45,11 @@ let
     builtins.replaceStrings
       [
         "<!-- PRELOAD:tdd-cycle -->"
-        "<!-- PRELOAD:quality-pipeline -->"
         "<!-- PRELOAD:review-checklist -->"
-        "<!-- PRELOAD:scope-guard -->"
       ]
       [
         (loadSkillBody ./skills/tdd-cycle/SKILL.md)
-        (loadSkillBody ./skills/quality-pipeline/SKILL.md)
         (loadSkillBody ./skills/review-checklist/SKILL.md)
-        (loadSkillBody ./skills/scope-guard/SKILL.md)
       ]
       (builtins.readFile ./agents/impl.md);
 in
@@ -185,7 +181,7 @@ in
           "Bash(pytest:*)"
           "Bash(ruff:*)"
           "Bash(mypy:*)"
-          "Bash(pyright:*)"
+          "Bash(pyrefly:*)"
           "Bash(uv:*)"
           "Bash(cargo test:*)"
           "Bash(cargo fmt:*)"
@@ -218,6 +214,7 @@ in
           "WebFetch(domain:api.github.com)"
           "WebFetch(domain:github.com)"
           "WebFetch(domain:gist.github.com)"
+          "WebFetch(domain:raw.githubusercontent.com)"
           "WebFetch(domain:docs.anthropic.com)"
           "Read(**/.env.example)"
           "Read(**/.env.sample)"
@@ -255,13 +252,10 @@ in
           "Bash(rm -rf *)"
           "Bash(rm -rf:*)"
           "Bash(rmdir *)"
-          "Bash(for)"
-          "Bash(do)"
           "Bash(gh repo delete:*)"
           "Bash(security *)"
           "Bash(ssh *)"
           "Bash(telnet *)"
-          "Bash(su *)"
           "Bash(sudo *)"
           "Bash(sudo:*)"
           "Bash(chmod 777:*)"
@@ -328,6 +322,7 @@ in
           "Bash(bun add:*)"
           "Bash(cargo add:*)"
           "Bash(npm install:*)"
+          "Bash(go get:*)"
           "Bash(git push:*)"
           "Bash(git config:*)"
           "Bash(git rm:*)"
@@ -408,10 +403,7 @@ in
         padding = 0;
       };
       enabledPlugins = {
-        # https://github.com/anthropics/claude-plugins-official
-        "agent-sdk-dev@claude-plugins-official" = true;
         "feature-dev@claude-plugins-official" = true;
-        "frontend-design@claude-plugins-official" = true;
         "pr-review-toolkit@claude-plugins-official" = true;
         "ralph-loop@claude-plugins-official" = true;
         "security-guidance@claude-plugins-official" = true;
@@ -419,18 +411,21 @@ in
       };
     };
     skills = {
+      develop = ./skills/develop/SKILL.md;
+      ship = ./skills/ship/SKILL.md;
       handover = ./skills/handover/SKILL.md;
       tdd-cycle = ./skills/tdd-cycle/SKILL.md;
-      quality-pipeline = ./skills/quality-pipeline/SKILL.md;
       review-checklist = ./skills/review-checklist/SKILL.md;
-      scope-guard = ./skills/scope-guard/SKILL.md;
       lang-go = ./skills/lang-go/SKILL.md;
       lang-typescript = ./skills/lang-typescript/SKILL.md;
       lang-python = ./skills/lang-python/SKILL.md;
       lang-rust = ./skills/lang-rust/SKILL.md;
+      aws-diagram = ./skills/aws-diagram;
     };
     agents = {
       impl = implContent;
+      security-auditor = builtins.readFile ./agents/security-auditor.md;
+      tf-analyst = builtins.readFile ./agents/tf-analyst.md;
     };
     mcpServers =
       (mcp-servers-nix.lib.evalModule pkgs {
@@ -448,6 +443,7 @@ in
           github = {
             enable = true;
             envFile = "${config.home.homeDirectory}/.claude/.github.token";
+            env.GITHUB_TOOLSETS = "context,repos,issues,pull_requests";
           };
         };
       }).config.settings.servers
@@ -476,5 +472,7 @@ in
   };
   home.file = {
     "${config.home.homeDirectory}/.claude/skills/drawio/SKILL.md".source = drawio-skill;
+    "${config.home.homeDirectory}/.claude/skills/aws-diagram/references".source =
+      ./skills/aws-diagram/references;
   };
 }

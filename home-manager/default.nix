@@ -7,6 +7,9 @@
   rust-overlay,
   llm-agents,
   gatehook,
+  hunk,
+  arto,
+  nixpkgs-bitwarden,
   extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
@@ -21,6 +24,13 @@ let
     chromaprint = prev.chromaprint.overrideAttrs { doCheck = false; };
     kvazaar = prev.kvazaar.overrideAttrs { doCheck = false; };
   };
+  # 26.05-darwin の bitwarden-desktop 2026.5.0 は electron-39 経由で compiler-rt 18 を引き込み、
+  # SDK 26.4 の libcxx 21 (__builtin_ctzg) でビルド不能。修正版を含む pin した nixpkgs の
+  # 2026.7.0 (electron 新版・compiler-rt 18 非依存) に差し替える。legacyPackages を直接使う
+  # (import ... {config} で作り直すと drv が変わりバイナリキャッシュを外すため)。
+  bitwardenOverlay = final: prev: {
+    bitwarden-desktop = nixpkgs-bitwarden.legacyPackages.${system}.bitwarden-desktop;
+  };
 
   pkgs = import nixpkgs {
     inherit system;
@@ -28,6 +38,7 @@ let
     config.permittedInsecurePackages = [ "electron-39.8.10" ];
     overlays = [
       dontCheckOverlay
+      bitwardenOverlay
       (import ./overlays/drawio-mcp.nix)
       (import ./overlays/d2-darwin.nix)
       (import ./overlays/python-audio-darwin.nix)
@@ -43,7 +54,15 @@ let
   };
   lib = pkgs.lib;
 
-  basicPkgs = import ./packages/basic.nix { inherit pkgs pkgs-stable llm-agents; };
+  basicPkgs = import ./packages/basic.nix {
+    inherit
+      pkgs
+      pkgs-stable
+      llm-agents
+      hunk
+      arto
+      ;
+  };
 
   misc = import ./misc { };
 

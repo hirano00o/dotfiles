@@ -11,6 +11,7 @@
   ./gh
   ./ghostty
   ./git
+  ./golangci-lint
   ./lazygit
   ./neovim
   ./nodejs

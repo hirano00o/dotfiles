@@ -1,6 +1,6 @@
 ---
 name: lang-typescript
-description: TypeScript / JavaScript の TDD 実装手順。Vitest / Jest / bun test、Biome / ESLint + Prettier、tsc、パッケージマネージャ (pnpm / npm / bun) の具体コマンド。
+description: TypeScript / JavaScript のコードを書く・修正する・テストする作業全般で使用。Vitest / Jest / bun test、Biome / ESLint + Prettier、tsc、パッケージマネージャ (pnpm / npm / bun) の具体コマンドと TDD (tdd-cycle) での典型実行順。
 ---
 
 # TypeScript 実装ガイド
@@ -11,24 +11,28 @@ description: TypeScript / JavaScript の TDD 実装手順。Vitest / Jest / bun 
 
 - `package.json` の `scripts`, `devDependencies` を確認
 - `biome.json` / `biome.jsonc` があれば Biome、`.eslintrc*` / `eslint.config.*` があれば ESLint + Prettier
-- `vitest.config.*` があれば Vitest、`jest.config.*` があれば Jest、`bunfig.toml` + テスト規約があれば bun test
+- `vitest.config.*` があれば Vitest、`jest.config.*` があれば Jest、`bunfig.toml` があり devDependencies に vitest / jest が無ければ bun test
 - `pnpm-lock.yaml` / `package-lock.json` / `bun.lockb` でパッケージマネージャを判定
 
 ## テスト
 
+テストランナはプロジェクトローカルにのみ存在する (グローバル環境に vitest / jest は無い)。
+`package.json` の scripts (`pnpm test` 等) を優先し、直接呼ぶ場合はパッケージマネージャ経由で
+実行する (以下は pnpm の例。npm プロジェクトでは `npx`、bun では `bunx` に読み替える):
+
 ```bash
 # Vitest
-vitest run                       # 1 回実行
-vitest run path/to/file.test.ts  # 特定ファイル
-vitest run -t "pattern"          # 名前パターン
-vitest                           # watch モード (CI では使わない)
+pnpm exec vitest run                       # 1 回実行
+pnpm exec vitest run path/to/file.test.ts  # 特定ファイル
+pnpm exec vitest run -t "pattern"          # 名前パターン
+pnpm exec vitest                           # watch モード (CI では使わない)
 
 # Jest
-jest
-jest path/to/file.test.ts
-jest -t "pattern"
+pnpm exec jest
+pnpm exec jest path/to/file.test.ts
+pnpm exec jest -t "pattern"
 
-# bun test
+# bun test (bun ランタイム内蔵のためそのまま実行できる)
 bun test
 bun test path/to/file.test.ts
 ```
@@ -39,17 +43,17 @@ bun test path/to/file.test.ts
 
 ## フォーマット / リンタ
 
-**Biome (推奨)**:
+**Biome (推奨。グローバル導入済みのため素で実行できる)**:
 ```bash
 biome check --write .      # lint + format を一括適用
 biome check .              # 確認のみ
 biome format --write .     # format のみ
 ```
 
-**ESLint + Prettier**:
+**ESLint + Prettier (プロジェクトローカルのみ。パッケージマネージャ経由で実行)**:
 ```bash
-eslint . --fix
-prettier -w .
+pnpm exec eslint . --fix
+pnpm exec prettier -w .
 ```
 
 ## 型チェック
@@ -86,8 +90,11 @@ bun add -d <pkg>
 
 ## TDD サイクル内での典型実行順
 
-1. Red: テスト作成 → `vitest run <file>` で失敗確認
-2. Green: 実装 → `vitest run <file>` で緑化
-3. Refactor: → `vitest run` で全体緑維持
-4. Type: `tsc --noEmit`
+1. Red: テスト作成 → `pnpm exec vitest run <file>` で失敗確認
+2. Green: 実装 → `pnpm exec vitest run <file>` で緑化
+3. Refactor: → `pnpm exec vitest run` で全体緑維持
+4. Type: `tsc --noEmit` (tsc はグローバル導入済み)
 5. Lint/Format: `biome check --write .`
+
+Jest / bun test 判定時は 1–3 のコマンドを読み替える (テスト節参照)。ESLint + Prettier
+判定時は 5 を `pnpm exec eslint . --fix` → `pnpm exec prettier -w .` の 2 ステップにする。

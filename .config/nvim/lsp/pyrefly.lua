@@ -42,20 +42,8 @@ end
 
 return {
   on_new_config = function(config, root_dir)
-    config.cmd = { get_venv_executable(root_dir, "pyright-langserver"), "--stdio" }
-    config.settings.python.pythonPath = get_python_path(root_dir)
+    config.cmd = { get_venv_executable(root_dir, "pyrefly"), "lsp" }
+    config.init_options = config.init_options or {}
+    config.init_options.pythonPath = get_python_path(root_dir)
   end,
-  settings = {
-    python = {
-      analysis = {
-        autoSearchPaths = true,
-        diagnosticMode = "workspace",
-        useLibraryCodeForTypes = true,
-      },
-    },
-    pyright = {
-      -- ruffを利用する
-      disableOrganizeImports = true,
-    },
-  },
 }
