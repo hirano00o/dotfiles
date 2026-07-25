@@ -35,6 +35,7 @@ let
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
+    config.permittedInsecurePackages = [ "electron-39.8.10" ];
     overlays = [
       dontCheckOverlay
       bitwardenOverlay
@@ -80,6 +81,6 @@ in
     inherit mcp-servers-nix llm-agents gatehook;
   };
 
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
   home.packages = basicPkgs ++ (extraPackages { inherit pkgs; });
 }

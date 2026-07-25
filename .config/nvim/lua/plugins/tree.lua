@@ -184,10 +184,26 @@ return {
 
       return {
         on_attach = on_attach,
+        hijack_unnamed_buffer_when_opening = false,
         view = {
           side = "left",
           width = 35,
           preserve_window_proportions = true,
+        },
+        actions = {
+          open_file = {
+            quit_on_open = false,
+            resize_window = true,
+            window_picker = {
+              enable = true,
+              picker = "default",
+              chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+              exclude = {
+                filetype = { "notify", "qf", "diff", "fugitive", "fugitiveblame", "NvimTree" },
+                buftype  = { "nofile", "terminal", "help" },
+              },
+            },
+          },
         },
         filters = {
           custom = { "^node_modules$", "^venv$", "^\\.venv$" },
