@@ -254,5 +254,10 @@ return {
       })
     end,
   },
-  { 'arto-app/arto.vim' }
+  {
+    'arto-app/arto.vim',
+    init = function()
+      vim.g.arto_path = vim.fn.expand('$HOME/Applications/Home Manager Apps/Arto.app')
+    end,
+  },
 }
