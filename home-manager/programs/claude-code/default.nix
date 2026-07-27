@@ -95,6 +95,9 @@ in
       language = "japanese";
       autoUpdates = false;
       includeCoAuthoredBy = false;
+      attribution = {
+        sessionUrl = false;
+      };
       enableAllProjectMcpServers = true;
       alwaysThinkingEnabled = true;
       env = {
