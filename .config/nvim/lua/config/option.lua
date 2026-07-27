@@ -11,6 +11,10 @@ opt.softtabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 
+-- 検索
+opt.ignorecase = true
+opt.smartcase = true -- 大文字を含む検索語のときだけ区別する
+
 -- ステータスライン
 opt.laststatus = 3
 opt.cmdheight = 2
