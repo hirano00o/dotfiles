@@ -19,7 +19,11 @@
         launchanim = false;
         orientation = "bottom";
         wvous-br-corner = 2;
+        # AeroSpace 推奨
+        expose-group-apps = true;
       };
+      # AeroSpace 推奨
+      spaces.spans-displays = true;
       controlcenter = {
         Bluetooth = true;
         Sound = true;
