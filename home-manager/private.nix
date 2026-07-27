@@ -2,6 +2,7 @@ args@{ sops-nix, ... }:
 import ./default.nix (
   args
   // {
+    extraOverlays = [ (import ./overlays/bitwarden.nix { inherit (args) nixpkgs-bitwarden; }) ];
     extraPackages =
       { pkgs }:
       import ./packages/private.nix {
