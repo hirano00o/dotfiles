@@ -1,5 +1,6 @@
 { ... }:
 [
+  ./aerospace
   ./bat
   ./bun
   ./cargo
