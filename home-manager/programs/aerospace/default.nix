@@ -89,8 +89,6 @@
         alt-tab = "workspace-back-and-forth";
         alt-shift-tab = "move-workspace-to-monitor --wrap-around next";
 
-        alt-enter = "exec-and-forget open -na Ghostty";
-
         alt-shift-semicolon = "mode service";
       };
 
