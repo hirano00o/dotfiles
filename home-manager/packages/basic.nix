@@ -16,6 +16,8 @@ with pkgs;
   # LSP/dev
   bash-language-server
   biome
+  oxfmt
+  oxlint
   buf
   docker-language-server
   golangci-lint-langserver
