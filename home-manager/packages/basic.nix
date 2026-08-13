@@ -2,6 +2,7 @@
   pkgs,
   pkgs-stable,
   llm-agents,
+  decisis,
   hunk,
   arto,
 }:
@@ -91,6 +92,7 @@ with pkgs;
   }))
 
   llm-agents.packages.${stdenv.hostPlatform.system}.ccusage
+  decisis.packages.${stdenv.hostPlatform.system}.default # AI エージェントの決定・制約の記憶ストア
 
   # Nix
   nix-output-monitor

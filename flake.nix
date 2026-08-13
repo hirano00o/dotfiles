@@ -49,6 +49,10 @@
       url = "github:hirano00o/gatehook";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    decisis = {
+      url = "github:hirano00o/decisis";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";

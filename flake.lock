@@ -130,6 +130,26 @@
         "type": "github"
       }
     },
+    "decisis": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786631524,
+        "narHash": "sha256-WrSdPaqQdw3XBIQPvrAQIZkhcTxkHjJ5WxoLCw1UiJs=",
+        "owner": "hirano00o",
+        "repo": "decisis",
+        "rev": "a22ba34aeb5540b8b66ebcce62bb0a4b377ab0f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hirano00o",
+        "repo": "decisis",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -504,6 +524,7 @@
         "arto": "arto",
         "brew-api": "brew-api",
         "brew-nix": "brew-nix",
+        "decisis": "decisis",
         "flake-parts": "flake-parts",
         "gatehook": "gatehook",
         "hb": "hb",

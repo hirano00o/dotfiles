@@ -53,6 +53,7 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) llm-agents;
           inherit (inputs) sops-nix;
           inherit (inputs) gatehook;
+          inherit (inputs) decisis;
           inherit (inputs) hunk;
           inherit (inputs) arto;
         };
