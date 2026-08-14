@@ -71,6 +71,8 @@ with pkgs;
   google-cloud-sdk
   hunk.packages.${pkgs.system}.default
   envsubst
+  postgresql_17
+  postgresql_17.pg_config
 
   presenterm
   mermaid-cli
