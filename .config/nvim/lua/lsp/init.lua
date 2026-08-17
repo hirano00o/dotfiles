@@ -1,5 +1,21 @@
 vim.api.nvim_create_user_command("LspHealth", "checkhealth vim.lsp", { desc = "LSP health check" })
 
+vim.api.nvim_create_user_command("PyreflySourceRoot", function(opts)
+  require("config.pyrefly").add(opts.fargs)
+end, {
+  nargs = "*",
+  complete = "dir",
+  desc = "Add source root directories for pyrefly (persisted to .nvim.lua, applied live)",
+})
+
+vim.api.nvim_create_user_command("PyreflySourceRootClear", function()
+  require("config.pyrefly").clear()
+end, { desc = "Clear pyrefly source roots" })
+
+vim.api.nvim_create_user_command("PyreflySourceRootPick", function()
+  require("config.pyrefly").pick()
+end, { desc = "Pick source root directories for pyrefly via Telescope" })
+
 vim.diagnostic.config({
   virtual_text = true,
 })
@@ -19,6 +35,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     if client:supports_method('textDocument/implementation') then
       vim.keymap.set("n", "<leader>i", "<cmd>Trouble lsp_implementations<cr>", { buffer = args.buf, desc = "References buffer" })
+    end
+
+    if client:supports_method("textDocument/definition") then
+      vim.keymap.set("n", "gd", "<cmd>Trouble lsp_definitions<cr>", { buffer = args.buf, desc = "Definitions buffer" })
     end
 
     if client:supports_method("textDocument/references") then
