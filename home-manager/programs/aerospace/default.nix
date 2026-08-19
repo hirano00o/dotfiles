@@ -186,19 +186,19 @@
         # 1: コミュニケーション
         {
           "if".app-id = "com.tinyspeck.slackmacgap";
-          run = "move-node-to-workspace 6";
+          run = "move-node-to-workspace 1";
         }
         {
           "if".app-id = "com.hnc.Discord";
-          run = "move-node-to-workspace 6";
+          run = "move-node-to-workspace 1";
         }
         {
           "if".app-id = "jp.naver.line.mac";
-          run = "move-node-to-workspace 6";
+          run = "move-node-to-workspace 1";
         }
         {
           "if".app-id = "us.zoom.xos";
-          run = "move-node-to-workspace 6";
+          run = "move-node-to-workspace 1";
         }
 
         # 2: ブラウザ
