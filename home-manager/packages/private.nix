@@ -5,7 +5,7 @@ with pkgs;
   go-mockery
   discord
   orbstack
-  brewCasks.bitwarden
+  bitwarden-desktop
   cloudflared
   kubernetes-helm
   fluxcd

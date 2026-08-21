@@ -52,7 +52,6 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) decisis;
           inherit (inputs) hunk;
           inherit (inputs) arto;
-          inherit (inputs) nixpkgs-bitwarden;
         };
       };
     }
