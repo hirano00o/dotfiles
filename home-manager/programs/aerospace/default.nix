@@ -227,10 +227,6 @@
           run = "move-node-to-workspace 4";
         }
         {
-          "if".app-id = "com.lambdalisue.Arto";
-          run = "move-node-to-workspace 4";
-        }
-        {
           "if".app-id = "com.jgraph.drawio.desktop";
           run = "move-node-to-workspace 4";
         }
@@ -249,9 +245,13 @@
           run = "move-node-to-workspace 7";
         }
 
-        # A: ターミナル
+        # A: ターミナル, markdown viewer
         {
           "if".app-id = "com.mitchellh.ghostty";
+          run = "move-node-to-workspace A";
+        }
+        {
+          "if".app-id = "com.lambdalisue.Arto";
           run = "move-node-to-workspace A";
         }
       ];
