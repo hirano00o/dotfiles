@@ -70,9 +70,40 @@ vim.lsp.config("*", {
   root_markers = { ".git" },
 })
 
+-- lsp/oxfmt.lua (this config dir) merges with nvim-lspconfig's own lsp/oxfmt.lua by
+-- runtime-path scan order, and the plugin's file is applied last, so it always wins
+-- for keys both define (root_dir included) -- a file-based override cannot win here.
+-- We therefore override root_dir imperatively, after everything else has loaded.
+-- Upstream's root_dir calls on_dir(vim.fs.dirname(nil)) when no oxfmt config is found,
+-- which resolves to on_dir(nil) and falls back to the "*" root_markers (".git") above,
+-- causing oxfmt to attach to any git project and steal the <leader>f keymap from biome.
+do
+  local util = require("lspconfig.util")
+  vim.lsp.config("oxfmt", {
+    root_dir = function(bufnr, on_dir)
+      local fname = vim.api.nvim_buf_get_name(bufnr)
+      local root_markers = util.insert_package_json(
+        { ".oxfmtrc.json", ".oxfmtrc.jsonc", "oxfmt.config.ts" },
+        { "oxfmt", "vite%-plus" },
+        fname
+      )
+      root_markers =
+        util.root_markers_with_field(root_markers, { "vite.config.ts" }, { "vite%-plus", "fmt:" }, fname, "all")
+
+      local found = vim.fs.find(root_markers, { path = fname, upward = true })[1]
+      if not found then
+        return
+      end
+      on_dir(vim.fs.dirname(found))
+    end,
+  })
+end
+
 vim.lsp.enable({
   "gopls",
   "ts_ls",
+  "biome",
+  "oxfmt",
   "pyrefly",
   "ruff",
   "lua_ls",
