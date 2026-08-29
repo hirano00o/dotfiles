@@ -7,12 +7,16 @@ with pkgs;
   orbstack
   bitwarden-desktop
   cloudflared
-  kubernetes-helm
-  fluxcd
   scrcpy
   ffmpeg-full
   slack
   zoom-us
+
+  # kubernetes tools
+  kubernetes-helm
+  kustomize
+  kubeseal
+  fluxcd
 ]
 ++ lib.optionals stdenv.isDarwin [
 ]
