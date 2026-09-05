@@ -49,9 +49,9 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) sops-nix;
           inherit (inputs) hb;
           inherit (inputs) gatehook;
+          inherit (inputs) decisis;
           inherit (inputs) hunk;
           inherit (inputs) arto;
-          inherit (inputs) nixpkgs-bitwarden;
         };
       };
     }

@@ -7,6 +7,7 @@
   rust-overlay,
   llm-agents,
   gatehook,
+  decisis,
   hunk,
   arto,
   extraOverlays ? [ ],
@@ -50,6 +51,7 @@ let
       pkgs
       pkgs-stable
       llm-agents
+      decisis
       hunk
       arto
       ;

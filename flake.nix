@@ -49,15 +49,15 @@
       url = "github:hirano00o/gatehook";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    decisis = {
+      url = "github:hirano00o/decisis";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     hunk = {
       url = "github:modem-dev/hunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     arto.url = "github:arto-app/Arto";
-    # 26.05-darwin の bitwarden-desktop 2026.5.0 は electron-39 経由で compiler-rt 18 を
-    # 引き込み、SDK 26.4 の libcxx 21 (__builtin_ctzg) でビルド不能。修正版 (nixpkgs #530348)
-    # を含む master の 2026.7.0 を pin して bitwarden-desktop だけ差し替える。
-    nixpkgs-bitwarden.url = "github:NixOS/nixpkgs/3c293e782c514503f6c6b623c0ec80c9b1a605f8";
   };
 
   outputs =

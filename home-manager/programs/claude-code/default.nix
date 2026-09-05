@@ -71,10 +71,6 @@ in
       source = ./scripts/posttooluse-lint.sh;
       executable = true;
     };
-    ".claude/scripts/stop-handover.sh" = {
-      source = ./scripts/stop-handover.sh;
-      executable = true;
-    };
     ".claude/scripts/claude-worktree.sh" = {
       source = ./scripts/claude-worktree.sh;
       executable = true;
@@ -373,15 +369,6 @@ in
             hooks = [
               {
                 type = "command";
-                command = "${config.home.homeDirectory}/.claude/scripts/stop-handover.sh";
-              }
-            ];
-          }
-          {
-            matcher = "";
-            hooks = [
-              {
-                type = "command";
                 command = "${config.home.homeDirectory}/.claude/scripts/notify.sh \"Finished\" 'Claude Code'";
               }
             ];
@@ -414,7 +401,6 @@ in
     skills = {
       develop = ./skills/develop/SKILL.md;
       ship = ./skills/ship/SKILL.md;
-      handover = ./skills/handover/SKILL.md;
       tdd-cycle = ./skills/tdd-cycle/SKILL.md;
       review-checklist = ./skills/review-checklist/SKILL.md;
       lang-go = ./skills/lang-go/SKILL.md;

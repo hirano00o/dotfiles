@@ -36,10 +36,12 @@
 
 ---
 
-## Session Handover
+## Decision Memory
 
-- At session start, check `$HOME/.claude/handovers/$(basename "$PWD")/`. If files exist, read the most recent one.
-- At session end or at a natural stopping point, prompt the user to run `/handover`.
+- Use the `decisis` skill to carry decisions across sessions.
+- **MUST** run `decisis recall` as the first action — before reading code or docs — when weighing a design or implementation approach, choosing a library, or when existing code's intent is unclear.
+- **MUST** run `decisis remember` right after a decision is made, a constraint is found, or a root cause is identified. Do not wait to be asked.
+- Record only decisions, constraints, pitfalls, and conventions. Never record work logs, transient state, or anything derivable from the code — noise degrades recall.
 
 ---
 
