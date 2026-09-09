@@ -11,11 +11,11 @@
     mcpServers = {
       datadog-dev = {
         type = "http";
-        url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking&account=dev";
+        url = "https://mcp.datadoghq.com/v1/mcp?toolsets=core,dashboards,apm,error-tracking&account=dev";
       };
       datadog-prd = {
         type = "http";
-        url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking&account=prd";
+        url = "https://mcp.datadoghq.com/v1/mcp?toolsets=core,dashboards,apm,error-tracking&account=prd";
       };
       cloudwatch-logs = {
         type = "stdio";
