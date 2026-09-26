@@ -34,7 +34,6 @@ let
       (import ./overlays/drawio-mcp.nix)
       (import ./overlays/d2-darwin.nix)
       (import ./overlays/python-audio-darwin.nix)
-      mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
     ]
     ++ extraOverlays
@@ -43,6 +42,11 @@ let
   pkgs-stable = import nixpkgs-stable {
     inherit system;
     config.allowUnfree = true;
+  };
+  pkgs-mcp = import mcp-servers-nix.inputs.nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
+    overlays = [ mcp-servers-nix.overlays.default ];
   };
   lib = pkgs.lib;
 
@@ -71,7 +75,12 @@ in
   # すべてのモジュールがoverlayを含むpkgsを使用するように設定
   _module.args = {
     pkgs = lib.mkForce pkgs;
-    inherit mcp-servers-nix llm-agents gatehook;
+    inherit
+      mcp-servers-nix
+      pkgs-mcp
+      llm-agents
+      gatehook
+      ;
   };
 
   home.stateVersion = "26.05";

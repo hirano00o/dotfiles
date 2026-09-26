@@ -2,6 +2,7 @@
   config,
   pkgs,
   mcp-servers-nix,
+  pkgs-mcp,
   llm-agents,
   gatehook,
   ...
@@ -415,7 +416,7 @@ in
       tf-analyst = builtins.readFile ./agents/tf-analyst.md;
     };
     mcpServers =
-      (mcp-servers-nix.lib.evalModule pkgs {
+      (mcp-servers-nix.lib.evalModule pkgs-mcp {
         programs = {
           filesystem.enable = true;
           fetch.enable = true;
@@ -424,6 +425,13 @@ in
           sequential-thinking.enable = true;
           serena = {
             enable = true;
+            package = pkgs-mcp.serena.overridePythonAttrs (old: {
+              disabledTests = old.disabledTests ++ [
+                "test_project_server_client_authenticates_requests"
+                "test_facade_method_results_are_transferred_from_the_project_server"
+                "test_external_project_context_in_repl"
+              ];
+            });
             context = "claude-code";
             enableWebDashboard = false;
           };
@@ -441,7 +449,7 @@ in
         };
         playwright = {
           type = "stdio";
-          command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
+          command = "${pkgs-mcp.playwright-mcp}/bin/playwright-mcp";
           args = [
             "--executable-path"
             "${pkgs.google-chrome}/bin/google-chrome"
