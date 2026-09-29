@@ -5,6 +5,7 @@
   decisis,
   hunk,
   arto,
+  gprt,
 }:
 with pkgs;
 [
@@ -95,6 +96,7 @@ with pkgs;
 
   llm-agents.packages.${stdenv.hostPlatform.system}.ccusage
   decisis.packages.${stdenv.hostPlatform.system}.default # AI エージェントの決定・制約の記憶ストア
+  gprt.packages.${stdenv.hostPlatform.system}.default # GitHub PR TUI
 
   # Nix
   nix-output-monitor

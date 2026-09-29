@@ -52,6 +52,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     arto.url = "github:arto-app/Arto";
+    gprt = {
+      url = "github:hirano00o/gprt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

@@ -10,6 +10,7 @@
   decisis,
   hunk,
   arto,
+  gprt,
   extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
@@ -58,6 +59,7 @@ let
       decisis
       hunk
       arto
+      gprt
       ;
   };
 
