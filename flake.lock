@@ -249,6 +249,26 @@
         "type": "github"
       }
     },
+    "gprt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790656847,
+        "narHash": "sha256-ztoqGVOI9SU+O1KnaX6vVZQNi060eIdXe6oQwLgMGbs=",
+        "owner": "hirano00o",
+        "repo": "gprt",
+        "rev": "0b032113d2819e0a4b2dbc581a101141ab105ca4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hirano00o",
+        "repo": "gprt",
+        "type": "github"
+      }
+    },
     "hb": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -544,6 +564,7 @@
         "decisis": "decisis",
         "flake-parts": "flake-parts",
         "gatehook": "gatehook",
+        "gprt": "gprt",
         "hb": "hb",
         "home-manager": "home-manager",
         "hunk": "hunk",
