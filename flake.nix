@@ -2,7 +2,7 @@
   description = "hirano00o's nix configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     flake-parts.url = "github:hercules-ci/flake-parts";
     sops-nix = {
@@ -16,7 +16,7 @@
     };
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     brew-nix = {
       url = "github:BatteredBunny/brew-nix";
@@ -37,7 +37,7 @@
     };
     hb = {
       url = "github:hirano00o/hb";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-stable";
     };
     gatehook = {
       url = "github:hirano00o/gatehook";

@@ -26,7 +26,15 @@ let
     kvazaar = prev.kvazaar.overrideAttrs { doCheck = false; };
   };
 
-  pkgs = import nixpkgs {
+  raycastUnstableOverlay = final: prev: {
+    raycast =
+      (import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      }).raycast;
+  };
+
+  pkgs = import nixpkgs-stable {
     inherit system;
     config.allowUnfree = true;
     config.permittedInsecurePackages = [ "electron-39.8.10" ];
@@ -35,15 +43,13 @@ let
       (import ./overlays/drawio-mcp.nix)
       (import ./overlays/d2-darwin.nix)
       (import ./overlays/python-audio-darwin.nix)
+      raycastUnstableOverlay
       rust-overlay.overlays.default
     ]
     ++ extraOverlays
     ++ brewNixOverlay;
   };
-  pkgs-stable = import nixpkgs-stable {
-    inherit system;
-    config.allowUnfree = true;
-  };
+  pkgs-stable = pkgs;
   pkgs-mcp = import mcp-servers-nix.inputs.nixpkgs {
     inherit system;
     config.allowUnfree = true;
