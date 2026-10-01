@@ -2,8 +2,10 @@
   pkgs,
   pkgs-stable,
   llm-agents,
+  decisis,
   hunk,
   arto,
+  gprt,
 }:
 with pkgs;
 [
@@ -16,6 +18,8 @@ with pkgs;
   # LSP/dev
   bash-language-server
   biome
+  oxfmt
+  oxlint
   buf
   docker-language-server
   golangci-lint-langserver
@@ -68,6 +72,8 @@ with pkgs;
   google-cloud-sdk
   hunk.packages.${pkgs.system}.default
   envsubst
+  postgresql_17
+  postgresql_17.pg_config
 
   presenterm
   mermaid-cli
@@ -89,6 +95,8 @@ with pkgs;
   }))
 
   llm-agents.packages.${stdenv.hostPlatform.system}.ccusage
+  decisis.packages.${stdenv.hostPlatform.system}.default # AI エージェントの決定・制約の記憶ストア
+  gprt.packages.${stdenv.hostPlatform.system}.default # GitHub PR TUI
 
   # Nix
   nix-output-monitor

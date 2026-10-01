@@ -9,6 +9,7 @@
       ".serena/"
       "**/.claude/**/*.local.*"
       ".envrc"
+      ".nvim.lua"
     ];
     settings = {
       ghq = {

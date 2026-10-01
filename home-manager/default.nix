@@ -7,8 +7,10 @@
   rust-overlay,
   llm-agents,
   gatehook,
+  decisis,
   hunk,
   arto,
+  gprt,
   extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
@@ -24,7 +26,15 @@ let
     kvazaar = prev.kvazaar.overrideAttrs { doCheck = false; };
   };
 
-  pkgs = import nixpkgs {
+  raycastUnstableOverlay = final: prev: {
+    raycast =
+      (import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      }).raycast;
+  };
+
+  pkgs = import nixpkgs-stable {
     inherit system;
     config.allowUnfree = true;
     config.permittedInsecurePackages = [ "electron-39.8.10" ];
@@ -33,15 +43,17 @@ let
       (import ./overlays/drawio-mcp.nix)
       (import ./overlays/d2-darwin.nix)
       (import ./overlays/python-audio-darwin.nix)
-      mcp-servers-nix.overlays.default
+      raycastUnstableOverlay
       rust-overlay.overlays.default
     ]
     ++ extraOverlays
     ++ brewNixOverlay;
   };
-  pkgs-stable = import nixpkgs-stable {
+  pkgs-stable = pkgs;
+  pkgs-mcp = import mcp-servers-nix.inputs.nixpkgs {
     inherit system;
     config.allowUnfree = true;
+    overlays = [ mcp-servers-nix.overlays.default ];
   };
   lib = pkgs.lib;
 
@@ -50,8 +62,10 @@ let
       pkgs
       pkgs-stable
       llm-agents
+      decisis
       hunk
       arto
+      gprt
       ;
   };
 
@@ -69,7 +83,12 @@ in
   # すべてのモジュールがoverlayを含むpkgsを使用するように設定
   _module.args = {
     pkgs = lib.mkForce pkgs;
-    inherit mcp-servers-nix llm-agents gatehook;
+    inherit
+      mcp-servers-nix
+      pkgs-mcp
+      llm-agents
+      gatehook
+      ;
   };
 
   home.stateVersion = "26.05";

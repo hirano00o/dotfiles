@@ -27,6 +27,11 @@ return {
         }
       },
       pickers = {
+        buffers = {
+          mappings = {
+            n = { ["<leader>d"] = actions.delete_buffer },
+          },
+        },
         diagnostics = {
           theme = "ivy",
         },
