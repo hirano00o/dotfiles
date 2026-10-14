@@ -85,7 +85,7 @@ in
   programs.claude-code = {
     enable = true;
     package = llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code;
-    context = ./CLAUDE.md;
+    context = builtins.readFile ../agents/AGENTS.md + "\n---\n\n" + builtins.readFile ./CLAUDE.md;
     settings = {
       model = "opus";
       theme = "dark";
