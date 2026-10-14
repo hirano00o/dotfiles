@@ -34,6 +34,14 @@ let
       }).raycast;
   };
 
+  codexUnstableOverlay = final: prev: {
+    codex =
+      (import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      }).codex;
+  };
+
   pkgs = import nixpkgs-stable {
     inherit system;
     config.allowUnfree = true;
@@ -44,6 +52,7 @@ let
       (import ./overlays/d2-darwin.nix)
       (import ./overlays/python-audio-darwin.nix)
       raycastUnstableOverlay
+      codexUnstableOverlay
       rust-overlay.overlays.default
     ]
     ++ extraOverlays
