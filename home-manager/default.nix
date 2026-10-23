@@ -24,6 +24,13 @@ let
   dontCheckOverlay = final: prev: {
     chromaprint = prev.chromaprint.overrideAttrs { doCheck = false; };
     kvazaar = prev.kvazaar.overrideAttrs { doCheck = false; };
+    # weasyprint の assert_pixels_equal テストが darwin で失敗する。md2pdf 等の
+    # 依存経由でも使われるため、python3Packages.override ではなく拡張で全体に効かせる。
+    pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+      (pyFinal: pyPrev: {
+        weasyprint = pyPrev.weasyprint.overridePythonAttrs { doCheck = false; };
+      })
+    ];
   };
 
   raycastUnstableOverlay = final: prev: {
