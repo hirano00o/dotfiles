@@ -36,7 +36,7 @@ with pkgs;
   typescript-language-server
   yaml-language-server
   vscode-langservers-extracted # HTML/CSS/JSON/ESLint
-  typescript-go
+  typescript
 
   # DB
   mysql84

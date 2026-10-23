@@ -33,39 +33,23 @@ let
     ];
   };
 
-  raycastUnstableOverlay = final: prev: {
-    raycast =
-      (import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      }).raycast;
-  };
-
-  codexUnstableOverlay = final: prev: {
-    codex =
-      (import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      }).codex;
-  };
-
-  pkgs = import nixpkgs-stable {
+  pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
     config.permittedInsecurePackages = [ "electron-39.8.10" ];
     overlays = [
       dontCheckOverlay
       (import ./overlays/drawio-mcp.nix)
-      (import ./overlays/d2-darwin.nix)
       (import ./overlays/python-audio-darwin.nix)
-      raycastUnstableOverlay
-      codexUnstableOverlay
       rust-overlay.overlays.default
     ]
     ++ extraOverlays
     ++ brewNixOverlay;
   };
-  pkgs-stable = pkgs;
+  pkgs-stable = import nixpkgs-stable {
+    inherit system;
+    config.allowUnfree = true;
+  };
   pkgs-mcp = import mcp-servers-nix.inputs.nixpkgs {
     inherit system;
     config.allowUnfree = true;
@@ -106,6 +90,12 @@ in
       gatehook
       ;
   };
+
+  # nix-darwin 26.05 の制約でmodule評価のlibはstableのままpkgsだけunstableにしているため、
+  # unstableのmake-options-docがstableのlibで評価されて失敗する。マニュアルは使わないので無効化する
+  manual.manpages.enable = false;
+  # libとpkgsのリリース差を意図して許容しているので警告を抑止する
+  home.enableNixpkgsReleaseCheck = false;
 
   home.stateVersion = "26.05";
   home.packages = basicPkgs ++ (extraPackages { inherit pkgs; });
