@@ -17,6 +17,12 @@ for f in /etc/nix/nix.conf /etc/zshrc /etc/bashrc; do
 done
 ```
 
+> [!Note]
+> `nix.package` is Nix with the patches in `nix-darwin/config/patches/`, which keep the darwin sandbox working for large closures such as `home-manager-generation` ([NixOS/nix#16613](https://github.com/NixOS/nix/issues/16613)).
+> Until the patched daemon is running, builds can fail with `sandbox initialization failed: data object length ... exceeds maximum (65535)`.
+> In that case, run the switch once with `--option sandbox false`, e.g. `sudo darwin-rebuild switch --flake .#privateDarwin --option sandbox false`.
+> Afterwards, confirm that `pgrep -fl nix-daemon` shows the patched version and that builds succeed with the sandbox enabled.
+
 ### Private
 
 ```sh
