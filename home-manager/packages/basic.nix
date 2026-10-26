@@ -105,7 +105,7 @@ with pkgs;
   sops
   age
 ]
-++ lib.optionals stdenv.isDarwin [
+++ lib.optionals stdenv.hostPlatform.isDarwin [
   terminal-notifier
   raycast
 ]

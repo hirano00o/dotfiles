@@ -18,5 +18,5 @@ with pkgs;
   kubeseal
   fluxcd
 ]
-++ lib.optionals stdenv.isDarwin [
+++ lib.optionals stdenv.hostPlatform.isDarwin [
 ]
