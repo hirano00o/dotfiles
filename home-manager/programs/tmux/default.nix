@@ -65,6 +65,13 @@
       set-option -g default-shell "''${SHELL}"
       set -g default-command "''${SHELL}"
 
+      # tmux 3.6以前と同じ背景設定にする
+      set -g theme terminal
+      set -g popup-style default
+      set -g popup-border-style default
+      set -g menu-style default
+      set -g menu-border-style default
+
       # ステータスバーの色を設定する
       set -g status-fg white
       set -g status-bg black
