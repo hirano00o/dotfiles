@@ -23,3 +23,6 @@ opt.cmdheight = 2
 opt.splitright = true
 opt.splitbelow = true
 opt.equalalways = false -- ウィンドウ開閉時の自動リサイズを無効化
+
+-- プロジェクトローカル設定
+opt.exrc = true -- カレントディレクトリの .nvim.lua を読み込む(初回は :trust が必要)

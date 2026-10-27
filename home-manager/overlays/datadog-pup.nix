@@ -4,12 +4,12 @@ final: prev:
 let
   version = "0.52.0";
   selectAsset =
-    if prev.stdenv.isDarwin && prev.stdenv.isAarch64 then
+    if prev.stdenv.hostPlatform.isDarwin && prev.stdenv.hostPlatform.isAarch64 then
       {
         suffix = "Darwin_arm64";
         hash = "sha256-bgL8eE6+Jaz1h6H7QbJqxRUnUQmrApIjHA+dfYnNpYA=";
       }
-    else if prev.stdenv.isDarwin && prev.stdenv.isx86_64 then
+    else if prev.stdenv.hostPlatform.isDarwin && prev.stdenv.hostPlatform.isx86_64 then
       {
         suffix = "Darwin_x86_64";
         hash = "sha256-c5jabz5FwuINvTr751nGkXoRwHlxlPRgCMkKb8Gzyp8=";

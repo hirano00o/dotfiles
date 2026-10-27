@@ -48,6 +48,11 @@
         alt-7 = "workspace 7";
         alt-8 = "workspace 8";
         alt-9 = "workspace 9";
+        alt-a = "workspace A";
+        alt-b = "workspace B";
+        alt-c = "workspace C";
+        alt-d = "workspace D";
+        alt-e = "workspace E";
 
         alt-shift-1 = [
           "move-node-to-workspace 1"
@@ -84,6 +89,26 @@
         alt-shift-9 = [
           "move-node-to-workspace 9"
           "workspace 9"
+        ];
+        alt-shift-a = [
+          "move-node-to-workspace A"
+          "workspace A"
+        ];
+        alt-shift-b = [
+          "move-node-to-workspace B"
+          "workspace B"
+        ];
+        alt-shift-c = [
+          "move-node-to-workspace C"
+          "workspace C"
+        ];
+        alt-shift-d = [
+          "move-node-to-workspace D"
+          "workspace D"
+        ];
+        alt-shift-e = [
+          "move-node-to-workspace E"
+          "workspace E"
         ];
 
         alt-tab = "workspace-back-and-forth";
@@ -158,9 +183,21 @@
           run = "layout floating";
         }
 
-        # 1: ターミナル
+        # 1: コミュニケーション
         {
-          "if".app-id = "com.mitchellh.ghostty";
+          "if".app-id = "com.tinyspeck.slackmacgap";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "com.hnc.Discord";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "jp.naver.line.mac";
+          run = "move-node-to-workspace 1";
+        }
+        {
+          "if".app-id = "us.zoom.xos";
           run = "move-node-to-workspace 1";
         }
 
@@ -190,30 +227,8 @@
           run = "move-node-to-workspace 4";
         }
         {
-          "if".app-id = "com.lambdalisue.Arto";
-          run = "move-node-to-workspace 4";
-        }
-        {
           "if".app-id = "com.jgraph.drawio.desktop";
           run = "move-node-to-workspace 4";
-        }
-
-        # 6: コミュニケーション
-        {
-          "if".app-id = "com.tinyspeck.slackmacgap";
-          run = "move-node-to-workspace 6";
-        }
-        {
-          "if".app-id = "com.hnc.Discord";
-          run = "move-node-to-workspace 6";
-        }
-        {
-          "if".app-id = "jp.naver.line.mac";
-          run = "move-node-to-workspace 6";
-        }
-        {
-          "if".app-id = "us.zoom.xos";
-          run = "move-node-to-workspace 6";
         }
 
         # 7: インフラ/リモート
@@ -229,7 +244,37 @@
           "if".app-id = "com.realvnc.vncviewer";
           run = "move-node-to-workspace 7";
         }
+
+        # A: ターミナル, markdown viewer
+        {
+          "if".app-id = "com.mitchellh.ghostty";
+          run = "move-node-to-workspace A";
+        }
+        {
+          "if".app-id = "com.lambdalisue.Arto";
+          run = "move-node-to-workspace A";
+        }
       ];
+
+      workspace-to-monitor-force-assignment = {
+        "1" = "main";
+        "2" = "main";
+        "3" = "main";
+        "4" = "main";
+        "5" = "main";
+        "6" = "main";
+        "7" = "main";
+        "8" = "main";
+        "9" = "main";
+        "A" = [
+          "secondary"
+          "2"
+        ];
+        "B" = "secondary";
+        "C" = "secondary";
+        "D" = "secondary";
+        "E" = "secondary";
+      };
     };
   };
 }

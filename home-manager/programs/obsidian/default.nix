@@ -21,6 +21,14 @@ in
         accentColor = "";
       };
 
+      # Generates ~/.obsidian/snippets/
+      cssSnippets = [
+        {
+          name = "customLineWidth";
+          text = "body {--file-line-width: 950px;}";
+        }
+      ];
+
       # Generates ~/.obsidian/core-plugins.json
       # Only plugins defined in home-manager's corePluginsList are managed here.
       # "webviewer", "footnotes" are not in the list yet, so they are omitted.

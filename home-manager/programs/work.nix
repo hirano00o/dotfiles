@@ -5,4 +5,5 @@
 }:
 [
   ./claude-code/work.nix
+  ./codex
 ]
