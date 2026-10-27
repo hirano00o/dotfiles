@@ -22,6 +22,10 @@
         "-dlig"
         "-liga"
       ];
+      font-family = [
+        "JetBrains Mono"
+        "HackGen Console NF"
+      ];
       font-size = 15;
       keybind = [
         "shift+enter=text:\n"
