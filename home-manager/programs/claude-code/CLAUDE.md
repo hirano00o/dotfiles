@@ -1,3 +1,13 @@
+## Commit Messages
+
+- **ALWAYS** write git commit messages in English, even though the response language is set to Japanese.
+
+## Pull Requests
+
+- **ALWAYS** create pull requests as drafts (`gh pr create --draft`) unless the user explicitly instructs otherwise.
+
+---
+
 ## Sub-Agent Usage
 
 - **ALWAYS** delegate research, investigation, and parallel analysis to sub-agents to keep the main context window clean.
