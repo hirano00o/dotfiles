@@ -10,11 +10,11 @@ let
     brew-nix
     sops-nix
     ;
-  inherit (inputs) nixpkgs;
+  inherit (inputs) nixpkgs nixpkgs-stable;
 
   system = "aarch64-darwin";
 
-  pkgs = import nixpkgs {
+  pkgs = import nixpkgs-stable {
     inherit system;
     overlays = [
       brew-nix.overlays.default
@@ -28,7 +28,7 @@ let
 in
 nix-darwin.lib.darwinSystem {
   inherit pkgs;
-  inherit (inputs.nixpkgs) lib;
+  inherit (inputs.nixpkgs-stable) lib;
   specialArgs = {
     inherit username brewUsername pkgs;
   };
@@ -53,8 +53,10 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) llm-agents;
           inherit (inputs) sops-nix;
           inherit (inputs) gatehook;
+          inherit (inputs) decisis;
           inherit (inputs) hunk;
           inherit (inputs) arto;
+          inherit (inputs) gprt;
         };
       };
     }

@@ -33,3 +33,16 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- yank
 vim.keymap.set("v", "Y", '"+y', { desc = "Copy to OS clipboard" })
+
+-- アンダースコア区切りをサブワードとして移動 (例: I_AM_A_BOY の各単語)
+local function subword_motion(motion)
+  return function()
+    local iskw = vim.opt_local.iskeyword:get()
+    vim.opt_local.iskeyword:remove("_")
+    vim.cmd("normal! " .. vim.v.count1 .. motion)
+    vim.opt_local.iskeyword = iskw
+  end
+end
+
+vim.keymap.set({ "n", "x" }, "]w", subword_motion("w"), { desc = "Move to next sub-word" })
+vim.keymap.set({ "n", "x" }, "[w", subword_motion("b"), { desc = "Move to previous sub-word" })

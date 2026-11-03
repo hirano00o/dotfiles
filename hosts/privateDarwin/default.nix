@@ -5,12 +5,12 @@ let
     home-manager
     brew-nix
     ;
-  inherit (inputs) nixpkgs;
+  inherit (inputs) nixpkgs nixpkgs-stable;
 
   username = "hirano00o";
   system = "aarch64-darwin";
 
-  pkgs = import nixpkgs {
+  pkgs = import nixpkgs-stable {
     inherit system;
     overlays = [
       brew-nix.overlays.default
@@ -24,7 +24,7 @@ let
 in
 nix-darwin.lib.darwinSystem {
   inherit pkgs;
-  inherit (inputs.nixpkgs) lib;
+  inherit (inputs.nixpkgs-stable) lib;
   specialArgs = {
     inherit username pkgs;
   };
@@ -49,9 +49,10 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) sops-nix;
           inherit (inputs) hb;
           inherit (inputs) gatehook;
+          inherit (inputs) decisis;
           inherit (inputs) hunk;
           inherit (inputs) arto;
-          inherit (inputs) nixpkgs-bitwarden;
+          inherit (inputs) gprt;
         };
       };
     }

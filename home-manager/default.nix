@@ -7,8 +7,10 @@
   rust-overlay,
   llm-agents,
   gatehook,
+  decisis,
   hunk,
   arto,
+  gprt,
   extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
@@ -22,6 +24,13 @@ let
   dontCheckOverlay = final: prev: {
     chromaprint = prev.chromaprint.overrideAttrs { doCheck = false; };
     kvazaar = prev.kvazaar.overrideAttrs { doCheck = false; };
+    # weasyprint の assert_pixels_equal テストが darwin で失敗する。md2pdf 等の
+    # 依存経由でも使われるため、python3Packages.override ではなく拡張で全体に効かせる。
+    pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+      (pyFinal: pyPrev: {
+        weasyprint = pyPrev.weasyprint.overridePythonAttrs { doCheck = false; };
+      })
+    ];
   };
 
   pkgs = import nixpkgs {
@@ -31,9 +40,7 @@ let
     overlays = [
       dontCheckOverlay
       (import ./overlays/drawio-mcp.nix)
-      (import ./overlays/d2-darwin.nix)
       (import ./overlays/python-audio-darwin.nix)
-      mcp-servers-nix.overlays.default
       rust-overlay.overlays.default
     ]
     ++ extraOverlays
@@ -43,6 +50,11 @@ let
     inherit system;
     config.allowUnfree = true;
   };
+  pkgs-mcp = import mcp-servers-nix.inputs.nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
+    overlays = [ mcp-servers-nix.overlays.default ];
+  };
   lib = pkgs.lib;
 
   basicPkgs = import ./packages/basic.nix {
@@ -50,8 +62,10 @@ let
       pkgs
       pkgs-stable
       llm-agents
+      decisis
       hunk
       arto
+      gprt
       ;
   };
 
@@ -69,8 +83,19 @@ in
   # すべてのモジュールがoverlayを含むpkgsを使用するように設定
   _module.args = {
     pkgs = lib.mkForce pkgs;
-    inherit mcp-servers-nix llm-agents gatehook;
+    inherit
+      mcp-servers-nix
+      pkgs-mcp
+      llm-agents
+      gatehook
+      ;
   };
+
+  # nix-darwin 26.05 の制約でmodule評価のlibはstableのままpkgsだけunstableにしているため、
+  # unstableのmake-options-docがstableのlibで評価されて失敗する。マニュアルは使わないので無効化する
+  manual.manpages.enable = false;
+  # libとpkgsのリリース差を意図して許容しているので警告を抑止する
+  home.enableNixpkgsReleaseCheck = false;
 
   home.stateVersion = "26.05";
   home.packages = basicPkgs ++ (extraPackages { inherit pkgs; });

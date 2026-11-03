@@ -2,11 +2,38 @@
 
 ## Nix
 
+### Common procedures
+
+Prerequisites: [Nix](https://nixos.org/download/) and [Homebrew](https://brew.sh/) (this also installs the Xcode Command Line Tools, which provide `git`). The owner of `/opt/homebrew` is set as `brewUser` below.
+
+```sh
+# 1. Place the sops age key (copy from the previous machine)
+mkdir -p ~/.config/sops/age
+cp /path/to/keys.txt ~/.config/sops/age/keys.txt
+
+# 2. Move aside files nix-darwin refuses to overwrite (only if they exist)
+for f in /etc/nix/nix.conf /etc/zshrc /etc/bashrc; do
+  [ -e "$f" ] && sudo mv "$f" "$f.before-nix-darwin"
+done
+```
+
+> [!Note]
+> `nix.package` is Nix with the patches in `nix-darwin/config/patches/`, which keep the darwin sandbox working for large closures such as `home-manager-generation` ([NixOS/nix#16613](https://github.com/NixOS/nix/issues/16613)).
+> Until the patched daemon is running, builds can fail with `sandbox initialization failed: data object length ... exceeds maximum (65535)`.
+> In that case, run the switch once with `--option sandbox false`, e.g. `sudo darwin-rebuild switch --flake .#privateDarwin --option sandbox false`.
+> Afterwards, confirm that `pgrep -fl nix-daemon` shows the patched version and that builds succeed with the sandbox enabled.
+
 ### Private
 
 ```sh
-sudo nix run nix-darwin --extra-experimental-features 'flakes nix-command' -- switch --flake .#privateDarwin
+# 1. Run nix-darwin
+sudo nix run nix-darwin \
+  --extra-experimental-features 'flakes nix-command' \
+  --extra-substituters https://cache.numtide.com \
+  --extra-trusted-public-keys niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g= \
+  -- switch --flake .#privateDarwin
 
+# 4. Set the token
 gh auth login
 
 cat <<EOF > ~/.config/nix/local.conf
@@ -30,20 +57,31 @@ darwin-rebuild build --flake .#privateDarwin
 
 ```sh
 # 1. Create username configuration
-cat > nix/users/work/flake.nix << EOF
+cat > users/work/flake.nix << EOF
 {
-  description = "Username configuration";
+  description = "Work username configuration";
   outputs = { self }: {
     value = "$(whoami)";
+    brewUser = "$(stat -f %Su /opt/homebrew)";
   };
 }
 EOF
 
-# 2. Tell git to ignore local changes
-git update-index --skip-worktree nix/users/work/flake.nix
+# 2. Place the CA bundle if you need
+sudo mkdir -p /etc/ssl/certs
+security find-certificate -a -p \
+  /System/Library/Keychains/SystemRootCertificates.keychain \
+  /Library/Keychains/System.keychain \
+  | sudo tee /etc/ssl/certs/ca-certificates.crt > /dev/null
 
 # 3. Run nix-darwin
-sudo nix run nix-darwin --extra-experimental-features 'flakes nix-command' -- switch --flake .#workDarwin
+sudo env NIX_SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt \
+  nix run nix-darwin \
+  --extra-experimental-features 'flakes nix-command' \
+  --option ssl-cert-file /etc/ssl/certs/ca-certificates.crt \
+  --extra-substituters https://cache.numtide.com \
+  --extra-trusted-public-keys niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g= \
+  -- switch --flake .#workDarwin
 
 # 4. Set the token
 gh auth login
@@ -57,13 +95,9 @@ GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)
 EOF
 ```
 
-**Note**: If you encounter an error like `evaluation of cached failed attribute 'darwinConfigurations.workDarwin.system' unexpectedly succeeded`, run the following command instead:
-
-```sh
-sudo nix run nix-darwin --extra-experimental-features 'flakes nix-command' -- switch --flake .#workDarwin --option eval-cache false
-```
-
-This disables the evaluation cache temporarily. After the first successful run, you can use the normal command without `--option eval-cache false`.
+> [!Note]
+> If you encounter an error like `evaluation of cached failed attribute 'darwinConfigurations.workDarwin.system' unexpectedly succeeded`, run with `--option eval-cache false` option.
+> This disables the evaluation cache temporarily. After the first successful run, you can use the normal command without `--option eval-cache false`.
 
 From the second time onwards:
 ```sh

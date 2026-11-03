@@ -11,19 +11,19 @@
     mcpServers = {
       datadog-dev = {
         type = "http";
-        url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking&account=dev";
+        url = "https://mcp.datadoghq.com/v1/mcp?toolsets=core,dashboards,apm,error-tracking&account=dev";
       };
       datadog-prd = {
         type = "http";
-        url = "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp?toolsets=core,dashboards,apm,error-tracking&account=prd";
+        url = "https://mcp.datadoghq.com/v1/mcp?toolsets=core,dashboards,apm,error-tracking&account=prd";
       };
       cloudwatch-logs = {
-        type = "stdio";
         command = "uvx";
-        args = [ "awslabs.cloudwatch-mcp-server@0.0.28" ];
+        args = [ "awslabs.cloudwatch-mcp-server@2026.09.20260922000649" ];
         env = {
           FASTMCP_LOG_LEVEL = "ERROR";
         };
+        transportType = "stdio";
       };
     };
   };
