@@ -397,6 +397,7 @@ in
         "ralph-loop@claude-plugins-official" = true;
         "security-guidance@claude-plugins-official" = true;
         "understand-anything@understand-anything" = true;
+        "yomiyasu@yomiyasu" = true;
       };
     };
     skills = {

@@ -6,6 +6,10 @@
 
 - **ALWAYS** create pull requests as drafts (`gh pr create --draft`) unless the user explicitly instructs otherwise.
 
+## Japanese Writing
+
+- **ALWAYS** proofread with the `yomiyasu` skill whenever you write or revise Japanese text.
+
 ---
 
 ## Sub-Agent Usage
