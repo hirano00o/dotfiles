@@ -36,9 +36,27 @@
 
 ---
 
+## Shell Commands
+
+- **NEVER** chain commands with `;`, `&&`, or `||` in a single shell tool call unless the commands must run in the same shell invocation. Chained commands can trigger extra permission prompts.
+- Run each command in its own shell tool call.
+- Prefer options such as `git -C <path>` over `cd <path> && ...`.
+
+---
+
 ## Standard Delivery Flow
 
 - At natural stopping points, propose committing the work. Use the `ship` skill (commit → push → create PR → report the URL) as the standard flow; do not wait to be asked each time.
+
+---
+
+## Commit Messages
+
+- **ALWAYS** write git commit messages in English, even though the response language is set to Japanese.
+
+## Pull Requests
+
+- **ALWAYS** create pull requests as drafts (`gh pr create --draft`) unless the user explicitly instructs otherwise.
 
 ---
 
