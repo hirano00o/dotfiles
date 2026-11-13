@@ -53,6 +53,7 @@ nix-darwin.lib.darwinSystem {
           inherit (inputs) hunk;
           inherit (inputs) arto;
           inherit (inputs) gprt;
+          inherit (inputs) neovim-nightly-overlay;
         };
       };
     }

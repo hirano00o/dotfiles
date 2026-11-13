@@ -11,6 +11,7 @@
   hunk,
   arto,
   gprt,
+  neovim-nightly-overlay,
   extraOverlays ? [ ],
   extraPackages ? { pkgs }: [ ],
   extraPrograms ? { pkgs, mcp-servers-nix }: [ ],
@@ -42,6 +43,7 @@ let
       (import ./overlays/drawio-mcp.nix)
       (import ./overlays/python-audio-darwin.nix)
       rust-overlay.overlays.default
+      neovim-nightly-overlay.overlays.default
     ]
     ++ extraOverlays
     ++ brewNixOverlay;
