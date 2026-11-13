@@ -13,9 +13,10 @@ allowed-tools: Bash, Read, Grep, Glob
 2. **差分確認**: `git status` と `git diff --stat` で影響範囲を確認し、想定外のファイル・
    デバッグ残骸・シークレットが含まれていないことを確かめる
 3. **コミット**: 意味のある単位でファイルを個別に `git add` し、**why** を説明する
-   コミットメッセージを書く (`git add -A` / `git add .` は使わない)
+   **英語の**コミットメッセージを書く (`git add -A` / `git add .` は使わない)
 4. **push**: `git push -u origin <branch>`
-5. **PR 作成**: リポジトリに PR テンプレートがあれば従い、`gh pr create` で作成する。
+5. **PR 作成**: リポジトリに PR テンプレートがあれば従い、`gh pr create --draft` でドラフトとして作成する
+   (ユーザーから明示的な指示がある場合のみ通常の PR にする)。
    概要には変更の why / what と検証方法を書く
 6. **報告**: PR の URL を報告する
 

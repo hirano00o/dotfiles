@@ -14,7 +14,7 @@ with pkgs;
   jira-cli-go
   datadog-pup
 ]
-++ lib.optionals stdenv.isDarwin [
+++ lib.optionals stdenv.hostPlatform.isDarwin [
   pkgs.brewCasks.docker-desktop
   pkgs.brewCasks.tunnelblick
 ]

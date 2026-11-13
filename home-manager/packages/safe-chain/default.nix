@@ -3,7 +3,7 @@ let
   pname = "safe-chain";
   version = "1.4.2";
 
-  arch = if pkgs.stdenv.isAarch64 then "arm64" else "x64";
+  arch = if pkgs.stdenv.hostPlatform.isAarch64 then "arm64" else "x64";
 
   src = pkgs.fetchurl {
     url = "https://github.com/AikidoSec/safe-chain/releases/download/${version}/safe-chain-macos-${arch}";
