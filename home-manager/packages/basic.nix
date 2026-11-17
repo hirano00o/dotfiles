@@ -4,7 +4,6 @@
   llm-agents,
   decisis,
   hunk,
-  arto,
   gprt,
 }:
 with pkgs;
@@ -83,7 +82,6 @@ with pkgs;
   python313Packages.weasyprint
 
   marp-cli
-  arto.packages.${pkgs.system}.default # markdown viewer
 
   markitdown-mcp
   drawio

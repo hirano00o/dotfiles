@@ -66,7 +66,6 @@ let
       llm-agents
       decisis
       hunk
-      arto
       gprt
       ;
   };
@@ -90,6 +89,7 @@ in
       pkgs-mcp
       llm-agents
       gatehook
+      arto
       ;
   };
 
