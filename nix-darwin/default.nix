@@ -3,6 +3,7 @@ let
   environment = import ./config/environment.nix;
   fonts = import ./config/fonts.nix { inherit pkgs; };
   homebrew = import ./config/homebrew.nix;
+  mozkey = import ./config/mozkey.nix { inherit pkgs; };
   nix = import ./config/nix.nix;
   security = import ./config/security.nix;
   system = import ./config/system.nix { inherit username; };
@@ -13,6 +14,7 @@ in
     environment
     fonts
     homebrew
+    mozkey
     nix
     security
     system

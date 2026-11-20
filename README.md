@@ -23,6 +23,10 @@ done
 > In that case, run the switch once with `--option sandbox false`, e.g. `sudo darwin-rebuild switch --flake .#privateDarwin --option sandbox false`.
 > Afterwards, confirm that `pgrep -fl nix-daemon` shows the patched version and that builds succeed with the sandbox enabled.
 
+> [!Note]
+> The switch installs the [Mozkey](https://github.com/koyasi777/mozkey) input method from its release `.pkg` whenever the installed version differs from the one pinned in `nix-darwin/config/mozkey.nix`.
+> After the first install, log out and back in, then add "Hiragana (Mozkey)" in System Settings → Keyboard → Text Input → Edit → "+" → Japanese if it is not listed yet.
+
 ### Private
 
 ```sh
