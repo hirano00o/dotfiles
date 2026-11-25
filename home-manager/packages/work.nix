@@ -4,6 +4,7 @@ with pkgs;
   _1password-cli
   awscli2
   saml2aws
+  ssm-session-manager-plugin
   granted
   kubectl
   docker
