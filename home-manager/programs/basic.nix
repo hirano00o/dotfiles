@@ -1,6 +1,7 @@
 { ... }:
 [
   ./aerospace
+  ./arto
   ./bat
   ./bun
   ./cargo

@@ -47,7 +47,7 @@ tdd-cycle の品質パイプライン (テスト / 型検査 / Lint / Format の
 ## 6. ドキュメント
 
 - 公開インターフェースに docstring / コメントがあるか
-- 関連する README / 設計ドキュメント / 要件ドキュメント (REQUIREMENTS.md 等) を同一コミットで更新しているか (CLAUDE.md の MUST)
+- 関連する README / 設計ドキュメント / 要件ドキュメント (REQUIREMENTS.md 等) を同一コミットで更新しているか (CLAUDE.md / AGENTS.md の MUST)
 - 破壊的変更がある場合、CHANGELOG / マイグレーション手順があるか
 
 ## 7. 変更スコープ

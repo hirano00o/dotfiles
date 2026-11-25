@@ -1,0 +1,14 @@
+diff --git a/src/libexpr/eval-settings.cc b/src/libexpr/eval-settings.cc
+index 5cf0ae0..2d3b1ca 100644
+--- a/src/libexpr/eval-settings.cc
++++ b/src/libexpr/eval-settings.cc
+@@ -82,7 +82,8 @@ Strings EvalSettings::getDefaultNixPath()
+ {
+     Strings res;
+     auto add = [&](const std::filesystem::path & p, const std::string & s = std::string()) {
+-        if (std::filesystem::exists(p)) {
++        std::error_code ec;
++        if (std::filesystem::exists(p, ec)) {
+             if (s.empty()) {
+                 res.push_back(p.string());
+             } else {

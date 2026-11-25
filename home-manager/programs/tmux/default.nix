@@ -65,6 +65,13 @@
       set-option -g default-shell "''${SHELL}"
       set -g default-command "''${SHELL}"
 
+      # tmux 3.6以前と同じ背景設定にする
+      set -g theme terminal
+      set -g popup-style default
+      set -g popup-border-style default
+      set -g menu-style default
+      set -g menu-border-style default
+
       # ステータスバーの色を設定する
       set -g status-fg white
       set -g status-bg black
@@ -90,7 +97,7 @@
       # 左パネルを設定する
       set -g status-left-length 40
       set -g status-left "#[fg=green]Session: #S #[fg=yellow]#I #[fg=cyan]#P"
-      # 右パネルを設定する (Claude Code 待機ペイン数を左端に差し込む)
+      # 右パネルを設定する (Claude Code の待機数/起動数を左端に差し込む)
       set-option -g status-right '#(${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh count)[%Y-%m-%d(%a) %H:%M]'
       set-option -g status-right-length 60
       set-option -g status-interval 5
@@ -113,7 +120,7 @@
       # <prefix>g でlazygitをポップアップウィンドウで起動する
       bind g display-popup -E -w 90% -h 90% -d "#{pane_current_path}" "lazygit"
 
-      # <prefix>C-n で Claude Code 待機中ペインの一覧をメニュー表示する
+      # <prefix>C-n で起動中の Claude Code セッション一覧をメニュー表示する (待機中は先頭に ● 付きで並ぶ)
       bind C-n run-shell "${config.home.homeDirectory}/.claude/scripts/waiting-panes.sh menu"
 
       # ペインにフォーカスが移ったら Claude Code 待機状態を解除する
