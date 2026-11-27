@@ -220,6 +220,10 @@
           "if".app-id = "com.anthropic.claudefordesktop";
           run = "move-node-to-workspace 3";
         }
+        {
+          "if".app-id = "com.google.GeminiMacOS";
+          run = "move-node-to-workspace 3";
+        }
 
         # 4: ドキュメント
         {

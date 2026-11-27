@@ -11,6 +11,7 @@ with pkgs;
   ffmpeg-full
   slack
   zoom-us
+  antigravity-cli
 
   # kubernetes tools
   kubernetes-helm
@@ -19,4 +20,10 @@ with pkgs;
   fluxcd
 ]
 ++ lib.optionals stdenv.hostPlatform.isDarwin [
+  (pkgs.brewCasks.google-gemini.overrideAttrs (old: {
+    src = fetchurl {
+      url = builtins.head old.src.urls;
+      hash = "sha256-mzWr/7iqWZHXUJTRN2LL44q0GgGvVidhf2itT9VduxY=";
+    };
+  }))
 ]
